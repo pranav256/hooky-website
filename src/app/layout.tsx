@@ -3,24 +3,53 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://hoooky.vercel.app"),
   title: "Hooky — Autonomous AI Video Clipper | Free & Open-Source Opus Clip Alternative",
   description: "100% Free and Open-Source (MIT) autonomous AI video clipper. Turn long YouTube videos, podcasts, and interviews into high-retention vertical 9:16 Shorts, Reels, and TikToks with Google Gemini 2.0 Flash semantic narrative detection, faster-whisper animated captions, and local GPU FFmpeg encoding.",
-  keywords: ["Hooky", "AI video clipper", "open source opus clip alternative", "klap alternative", "vertical video generator", "youtube shorts generator", "instagram reels generator", "faster-whisper", "gemini 2.0", "ffmpeg 9:16", "hormozi captions", "free video clipper"],
-  authors: [{ name: "Pranav / Hooky Contributors" }],
+  keywords: [
+    "Hooky",
+    "AI video clipper",
+    "open source opus clip alternative",
+    "klap alternative",
+    "submagic alternative",
+    "vertical video generator",
+    "youtube shorts generator",
+    "instagram reels generator",
+    "faster-whisper",
+    "gemini 2.0 flash",
+    "ffmpeg 9:16",
+    "hormozi captions",
+    "free video clipper"
+  ],
+  authors: [{ name: "Pranav / Hooky Contributors", url: "https://github.com/pranav256/Hooky" }],
+  alternates: {
+    canonical: "https://hoooky.vercel.app",
+  },
   openGraph: {
     type: "website",
-    url: "https://github.com/pranav256/Hooky",
+    url: "https://hoooky.vercel.app",
     siteName: "Hooky",
     title: "Hooky — Autonomous AI Video Clipper & Shorts/Reels Generator",
-    description: "Open-source Opus Clip alternative. Turn long videos into high-retention 9:16 vertical shorts locally with Gemini 2.0 Flash semantic detection, faster-whisper animated captions, and local GPU acceleration.",
+    description: "Free & open-source Opus Clip alternative. Local GPU rendering, faster-whisper animated subtitles, and Gemini 2.0 narrative hook detection.",
+    images: [
+      {
+        url: "/og-image.svg",
+        width: 1200,
+        height: 630,
+        alt: "Hooky — Autonomous AI Video Clipper",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Hooky — Autonomous AI Video Clipper & Shorts/Reels Generator",
-    description: "Free & open-source Opus Clip alternative. Local GPU rendering, faster-whisper animated subtitles, and Gemini 2.0 hook detection.",
+    description: "Free & open-source Opus Clip alternative. Local GPU rendering, faster-whisper animated subtitles, and Gemini 2.0 narrative hook detection.",
+    images: ["/og-image.svg"],
   },
   icons: {
     icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
   },
 };
 
@@ -44,7 +73,7 @@ export default function RootLayout({
               "isAccessibleForFree": true,
               "license": "https://opensource.org/licenses/MIT",
               "description": "Autonomous AI video clipper and shorts/reels generator. Open-source Opus Clip alternative powered by Google Gemini 2.0 Flash, faster-whisper, and FFmpeg.",
-              "url": "https://github.com/pranav256/Hooky",
+              "url": "https://hoooky.vercel.app",
               "codeRepository": "https://github.com/pranav256/Hooky",
               "offers": {
                 "@type": "Offer",

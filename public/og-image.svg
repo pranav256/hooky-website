@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0E121B" />
+      <stop offset="50%" stop-color="#080A0F" />
+      <stop offset="100%" stop-color="#05070A" />
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#F3DFA2" />
+      <stop offset="50%" stop-color="#E5C07B" />
+      <stop offset="100%" stop-color="#D4AF37" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Canvas -->
+  <rect width="1200" height="630" fill="url(#bg)" />
+
+  <!-- Ambient Glow -->
+  <circle cx="600" cy="180" r="320" fill="#E5C07B" opacity="0.05" filter="blur(80px)" />
+  <circle cx="950" cy="400" r="280" fill="#3B82F6" opacity="0.03" filter="blur(100px)" />
+
+  <!-- Top Pill -->
+  <g transform="translate(100, 90)">
+    <rect width="400" height="42" rx="21" fill="#141A28" stroke="#E5C07B" stroke-opacity="0.3" stroke-width="1.5" />
+    <text x="28" y="27" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#E5C07B">
+      ✦ 100% Free &amp; Open Source (MIT)
+    </text>
+  </g>
+
+  <!-- Title & Subtitle -->
+  <g transform="translate(100, 200)">
+    <text font-family="system-ui, -apple-system, sans-serif" font-size="64" font-weight="800" fill="#FFFFFF" letter-spacing="-1">
+      Hooky
+    </text>
+    <text y="70" font-family="system-ui, -apple-system, sans-serif" font-size="44" font-weight="700" fill="url(#gold)" letter-spacing="-0.5">
+      Autonomous AI Video Clipper
+    </text>
+    <text y="130" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="400" fill="#94A3B8">
+      Open-Source Opus Clip Alternative. Gemini 2.0 Flash • Faster-Whisper • Local GPU FFmpeg
+    </text>
+  </g>
+
+  <!-- Terminal Preview Box -->
+  <g transform="translate(100, 390)">
+    <rect width="1000" height="150" rx="16" fill="#10141E" stroke="#FFFFFF" stroke-opacity="0.1" stroke-width="1.5" />
+    <!-- Terminal circles -->
+    <circle cx="28" cy="24" r="6" fill="#EF4444" opacity="0.8" />
+    <circle cx="48" cy="24" r="6" fill="#F59E0B" opacity="0.8" />
+    <circle cx="68" cy="24" r="6" fill="#10B981" opacity="0.8" />
+    <!-- Command -->
+    <text x="28" y="70" font-family="monospace" font-size="18" font-weight="700" fill="#E5C07B">
+      $ git clone https://github.com/pranav256/Hooky.git &amp;&amp; ./hooky.sh
+    </text>
+    <text x="28" y="105" font-family="monospace" font-size="15" fill="#64748B">
+      ✓ Gemini 2.0 Hook Detection &bull; ✓ Smart Dual-Speaker Fit &bull; ✓ 6 Animated Subtitle Presets
+    </text>
+  </g>
+
+  <!-- Bottom Badges -->
+  <g transform="translate(100, 580)">
+    <text font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="600" fill="#94A3B8">
+      https://hoooky.vercel.app &bull; github.com/pranav256/Hooky
+    </text>
+  </g>
+</svg>

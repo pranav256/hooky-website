@@ -1,5 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <rect width="32" height="32" rx="8" fill="#090B12"/>
-  <rect x="0.5" y="0.5" width="31" height="31" rx="7.5" stroke="#7C3AED" stroke-opacity="0.4"/>
-  <path d="M18 4L8 16H16L14 28L24 16H16L18 4Z" fill="#A855F7" stroke="#C084FC" stroke-width="1.2" stroke-linejoin="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="100%" height="100%">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F3DFA2" />
+      <stop offset="50%" stop-color="#E5C07B" />
+      <stop offset="100%" stop-color="#C99E2A" />
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141A28" />
+      <stop offset="100%" stop-color="#080A0F" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#E5C07B" flood-opacity="0.3" />
+    </filter>
+  </defs>
+  
+  <!-- Outer rounded background -->
+  <rect width="128" height="128" rx="28" fill="url(#bgGrad)" stroke="#E5C07B" stroke-width="2" stroke-opacity="0.3" />
+  
+  <!-- Film Reel / Hooky Stylized H & Play Blade -->
+  <g filter="url(#glow)">
+    <!-- Left vertical bar -->
+    <rect x="34" y="30" width="12" height="68" rx="6" fill="url(#goldGrad)" />
+    <!-- Right vertical bar -->
+    <rect x="82" y="30" width="12" height="68" rx="6" fill="url(#goldGrad)" />
+    <!-- Center crossbar hook -->
+    <path d="M46 64 C 54 56, 74 56, 82 64" fill="none" stroke="url(#goldGrad)" stroke-width="10" stroke-linecap="round" />
+    <!-- Center cinematic lightning spark -->
+    <polygon points="64,46 56,66 65,66 60,82 72,60 63,60" fill="#FFFFFF" />
+  </g>
 </svg>
