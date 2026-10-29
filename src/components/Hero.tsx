@@ -311,16 +311,40 @@ export function Hero() {
 
                     {/* Subtitle in the bottom vertical padded region */}
                     <div className="text-center my-1 px-1">
-                      <div className="inline-block bg-black/90 px-2 py-1 rounded border border-white/10">
-                        <div className="flex flex-wrap justify-center gap-1 text-[11px] font-bold">
-                          {currentWords.map((word, wIdx) => (
-                            <span
-                              key={wIdx}
-                              className={wIdx === wordIdx ? "text-[#E5C07B] scale-105" : "text-white/80"}
-                            >
-                              {word}
-                            </span>
-                          ))}
+                      <div className={`inline-block px-2 py-1 rounded-lg max-w-full transition-all ${
+                        subtitleStyle === "clean" ? "bg-black/90 border border-white/20" :
+                        subtitleStyle === "gold" ? "bg-black/85 border border-[#E5C07B]/30" :
+                        subtitleStyle === "emerald" ? "bg-black/90 border border-emerald-500/30 font-mono" :
+                        subtitleStyle === "crimson" ? "bg-black/90 border border-rose-500/30" :
+                        subtitleStyle === "minimal" ? "bg-black/60 border border-white/10" :
+                        "bg-black/85 backdrop-blur-md border border-white/10"
+                      }`}>
+                        <div className="flex flex-wrap justify-center gap-1 text-[11px] font-black tracking-wide">
+                          {currentWords.map((word, wIdx) => {
+                            const isActive = wIdx === wordIdx;
+                            return (
+                              <span
+                                key={wIdx}
+                                className={`transition-all duration-150 ${
+                                  isActive
+                                    ? subtitleStyle === "hormozi"
+                                      ? "text-yellow-400 scale-110 drop-shadow-[0_2px_8px_rgba(250,204,21,0.6)]"
+                                      : subtitleStyle === "gold"
+                                      ? "text-[#E5C07B] scale-110 drop-shadow-[0_2px_8px_rgba(229,192,123,0.5)]"
+                                      : subtitleStyle === "clean"
+                                      ? "text-white underline decoration-[#E5C07B] decoration-2"
+                                      : subtitleStyle === "minimal"
+                                      ? "text-white border-b border-[#E5C07B] font-serif italic"
+                                      : subtitleStyle === "emerald"
+                                      ? "text-emerald-400 scale-110 drop-shadow-[0_2px_8px_rgba(52,211,153,0.6)]"
+                                      : "text-rose-400 scale-110 drop-shadow-[0_2px_8px_rgba(244,63,94,0.6)]"
+                                    : "text-white/80"
+                                }`}
+                              >
+                                {word}
+                              </span>
+                            );
+                          })}
                         </div>
                       </div>
                     </div>
