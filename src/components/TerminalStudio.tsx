@@ -5,7 +5,7 @@ import { Terminal, Check, Copy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function TerminalStudio() {
-  const [activeTab, setActiveTab] = useState<"make" | "preview" | "parts" | "doctor">("make");
+  const [activeTab, setActiveTab] = useState<"web" | "make" | "preview" | "parts" | "doctor">("web");
   const [copiedTab, setCopiedTab] = useState<string | null>(null);
 
   const handleCopy = (tab: string, text: string) => {
@@ -15,6 +15,21 @@ export function TerminalStudio() {
   };
 
   const cliOutputs = {
+    web: {
+      cmd: "./hooky.sh web",
+      content: (
+        <>
+          <span className="text-[#E5C07B] font-bold">$ ./hooky.sh web</span>
+          <br /><br />
+          <span className="text-emerald-400">[hooky]</span> 🚀 Launching Hooky Web Studio &amp; Control Portal...<br />
+          <span className="text-slate-400">[server]</span> Uvicorn server running on <span className="text-[#E5C07B] underline">http://127.0.0.1:8000</span><br />
+          <span className="text-slate-400">[studio]</span> Connected to local engine with live telemetry and progress streaming<br />
+          <span className="text-slate-400">[smart]</span> AI Auto-Tuned: Canvas Fit (Multi-speaker table) + Warm Titanium<br />
+          <span className="text-slate-400">[config]</span> Full .env visual editor and channel radar loaded<br />
+          <span className="text-slate-200 font-medium">✓ Browser Studio open. Control the entire application visually without terminal commands.</span>
+        </>
+      ),
+    },
     make: {
       cmd: "./hooky.sh make",
       content: (
@@ -110,7 +125,7 @@ export function TerminalStudio() {
             role="tablist"
             aria-label="Terminal command switcher"
           >
-            {(["make", "preview", "parts", "doctor"] as const).map((tab) => (
+            {(["web", "make", "preview", "parts", "doctor"] as const).map((tab) => (
               <button
                 key={tab}
                 role="tab"
@@ -122,7 +137,7 @@ export function TerminalStudio() {
                     : "text-slate-400 hover:text-white"
                 }`}
               >
-                ./hooky.sh {tab}
+                {tab === "web" ? "✨ ./hooky.sh web" : `./hooky.sh ${tab}`}
               </button>
             ))}
           </div>

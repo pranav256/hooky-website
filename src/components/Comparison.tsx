@@ -35,6 +35,14 @@ export function Comparison() {
       highlight: true,
     },
     {
+      feature: "Control Interfaces",
+      hooky: "Browser Web Studio (Local Portal) + Native CLI",
+      opus: "Browser only (Cloud)",
+      klap: "Browser only (Cloud)",
+      submagic: "Browser only (Cloud)",
+      highlight: true,
+    },
+    {
       feature: "Smart Multi-Speaker Framing",
       hooky: "Center Crop + Ambient Blur Fit",
       opus: "Single face crop only",

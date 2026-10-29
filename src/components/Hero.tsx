@@ -69,7 +69,7 @@ export function Hero() {
           <div className="lg:col-span-6 flex flex-col items-start text-left">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#10141E] border border-[#E5C07B]/20 text-[#E5C07B] text-xs font-medium mb-6 shadow-sm">
               <Sparkles className="w-3.5 h-3.5 text-[#E5C07B]" />
-              <span>Gemini 2.0 Flash • Faster-Whisper • Local GPU FFmpeg</span>
+              <span>Web Studio (http://127.0.0.1:8000) &amp; Terminal CLI • Gemini 2.0 • Faster-Whisper</span>
             </div>
 
             <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.08] text-[#F8FAFC] mb-6">
@@ -78,15 +78,15 @@ export function Hero() {
               <span className="text-[#E5C07B] font-semibold text-3xl sm:text-4xl">100% Free &amp; Open Source.</span>
             </h1>
 
-            <p className="text-[#94A3B8] text-base sm:text-lg max-w-xl leading-relaxed mb-8">
-              Autonomous AI detects semantic narrative hooks, applies intelligent 9:16 framing (solo center-crop or dual-speaker blur fit), and burns word-level animated captions on your local GPU.
+            <p className="text-[#94A3B8] text-base sm:text-lg max-w-xl leading-relaxed mb-6">
+              Autonomous AI detects semantic narrative hooks, applies intelligent 9:16 framing (solo center-crop or dual-speaker blur fit), and burns word-level animated captions on your local GPU. Control via local browser Studio or native terminal.
             </p>
 
             {/* 1-Click Terminal Pill */}
-            <div className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3 p-1.5 rounded-2xl bg-[#10141E] border border-white/10 backdrop-blur-md mb-8 group hover:border-[#E5C07B]/40 transition-all shadow-md">
+            <div className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3 p-1.5 rounded-2xl bg-[#10141E] border border-white/10 backdrop-blur-md mb-2 group hover:border-[#E5C07B]/40 transition-all shadow-md">
               <div className="flex items-center gap-2.5 px-3 py-1 font-mono text-xs sm:text-sm text-slate-300">
                 <span className="text-[#E5C07B] font-bold">$</span>
-                <span className="truncate">git clone https://github.com/pranav256/Hooky.git &amp;&amp; ./hooky.sh</span>
+                <span className="truncate">git clone https://github.com/pranav256/Hooky.git &amp;&amp; ./hooky.sh web</span>
               </div>
               <Button
                 size="sm"
@@ -99,6 +99,9 @@ export function Hero() {
                 <span>{copied ? "Copied" : "Copy"}</span>
               </Button>
             </div>
+            <p className="text-[11px] font-mono text-slate-500 mb-6">
+              💡 Tip: Run <code className="text-[#E5C07B]">./hooky.sh web</code> for browser studio, or <code className="text-[#E5C07B]">./hooky.sh make</code> for headless batch processing.
+            </p>
 
             {/* Framing & Subtitle Controls */}
             <div className="w-full space-y-4 pt-1">
