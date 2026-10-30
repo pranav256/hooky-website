@@ -21,8 +21,8 @@ Built with **Next.js 15 (App Router)**, **React 19**, **Tailwind CSS**, and **@v
 
 ```bash
 # Clone this repository
-git clone https://github.com/pranav256/hooky-web.git
-cd hooky-web
+git clone https://github.com/pranav256/hooky-website.git
+cd hooky-website
 
 # Install dependencies
 npm install
@@ -49,7 +49,7 @@ npm run start
 This repository is optimized for 1-click deployment on [Vercel](https://vercel.com):
 
 1. Go to [Vercel Dashboard](https://vercel.com/new).
-2. Import `pranav256/hooky-web`.
+2. Import `pranav256/hooky-website`.
 3. Framework Preset: **Next.js** (detected automatically).
 4. Click **Deploy**.
 
