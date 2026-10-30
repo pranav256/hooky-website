@@ -40,6 +40,11 @@ export function SetupGuide() {
           desc: "Generate your first vertical short from a YouTube link:",
           code: '.\\hooky.ps1 make "https://www.youtube.com/watch?v=EXAMPLE" --style gold',
         },
+        {
+          num: 5,
+          desc: "Or launch the interactive browser-based Web Studio & Control Portal (http://127.0.0.1:8000):",
+          code: ".\\hooky.ps1 web",
+        },
       ],
     },
     macos: {
@@ -65,6 +70,11 @@ export function SetupGuide() {
           desc: "Render high-retention clips automatically:",
           code: './hooky.sh make "https://www.youtube.com/watch?v=EXAMPLE"',
         },
+        {
+          num: 5,
+          desc: "Or launch the visual browser-based Web Studio (http://127.0.0.1:8000):",
+          code: "./hooky.sh web",
+        },
       ],
     },
     linux: {
@@ -89,6 +99,11 @@ export function SetupGuide() {
           num: 4,
           desc: "Queue automated channel monitoring in channels.txt and execute:",
           code: "./hooky.sh make",
+        },
+        {
+          num: 5,
+          desc: "Or launch the visual browser-based Web Studio (http://127.0.0.1:8000):",
+          code: "./hooky.sh web",
         },
       ],
     },
