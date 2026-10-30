@@ -11,7 +11,7 @@ export function Pipeline() {
           Engineered for Clean Execution
         </h2>
         <p className="text-sm text-slate-400 mt-2">
-          Driven cleanly by CLI configs, faster-whisper, and your local GPU. Zero cloud fees or telemetry.
+          Driven cleanly by CLI configs, faster-whisper, and local FFmpeg. Zero subscription fees or video telemetry.
         </p>
       </div>
 
@@ -22,7 +22,7 @@ export function Pipeline() {
             <div className="w-10 h-10 rounded-xl bg-[#171D2B] border border-white/10 flex items-center justify-center text-[#E5C07B] mb-5">
               <Sparkles className="w-5 h-5" />
             </div>
-            <h3 className="text-lg font-bold text-[#F8FAFC] mb-2.5">Gemini 2.0 Semantic Hooking</h3>
+            <h3 className="text-lg font-bold text-[#F8FAFC] mb-2.5">Gemini Flash Semantic Hooking</h3>
             <p className="text-xs text-slate-400 leading-relaxed mb-6">
               Gemini analyzes transcript pacing and emotional climax to extract standalone narrative segments (15s–75s). Never guesses with artificial virality formulas—it targets coherent thoughts that hook viewers.
             </p>

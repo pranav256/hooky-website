@@ -16,7 +16,7 @@ export function Stats() {
         </div>
         <div className="flex flex-col items-center text-center">
           <span className="text-3xl sm:text-4xl font-extrabold text-[#F8FAFC] font-mono">100%</span>
-          <span className="text-xs text-slate-400 mt-1 font-medium">Private Local GPU Encoding</span>
+          <span className="text-xs text-slate-400 mt-1 font-medium">Private Local Processing</span>
         </div>
       </div>
     </section>

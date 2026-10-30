@@ -4,11 +4,11 @@ export function Faq() {
   const faqs = [
     {
       q: "Can I run Hooky without a dedicated GPU?",
-      a: "Yes! Hooky auto-profiles your system on startup. If no NVIDIA CUDA GPU or Apple Silicon Metal GPU is found, it automatically switches faster-whisper to int8 CPU mode and leverages multi-threaded CPU FFmpeg encoding.",
+      a: "Yes! Hooky is designed from the ground up for CPU multi-threading. It uses faster-whisper in int8 CPU mode and multi-threaded FFmpeg encoding, running smoothly even on modest hardware with ~4 GB of RAM.",
     },
     {
-      q: "Does Google Gemini 2.0 Flash cost money?",
-      a: "Google Gemini 2.0 Flash has a generous 100% free tier in Google AI Studio (up to 15 Requests Per Minute with no credit card required). Since Hooky sends only transcripts and timestamped text (not large video files), token consumption is very low and comfortably stays within the free quota.",
+      q: "Does Google Gemini cost money?",
+      a: "Google Gemini Flash offers free-tier API keys in Google AI Studio. Since Hooky sends only transcripts and timestamped text (your video files remain completely local), token consumption is minimal. Hooky also includes automatic runtime model rotation across fallback models when quotas are reached.",
     },
     {
       q: "How does the smart video framing (Center Crop vs Canvas Fit) work?",
@@ -24,11 +24,11 @@ export function Faq() {
     },
     {
       q: "Can I split long masterclasses or podcasts into Part 1, Part 2, etc.?",
-      a: "Yes! Run ./hooky.sh parts <video.mp4> --part-duration 60. Hooky automatically calculates segment boundaries, burns sequential 'Part N' badges into the video header, and outputs clean 60-second vertical reels.",
+      a: "Yes! Run ./main.sh parts <video.mp4> --part-duration 60 (or .\\main.ps1 on Windows). Hooky automatically calculates segment boundaries, burns sequential 'Part N' badges into the video header, and outputs clean 60-second vertical reels.",
     },
     {
       q: "What are the minimum system requirements?",
-      a: "Python 3.10+ and FFmpeg 5.0+. For GPU acceleration, NVIDIA RTX (Turing or newer with NVENC) or Apple Silicon (M1/M2/M3/M4) is recommended, but any modern 4+ core CPU will work cleanly.",
+      a: "Python 3.10+ and FFmpeg 5.0+. Hooky runs on any modern 2+ core CPU with at least 4 GB of RAM. Source video stays on your local machine; only transcript text is sent for AI hook evaluation.",
     },
   ];
 

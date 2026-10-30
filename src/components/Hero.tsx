@@ -79,7 +79,7 @@ export function Hero() {
             </h1>
 
             <p className="text-[#94A3B8] text-base sm:text-lg max-w-xl leading-relaxed mb-6">
-              Autonomous AI detects semantic narrative hooks, applies intelligent 9:16 framing (solo center-crop or dual-speaker blur fit), and burns word-level animated captions on your local GPU. Control via local browser Studio or native terminal.
+              Autonomous AI detects semantic narrative hooks, applies intelligent 9:16 framing (solo center-crop or dual-speaker blur fit), and burns word-level animated captions with local FFmpeg processing. Control via local browser Studio or native terminal.
             </p>
 
             {/* 1-Click Terminal Pill */}
