@@ -16,17 +16,17 @@ export function TerminalStudio() {
 
   const cliOutputs = {
     web: {
-      cmd: "./hooky.sh web",
+      cmd: "./main.sh",
       content: (
         <>
-          <span className="text-[#E5C07B] font-bold">$ ./hooky.sh web</span>
+          <span className="text-[#E5C07B] font-bold">$ ./main.sh</span>
           <br /><br />
-          <span className="text-emerald-400">[hooky]</span> 🚀 Launching Hooky Web Studio &amp; Control Portal...<br />
-          <span className="text-slate-400">[server]</span> Uvicorn server running on <span className="text-[#E5C07B] underline">http://127.0.0.1:8000</span><br />
+          <span className="text-emerald-400">[hooky]</span> 🚀 Single-command setup &amp; run: Verifying FFmpeg &amp; uv dependencies...<br />
+          <span className="text-slate-400">[server]</span> Uvicorn server online at <span className="text-[#E5C07B] underline">http://127.0.0.1:8000</span><br />
           <span className="text-slate-400">[studio]</span> Connected to local engine with live telemetry and progress streaming<br />
           <span className="text-slate-400">[smart]</span> AI Auto-Tuned: Canvas Fit (Multi-speaker table) + Warm Titanium<br />
-          <span className="text-slate-400">[config]</span> Full .env visual editor and channel radar loaded<br />
-          <span className="text-slate-200 font-medium">✓ Browser Studio open. Control the entire application visually without terminal commands.</span>
+          <span className="text-slate-400">[browser]</span> Automatically opened default browser to Web Studio interface!<br />
+          <span className="text-slate-200 font-medium">✓ Ready. Full visual control of Hooky in browser without terminal commands.</span>
         </>
       ),
     },
@@ -137,7 +137,7 @@ export function TerminalStudio() {
                     : "text-slate-400 hover:text-white"
                 }`}
               >
-                {tab === "web" ? "✨ ./hooky.sh web" : `./hooky.sh ${tab}`}
+                {tab === "web" ? "🚀 ./main.sh (All-in-One)" : `./hooky.sh ${tab}`}
               </button>
             ))}
           </div>

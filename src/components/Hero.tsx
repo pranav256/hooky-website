@@ -41,7 +41,7 @@ export function Hero() {
   }, [isPlaying, phraseIdx]);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText("git clone https://github.com/pranav256/Hooky.git && cd Hooky && ./hooky.sh");
+    navigator.clipboard.writeText("git clone https://github.com/pranav256/Hooky.git && cd Hooky && ./main.sh");
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -86,7 +86,7 @@ export function Hero() {
             <div className="w-full sm:w-auto flex flex-col sm:flex-row items-stretch sm:items-center gap-3 p-1.5 rounded-2xl bg-[#10141E] border border-white/10 backdrop-blur-md mb-2 group hover:border-[#E5C07B]/40 transition-all shadow-md">
               <div className="flex items-center gap-2.5 px-3 py-1 font-mono text-xs sm:text-sm text-slate-300">
                 <span className="text-[#E5C07B] font-bold">$</span>
-                <span className="truncate">git clone https://github.com/pranav256/Hooky.git &amp;&amp; ./hooky.sh web</span>
+                <span className="truncate">git clone https://github.com/pranav256/Hooky.git &amp;&amp; ./main.sh</span>
               </div>
               <Button
                 size="sm"
@@ -100,7 +100,7 @@ export function Hero() {
               </Button>
             </div>
             <p className="text-[11px] font-mono text-slate-500 mb-6">
-              💡 Tip: Run <code className="text-[#E5C07B]">./hooky.sh web</code> for browser studio, or <code className="text-[#E5C07B]">./hooky.sh make</code> for headless batch processing.
+              💡 Tip: Running <code className="text-[#E5C07B]">./main.sh</code> (or <code className="text-[#E5C07B]">.\main.ps1</code> / <code className="text-[#E5C07B]">python main.py</code>) auto-sets up and opens the browser studio at <code className="text-[#E5C07B]">http://127.0.0.1:8000</code>!
             </p>
 
             {/* Framing & Subtitle Controls */}
