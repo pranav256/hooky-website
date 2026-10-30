@@ -5,6 +5,11 @@
 :root {
   --bg-main: #080A0F;
   --bg-surface: #10141E;
+  --gold-accent: #E5C07B;
+}
+
+html {
+  color-scheme: dark;
 }
 
 body {
@@ -12,9 +17,11 @@ body {
   color: #F1F5F9;
   overflow-x: hidden;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  scrollbar-width: thin;
+  scrollbar-color: #1E2536 #080A0F;
 }
 
-/* Custom subtle scrollbar */
+/* Custom subtle scrollbar for Chrome/Safari */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -28,4 +35,10 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #2C354C;
+}
+
+/* Accessible universal focus visible outline */
+:focus-visible {
+  outline: 2px solid rgba(229, 192, 123, 0.7);
+  outline-offset: 2px;
 }
