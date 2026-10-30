@@ -20,7 +20,7 @@ export function Comparison() {
     },
     {
       feature: "Rendering Speed",
-      hooky: "240+ FPS (Local NVENC / Metal)",
+      hooky: "Immediate Local Render (No Cloud Queues)",
       opus: "Cloud Queue (5-15 mins)",
       klap: "Cloud Queue (8-20 mins)",
       submagic: "Cloud Queue",
@@ -28,7 +28,7 @@ export function Comparison() {
     },
     {
       feature: "Privacy & Data Ownership",
-      hooky: "100% Local (Zero video upload)",
+      hooky: "Video Stays Local (Dialogue only to Gemini)",
       opus: "Uploaded to 3rd-party servers",
       klap: "Uploaded to cloud",
       submagic: "Uploaded to cloud",
@@ -132,7 +132,7 @@ export function Comparison() {
         </div>
         <div className="flex items-center gap-2">
           <Cpu className="w-4 h-4 text-[#E5C07B]" />
-          <span>Hardware accelerated on NVIDIA NVENC, Apple Silicon Metal, and modern CPUs.</span>
+          <span>Multi-threaded CPU encoding with zero cloud upload or telemetry.</span>
         </div>
       </div>
     </section>

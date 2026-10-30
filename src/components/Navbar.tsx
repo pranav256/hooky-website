@@ -31,7 +31,7 @@ export function Navbar() {
     { label: "Comparison", href: "#comparison" },
     { label: "Setup Guide", href: "#setup" },
     { label: "CLI Studio", href: "#terminal" },
-    { label: "Benchmarks", href: "#benchmarks" },
+    { label: "Hardware", href: "#architecture" },
     { label: "FAQ", href: "#faq" },
   ];
 

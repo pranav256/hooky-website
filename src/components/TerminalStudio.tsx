@@ -31,45 +31,45 @@ export function TerminalStudio() {
       ),
     },
     make: {
-      cmd: "./hooky.sh make",
+      cmd: "./main.sh make",
       content: (
         <>
-          <span className="text-[#E5C07B] font-bold">$ ./hooky.sh make</span>
+          <span className="text-[#E5C07B] font-bold">$ ./main.sh make</span>
           <br /><br />
           <span className="text-slate-400">[01/04]</span> Auto-scanning channels.txt for new uploads...<br />
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Found winning source: @TheDiaryOfACEO (840k views) -&gt; <span className="text-emerald-400">QUEUED</span><br />
-          <span className="text-slate-400">[02/04]</span> Gemini 2.0 Flash analyzing narrative hook points...<br />
+          <span className="text-slate-400">[02/04]</span> Gemini Flash analyzing narrative hook points...<br />
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Segment 1 [01:14 -&gt; 01:52]: <span className="text-[#E5C07B]">Specific knowledge leverage point</span><br />
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;• Segment 2 [12:40 -&gt; 13:22]: <span className="text-emerald-400">Permissionless code &amp; media principle</span><br />
           <span className="text-slate-400">[03/04]</span> Faster-whisper int8 millisecond word-level timing...<br />
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Aligned 124 words with frame-accurate ASS karaoke boundaries.<br />
-          <span className="text-slate-400">[04/04]</span> Local GPU 1080x1920 smart framing at 240 FPS...<br />
+          <span className="text-slate-400">[04/04]</span> Multi-threaded FFmpeg 1080x1920 smart framing &amp; subtitle burn...<br />
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-emerald-400">✓ output/diary_of_ceo_clip_01.mp4 generated (38s)</span><br />
           <span className="text-slate-200 font-medium">Done. Added to anti-ban Instagram queue with safe 45m jitter delay.</span>
         </>
       ),
     },
     preview: {
-      cmd: "./hooky.sh preview",
+      cmd: "./main.sh preview",
       content: (
         <>
-          <span className="text-[#E5C07B] font-bold">$ ./hooky.sh preview</span>
+          <span className="text-[#E5C07B] font-bold">$ ./main.sh preview</span>
           <br /><br />
           <span className="text-slate-400">[Dry-Run Mode: Zero disk writes or rendering]</span><br />
           • Parsing pending video: https://www.youtube.com/watch?v=3qHkcs3kG44<br />
           • Title: Naval Ravikant - How to Get Rich Without Getting Lucky<br />
-          • Gemini 2.0 Hook Extraction (completed in 1.1s):<br />
+          • Gemini Hook Extraction (completed in 1.1s):<br />
           &nbsp;&nbsp;1. [04:12 - 04:48] &quot;Specific knowledge vs competition&quot;<br />
           &nbsp;&nbsp;2. [18:30 - 19:15] &quot;Code and media are permissionless leverage&quot;<br />
-          Ready to process. Run <span className="text-[#E5C07B]">./hooky.sh make</span> to render.
+          Ready to process. Run <span className="text-[#E5C07B]">./main.sh make</span> to render.
         </>
       ),
     },
     parts: {
-      cmd: "./hooky.sh parts masterclass.mp4 --part-duration 60",
+      cmd: "./main.sh parts masterclass.mp4 --part-duration 60",
       content: (
         <>
-          <span className="text-[#E5C07B] font-bold">$ ./hooky.sh parts masterclass.mp4 --part-duration 60</span>
+          <span className="text-[#E5C07B] font-bold">$ ./main.sh parts masterclass.mp4 --part-duration 60</span>
           <br /><br />
           <span className="text-slate-400">[Episodic Series Engine]</span> Slicing 12-minute interview into 60s segments:<br />
           • Part 1: [00:00 -&gt; 01:00] -&gt; <span className="text-emerald-400">✓ masterclass_part_1.mp4</span><br />
@@ -80,14 +80,14 @@ export function TerminalStudio() {
       ),
     },
     doctor: {
-      cmd: "./hooky.sh doctor",
+      cmd: "./main.sh doctor",
       content: (
         <>
-          <span className="text-[#E5C07B] font-bold">$ ./hooky.sh doctor</span>
+          <span className="text-[#E5C07B] font-bold">$ ./main.sh doctor</span>
           <br /><br />
           <span className="text-emerald-400">✓</span> Python Environment: 3.10+ (.venv detected)<br />
-          <span className="text-emerald-400">✓</span> FFmpeg Engine: Hardware acceleration active (CUDA / Apple Silicon)<br />
-          <span className="text-emerald-400">✓</span> Google Gemini API: Authenticated (gemini-2.0-flash responsive)<br />
+          <span className="text-emerald-400">✓</span> FFmpeg Engine: Multi-threaded CPU encoding verified<br />
+          <span className="text-emerald-400">✓</span> Google Gemini API: Authenticated with live model rotation<br />
           <span className="text-emerald-400">✓</span> faster-whisper: Int8 compute engine loaded<br />
           <span className="text-emerald-400">✓</span> yt-dlp: Validated with cookie session injection<br />
           <span className="text-slate-200 font-medium">All health checks passed. System ready for production workload.</span>
