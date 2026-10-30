@@ -22,28 +22,23 @@ export function SetupGuide() {
       steps: [
         {
           num: 1,
-          desc: "Clone Hooky and run automated setup script (creates virtualenv & validates FFmpeg):",
-          code: "git clone https://github.com/pranav256/Hooky.git\ncd Hooky\n.\\setup.ps1",
+          desc: "Clone Hooky and run all-in-one launcher (installs FFmpeg/uv, syncs environment & opens browser studio):",
+          code: "git clone https://github.com/pranav256/Hooky.git\ncd Hooky\n.\\main.ps1",
         },
         {
           num: 2,
-          desc: "Set your free Google Gemini API key in your .env file:",
-          code: "Copy-Item .env.example .env\n# Add GEMINI_API_KEY=your_key_here to .env",
+          desc: "Configure your free Google Gemini API key directly in Web Studio Settings or .env:",
+          code: "# In browser: Settings tab -> Enter GEMINI_API_KEY -> Save\n# Or edit .env file: GEMINI_API_KEY=your_key_here",
         },
         {
           num: 3,
-          desc: "Verify your system and hardware acceleration with Hooky Doctor:",
-          code: ".\\hooky.ps1 doctor",
+          desc: "Verify system health & diagnostics anytime:",
+          code: ".\\main.ps1 doctor",
         },
         {
           num: 4,
-          desc: "Generate your first vertical short from a YouTube link:",
-          code: '.\\hooky.ps1 make "https://www.youtube.com/watch?v=EXAMPLE" --style gold',
-        },
-        {
-          num: 5,
-          desc: "Or launch the interactive browser-based Web Studio & Control Portal (http://127.0.0.1:8000):",
-          code: ".\\hooky.ps1 web",
+          desc: "Generate clips via browser or terminal automation:",
+          code: '.\\main.ps1 make "https://www.youtube.com/watch?v=EXAMPLE" --style gold',
         },
       ],
     },
@@ -52,28 +47,23 @@ export function SetupGuide() {
       steps: [
         {
           num: 1,
-          desc: "Install FFmpeg via Homebrew and bootstrap the virtual environment:",
-          code: "brew install ffmpeg\ngit clone https://github.com/pranav256/Hooky.git\ncd Hooky\nchmod +x setup.sh hooky.sh\n./setup.sh",
+          desc: "Clone Hooky and run all-in-one launcher (auto-installs FFmpeg & launches browser studio):",
+          code: "git clone https://github.com/pranav256/Hooky.git\ncd Hooky\nchmod +x main.sh\n./main.sh",
         },
         {
           num: 2,
-          desc: "Configure your Google AI Studio API key:",
-          code: "cp .env.example .env\n# Open .env and insert your GEMINI_API_KEY",
+          desc: "Configure your Google AI Studio API key in Web Studio Settings or .env:",
+          code: "# In browser: Settings (.env) tab -> Save\n# Or terminal: cp .env.example .env",
         },
         {
           num: 3,
-          desc: "Run system diagnostics to confirm Apple Silicon acceleration:",
-          code: "./hooky.sh doctor",
+          desc: "Run system diagnostics to confirm hardware acceleration:",
+          code: "./main.sh doctor",
         },
         {
           num: 4,
           desc: "Render high-retention clips automatically:",
-          code: './hooky.sh make "https://www.youtube.com/watch?v=EXAMPLE"',
-        },
-        {
-          num: 5,
-          desc: "Or launch the visual browser-based Web Studio (http://127.0.0.1:8000):",
-          code: "./hooky.sh web",
+          code: './main.sh make "https://www.youtube.com/watch?v=EXAMPLE"',
         },
       ],
     },
@@ -82,28 +72,23 @@ export function SetupGuide() {
       steps: [
         {
           num: 1,
-          desc: "Install system packages and run Hooky setup:",
-          code: "sudo apt update && sudo apt install -y ffmpeg python3-venv\ngit clone https://github.com/pranav256/Hooky.git\ncd Hooky\nchmod +x setup.sh hooky.sh\n./setup.sh",
+          desc: "Clone Hooky and run all-in-one launcher (auto-installs packages & launches browser studio):",
+          code: "git clone https://github.com/pranav256/Hooky.git\ncd Hooky\nchmod +x main.sh\n./main.sh",
         },
         {
           num: 2,
-          desc: "Populate environment config with your API key:",
-          code: "cp .env.example .env\n# Paste your GEMINI_API_KEY in .env",
+          desc: "Populate environment config with your API key in Web Studio Settings or .env:",
+          code: "# Enter GEMINI_API_KEY in browser Settings tab or edit .env",
         },
         {
           num: 3,
           desc: "Test the pipeline with dry-run mode (zero writes):",
-          code: "./hooky.sh preview",
+          code: "./main.sh preview",
         },
         {
           num: 4,
           desc: "Queue automated channel monitoring in channels.txt and execute:",
-          code: "./hooky.sh make",
-        },
-        {
-          num: 5,
-          desc: "Or launch the visual browser-based Web Studio (http://127.0.0.1:8000):",
-          code: "./hooky.sh web",
+          code: "./main.sh make",
         },
       ],
     },
