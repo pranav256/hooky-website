@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <rect width="1200" height="630" fill="#070916"/>
+  <circle cx="950" cy="150" r="300" fill="#9C8CFF" fill-opacity="0.12" filter="blur(80px)"/>
+  <circle cx="200" cy="480" r="280" fill="#55F5D2" fill-opacity="0.08" filter="blur(70px)"/>
+
+  <!-- Logo Mark -->
+  <g transform="translate(100, 100)">
+    <rect x="6" y="6" width="64" height="64" fill="#9C8CFF" transform="rotate(-6 32 32)"/>
+    <rect width="64" height="64" fill="#55F5D2" transform="rotate(-6 32 32)"/>
+    <text x="32" y="44" font-family="'Courier New', monospace" font-size="34" font-weight="900" fill="#07110F" text-anchor="middle">H</text>
+    <text x="96" y="45" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="36" font-weight="900" letter-spacing="-1px" fill="#F6F4EE">HOOKY</text>
+    <rect x="250" y="24" width="130" height="28" rx="14" fill="#10142A" stroke="#55F5D2" stroke-opacity="0.4"/>
+    <text x="315" y="42" font-family="'Courier New', monospace" font-size="12" font-weight="700" fill="#55F5D2" text-anchor="middle">OPEN SOURCE</text>
+  </g>
+
+  <!-- Headline -->
+  <text x="100" y="280" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="64" font-weight="900" letter-spacing="-2px" fill="#F6F4EE" line-height="1.05">
+    One long video.
+  </text>
+  <text x="100" y="355" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="64" font-weight="900" letter-spacing="-2px" fill="#FF6B62">
+    Only the good parts.
+  </text>
+
+  <!-- Subheadline -->
+  <text x="100" y="425" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="500" fill="#9298AE">
+    Turn long videos into high-retention 9:16 vertical shorts with local FFmpeg &amp; Gemini.
+  </text>
+
+  <!-- Tech Badges -->
+  <g transform="translate(100, 490)">
+    <!-- Badge 1 -->
+    <rect x="0" y="0" width="190" height="44" fill="#10142A" stroke="#DDE1FF" stroke-opacity="0.2"/>
+    <text x="95" y="27" font-family="'Courier New', monospace" font-size="14" font-weight="700" fill="#F6F4EE" text-anchor="middle">$0 SUBSCRIPTION</text>
+
+    <!-- Badge 2 -->
+    <rect x="210" y="0" width="190" height="44" fill="#10142A" stroke="#DDE1FF" stroke-opacity="0.2"/>
+    <text x="305" y="27" font-family="'Courier New', monospace" font-size="14" font-weight="700" fill="#55F5D2" text-anchor="middle">100% LOCAL RUN</text>
+
+    <!-- Badge 3 -->
+    <rect x="420" y="0" width="190" height="44" fill="#10142A" stroke="#DDE1FF" stroke-opacity="0.2"/>
+    <text x="515" y="27" font-family="'Courier New', monospace" font-size="14" font-weight="700" fill="#9C8CFF" text-anchor="middle">FASTER-WHISPER</text>
+  </g>
+</svg>
