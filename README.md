@@ -1,11 +1,12 @@
 # Hooky Website
 
-Marketing showcase and documentation site for [Hooky](https://github.com/pranav256/Hooky) — the 100% free and open-source AI video clipper.
+Official website and marketing showcase for [Hooky](https://github.com/pranav256/Hooky) — the 100% free and open-source AI video clipper.
 
 ## Tech Stack
-- **React 19** + **TypeScript**
-- **Vite 8**
-- **Tailwind CSS v4**
+- **Next.js 15** (App Router, Static Site Generation)
+- **React 19**
+- **Tailwind CSS**
+- **TypeScript**
 
 ## Development
 
@@ -14,9 +15,11 @@ npm install
 npm run dev
 ```
 
+Open [http://localhost:3000](http://localhost:3000) to view the site.
+
 ## Production Build
 
 ```bash
 npm run build
-npm run preview
+npm run start
 ```
