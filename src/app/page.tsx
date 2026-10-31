@@ -1,9 +1,9 @@
-import { useState, type CSSProperties } from "react"
+"use client";
 
-const repo = "https://github.com/pranav256/Hooky"
-const command = "git clone https://github.com/pranav256/Hooky.git"
+import { useState, type CSSProperties } from "react";
+import { REPO_URL, CLONE_COMMAND } from "@/lib/constants";
 
-type IconName = "arrow" | "check" | "copy" | "github" | "menu" | "play" | "spark" | "x"
+type IconName = "arrow" | "check" | "copy" | "github" | "menu" | "play" | "spark" | "x";
 
 function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
   const paths: Record<IconName, React.ReactNode> = {
@@ -42,7 +42,7 @@ function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
         <path d="m18 6-12 12" />
       </>
     ),
-  }
+  };
   return (
     <svg
       width={size}
@@ -57,7 +57,7 @@ function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
     >
       {paths[name]}
     </svg>
-  )
+  );
 }
 
 const steps = [
@@ -81,27 +81,27 @@ const steps = [
     title: "Render locally",
     text: "FFmpeg exports polished 9:16 video on your machine. No uploads, queues, or minute limits.",
   },
-]
+];
 
 const comparisons = [
   ["Monthly cost", "$0, forever", "$19–99 / month"],
   ["Processing", "On your machine", "Third-party cloud"],
   ["Usage limits", "None", "Credit or minute caps"],
   ["Interfaces", "Web studio + CLI", "Browser only"],
-]
+];
 
-function App() {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [copied, setCopied] = useState(false)
-  const [mode, setMode] = useState<"crop" | "canvas">("crop")
-  const [caption, setCaption] = useState<"bold" | "clean" | "mono">("bold")
-  const [tilt, setTilt] = useState({ x: 0, y: 0 })
+export default function Home() {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [mode, setMode] = useState<"crop" | "canvas">("crop");
+  const [caption, setCaption] = useState<"bold" | "clean" | "mono">("bold");
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
   const copyCommand = async () => {
-    await navigator.clipboard?.writeText(`${command} && cd Hooky && ./main.sh`)
-    setCopied(true)
-    window.setTimeout(() => setCopied(false), 1800)
-  }
+    await navigator.clipboard?.writeText(`${CLONE_COMMAND} && cd Hooky && ./main.sh`);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1800);
+  };
 
   return (
     <div className="site-shell">
@@ -125,14 +125,14 @@ function App() {
           <a href="#install" onClick={() => setMenuOpen(false)}>
             Install
           </a>
-          <a className="mobile-github" href={repo}>
+          <a className="mobile-github" href={REPO_URL} target="_blank" rel="noreferrer">
             GitHub
           </a>
         </nav>
         <div className="nav-actions">
           <a
             className="github-link"
-            href={repo}
+            href={REPO_URL}
             target="_blank"
             rel="noreferrer"
           >
@@ -173,7 +173,7 @@ function App() {
               </a>
               <a
                 className="text-link"
-                href={repo}
+                href={REPO_URL}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -181,7 +181,7 @@ function App() {
               </a>
             </div>
             <p className="microcopy">
-              MIT licensed · macOS, Windows & Linux · no credit card
+              MIT licensed · macOS, Windows &amp; Linux · no credit card
             </p>
           </div>
 
@@ -194,10 +194,10 @@ function App() {
               } as CSSProperties
             }
             onPointerMove={(event) => {
-              const bounds = event.currentTarget.getBoundingClientRect()
-              const x = (event.clientX - bounds.left) / bounds.width - 0.5
-              const y = (event.clientY - bounds.top) / bounds.height - 0.5
-              setTilt({ x: y * -7, y: x * 9 })
+              const bounds = event.currentTarget.getBoundingClientRect();
+              const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+              const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+              setTilt({ x: y * -7, y: x * 9 });
             }}
             onPointerLeave={() => setTilt({ x: 0, y: 0 })}
           >
@@ -378,7 +378,7 @@ function App() {
             </p>
             <a
               className="text-link dark"
-              href={repo}
+              href={REPO_URL}
               target="_blank"
               rel="noreferrer"
             >
@@ -423,19 +423,18 @@ function App() {
             </div>
             <div className="command">
               <span>$</span>
-              <code>{command}</code>
+              <code>{CLONE_COMMAND}</code>
             </div>
             <div className="command">
               <span>$</span>
-              <code>cd Hooky && ./main.sh</code>
+              <code>cd Hooky &amp;&amp; ./main.sh</code>
             </div>
             <button onClick={copyCommand}>
               <Icon name={copied ? "check" : "copy"} />{" "}
               {copied ? "Copied" : "Copy commands"}
             </button>
             <p>
-              <Icon name="check" size={15} /> Auto-detects your OS and installs
-              dependencies.
+              <Icon name="check" size={15} /> Auto-detects your OS (macOS/Linux: <code>./main.sh</code>, Windows: <code>.\main.ps1</code>).
             </p>
           </div>
         </section>
@@ -452,14 +451,18 @@ function App() {
           <p>Make the cut. Keep the footage.</p>
         </div>
         <div className="footer-links">
-          <a href={repo}>GitHub</a>
-          <a href={`${repo}#readme`}>Docs</a>
-          <a href={`${repo}/issues`}>Issues</a>
+          <a href={REPO_URL} target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+          <a href={`${REPO_URL}#readme`} target="_blank" rel="noreferrer">
+            Docs
+          </a>
+          <a href={`${REPO_URL}/issues`} target="_blank" rel="noreferrer">
+            Issues
+          </a>
         </div>
         <p className="copyright">OPEN SOURCE · MIT LICENSE</p>
       </footer>
     </div>
-  )
+  );
 }
-
-export default App
