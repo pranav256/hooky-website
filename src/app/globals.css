@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Manrope:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,19 +6,19 @@
 
 :root {
   color-scheme: dark;
-  --bg-deep: #0c0d10;
-  --bg-page: #121316;
-  --card: #18191e;
-  --raised: #21232a;
-  --raised-active: #2b2e38;
+  --bg-deep: #0f0f10;
+  --bg-page: #141415;
+  --card: #19191b;
+  --raised: #232325;
+  --raised-hover: #2b2b2e;
   --hairline: rgba(255, 255, 255, 0.08);
-  --hairline-strong: rgba(255, 255, 255, 0.14);
-  --text-primary: #f0f1f4;
-  --text-secondary: #9ea2b0;
-  --text-muted: #6e7282;
-  --accent: #34d399; /* Precision Studio Mint */
-  --accent-dim: rgba(52, 211, 153, 0.12);
-  --danger: #ef4444;
+  --hairline-hover: rgba(255, 255, 255, 0.14);
+  --text-primary: #ededed;
+  --text-secondary: #a1a1a6;
+  --text-muted: #85858b;
+  --accent: #4ade80;
+  --accent-dim: rgba(74, 222, 128, 0.1);
+  --danger: #e5484d;
   --font-sans: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'DM Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
@@ -38,11 +38,11 @@ body {
   color: var(--text-primary);
   font-family: var(--font-sans);
   font-size: 14px;
-  line-height: 1.6;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
-button, a, input, textarea {
+button, a, input, textarea, select {
   font: inherit;
 }
 
@@ -57,6 +57,10 @@ a {
   text-decoration: none;
 }
 
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
 .site-shell {
   min-height: 100vh;
   display: flex;
@@ -64,7 +68,7 @@ a {
 }
 
 /* ==========================================================================
-   NAVIGATION
+   NAVIGATION (64px, quiet chrome, hairline border)
    ========================================================================== */
 
 .nav-wrap {
@@ -77,7 +81,7 @@ a {
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid var(--hairline);
-  background: rgba(18, 19, 22, 0.85);
+  background: rgba(20, 20, 21, 0.85);
   backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
@@ -94,16 +98,16 @@ a {
 }
 
 .mark {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   display: grid;
   place-items: center;
   background: var(--text-primary);
   color: var(--bg-deep);
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .nav-links {
@@ -183,21 +187,21 @@ a {
 }
 
 /* ==========================================================================
-   HERO SECTION
+   HERO SECTION (Asymmetric split, text on calm space)
    ========================================================================== */
 
 .hero {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 72px 32px 88px;
+  padding: 80px 32px 96px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.05fr 0.95fr;
   align-items: center;
   gap: 64px;
 }
 
 .hero-copy {
-  max-width: 560px;
+  max-width: 580px;
 }
 
 .eyebrow {
@@ -219,9 +223,9 @@ a {
 
 h1 {
   margin: 0;
-  font-size: clamp(44px, 4.8vw, 64px);
-  line-height: 1.05;
-  letter-spacing: -0.03em;
+  font-size: clamp(40px, 4.4vw, 58px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -252,7 +256,7 @@ h1 em {
 }
 
 /* ==========================================================================
-   AUTHENTIC PRODUCT PREVIEW (UNSLOPPED HERO STUDIO)
+   AUTHENTIC PRODUCT PREVIEW (Web Studio Monitor)
    ========================================================================== */
 
 .studio-scene {
@@ -261,14 +265,14 @@ h1 em {
 
 .studio {
   background: var(--card);
-  border: 1px solid var(--hairline-strong);
+  border: 1px solid var(--hairline-hover);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 16px 36px -12px rgba(0, 0, 0, 0.45);
 }
 
 .studio-bar {
-  height: 42px;
+  height: 40px;
   background: var(--bg-deep);
   border-bottom: 1px solid var(--hairline);
   display: flex;
@@ -286,8 +290,8 @@ h1 em {
 }
 
 .traffic i {
-  width: 9px;
-  height: 9px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.12);
 }
@@ -306,8 +310,8 @@ h1 em {
 
 .studio-body {
   display: grid;
-  grid-template-columns: 140px 1fr;
-  min-height: 340px;
+  grid-template-columns: 135px 1fr;
+  min-height: 330px;
 }
 
 .studio-controls {
@@ -316,7 +320,7 @@ h1 em {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background: rgba(12, 13, 16, 0.5);
+  background: rgba(15, 15, 16, 0.6);
 }
 
 .studio-controls label {
@@ -330,7 +334,7 @@ h1 em {
 
 .studio-controls button {
   width: 100%;
-  padding: 7px 10px;
+  padding: 6px 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -349,20 +353,20 @@ h1 em {
 .studio-controls button.selected {
   background: var(--raised);
   color: var(--text-primary);
-  border-color: var(--hairline-strong);
+  border-color: var(--hairline-hover);
 }
 
 .preview-stage {
   display: grid;
   place-items: center;
   padding: 24px;
-  background: #0f1013;
+  background: #0d0d0e;
 }
 
 .video-frame {
-  width: 160px;
+  width: 156px;
   aspect-ratio: 9/16;
-  background: #1c1e24;
+  background: #1c1c1f;
   border: 1px solid var(--hairline);
   border-radius: 8px;
   position: relative;
@@ -381,7 +385,7 @@ h1 em {
   width: 80%;
   height: 80%;
   border-radius: 48% 48% 0 0;
-  background: #2a2d36;
+  background: #2a2a2e;
 }
 
 .person span {
@@ -389,7 +393,7 @@ h1 em {
   width: 48%;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: #505565;
+  background: #4a4a52;
   left: 26%;
   top: -8%;
 }
@@ -401,7 +405,7 @@ h1 em {
 .person-two {
   display: none;
   right: 5%;
-  background: #23252d;
+  background: #242428;
   transform: scale(0.85);
   transform-origin: bottom right;
 }
@@ -424,7 +428,7 @@ h1 em {
   text-align: center;
   font-size: 9px;
   line-height: 1.35;
-  font-weight: 600;
+  font-weight: 500;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
@@ -433,7 +437,6 @@ h1 em {
 }
 
 .caption.clean {
-  font-weight: 500;
   background: rgba(0, 0, 0, 0.7);
   padding: 4px 6px;
   border-radius: 4px;
@@ -455,7 +458,7 @@ h1 em {
   position: absolute;
   top: 8px;
   left: 8px;
-  background: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.7);
   color: var(--text-primary);
   border: 1px solid var(--hairline);
   padding: 2px 6px;
@@ -484,17 +487,16 @@ h1 em {
 }
 
 .waveform {
-  height: 36px;
+  height: 32px;
   margin-top: 8px;
   display: flex;
   align-items: center;
-  gap: 3px;
-  position: relative;
+  gap: 2.5px;
 }
 
 .waveform i {
   flex: 1;
-  background: #2b2e38;
+  background: #2a2a2e;
   border-radius: 1px;
 }
 
@@ -503,7 +505,7 @@ h1 em {
 }
 
 /* ==========================================================================
-   PROOF STRIP
+   PROOF STRIP (Strict numbers, no decorative filler)
    ========================================================================== */
 
 .proof-strip {
@@ -542,32 +544,32 @@ h1 em {
 }
 
 /* ==========================================================================
-   SECTIONS & WORKFLOW
+   SECTIONS & SECTION HEADINGS
    ========================================================================== */
 
 .section {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 100px 32px;
+  padding: 96px 32px;
 }
 
 .section-heading {
-  margin-bottom: 48px;
+  margin-bottom: 44px;
 }
 
 .kicker {
   font-family: var(--font-mono);
   font-size: 11px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   color: var(--text-muted);
   margin: 0 0 10px;
 }
 
 h2 {
-  margin: 0 0 14px;
-  font-size: clamp(32px, 3.5vw, 44px);
+  margin: 0 0 12px;
+  font-size: clamp(30px, 3.2vw, 42px);
   line-height: 1.15;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
   font-weight: 600;
   color: var(--text-primary);
 }
@@ -576,13 +578,16 @@ h2 {
   margin: 0;
   color: var(--text-secondary);
   font-size: 15px;
-  max-width: 580px;
+  max-width: 560px;
 }
 
-/* Interactive Pipeline Explorer */
+/* ==========================================================================
+   INTERACTIVE WORKFLOW PIPELINE
+   ========================================================================== */
+
 .workflow-explorer {
   border: 1px solid var(--hairline);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--card);
   overflow: hidden;
 }
@@ -595,7 +600,7 @@ h2 {
 }
 
 .workflow-tab-btn {
-  padding: 14px 18px;
+  padding: 12px 18px;
   border-right: 1px solid var(--hairline);
   color: var(--text-muted);
   font-family: var(--font-mono);
@@ -641,9 +646,9 @@ h2 {
 
 .workflow-panel-copy h3 {
   margin: 0 0 12px;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
 }
 
 .workflow-panel-copy p {
@@ -701,7 +706,10 @@ h2 {
   word-break: break-all;
 }
 
-/* Capabilities Grid */
+/* ==========================================================================
+   CAPABILITIES GRID
+   ========================================================================== */
+
 .capabilities-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -711,22 +719,22 @@ h2 {
 .cap-card {
   background: var(--card);
   border: 1px solid var(--hairline);
-  border-radius: 10px;
-  padding: 28px;
+  border-radius: 12px;
+  padding: 24px;
   display: flex;
   flex-direction: column;
   transition: border-color 0.15s ease;
 }
 
 .cap-card:hover {
-  border-color: var(--hairline-strong);
+  border-color: var(--hairline-hover);
 }
 
 .cap-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .cap-number {
@@ -736,8 +744,8 @@ h2 {
 }
 
 .cap-icon {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   display: grid;
   place-items: center;
   background: var(--raised);
@@ -768,7 +776,10 @@ h2 {
   color: var(--text-muted);
 }
 
-/* Manifesto Section */
+/* ==========================================================================
+   MANIFESTO
+   ========================================================================== */
+
 .manifesto {
   background: var(--card);
   border-top: 1px solid var(--hairline);
@@ -780,7 +791,7 @@ h2 {
   max-width: 1440px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 240px 1fr;
+  grid-template-columns: 220px 1fr;
   gap: 48px;
   align-items: baseline;
 }
@@ -788,13 +799,13 @@ h2 {
 .manifesto-label {
   font-family: var(--font-mono);
   font-size: 11px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   color: var(--accent);
 }
 
 blockquote {
   margin: 0;
-  font-size: clamp(28px, 3.2vw, 42px);
+  font-size: clamp(26px, 2.8vw, 38px);
   line-height: 1.25;
   letter-spacing: -0.02em;
   font-weight: 500;
@@ -811,10 +822,13 @@ blockquote em {
   margin: 16px 0 0;
   color: var(--text-secondary);
   font-size: 15px;
-  max-width: 640px;
+  max-width: 600px;
 }
 
-/* Comparison Table */
+/* ==========================================================================
+   COMPARISON TABLE
+   ========================================================================== */
+
 .comparison {
   display: grid;
   grid-template-columns: 1fr 1.3fr;
@@ -824,7 +838,7 @@ blockquote em {
 
 .compare-table {
   border: 1px solid var(--hairline);
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   background: var(--card);
 }
@@ -870,10 +884,13 @@ blockquote em {
   color: var(--text-muted);
 }
 
-/* Command Runner */
+/* ==========================================================================
+   COMMAND RUNNER & TERMINAL
+   ========================================================================== */
+
 .command-runner-wrap {
   border: 1px solid var(--hairline);
-  border-radius: 10px;
+  border-radius: 12px;
   background: var(--card);
   overflow: hidden;
 }
@@ -947,7 +964,6 @@ blockquote em {
   color: var(--text-primary);
 }
 
-/* Install Section */
 .install {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -958,8 +974,8 @@ blockquote em {
 
 .terminal {
   background: var(--bg-deep);
-  border: 1px solid var(--hairline-strong);
-  border-radius: 10px;
+  border: 1px solid var(--hairline-hover);
+  border-radius: 12px;
   padding: 20px;
   font-family: var(--font-mono);
 }
@@ -1016,7 +1032,7 @@ blockquote em {
 }
 
 /* ==========================================================================
-   DOCUMENTATION PAGE STYLES (UNSLOPPED)
+   DOCUMENTATION PAGE
    ========================================================================== */
 
 .docs-page .nav-wrap {
@@ -1027,7 +1043,6 @@ blockquote em {
   font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 600;
-  letter-spacing: 0.08em;
   background: var(--raised);
   color: var(--accent);
   border: 1px solid var(--hairline);
@@ -1070,13 +1085,12 @@ blockquote em {
 }
 
 .docs-search-input:focus {
-  border-color: var(--hairline-strong);
+  border-color: var(--hairline-hover);
 }
 
 .docs-nav-category {
   font-family: var(--font-mono);
   font-size: 10px;
-  letter-spacing: 0.08em;
   color: var(--text-muted);
   margin-bottom: 8px;
 }
@@ -1133,12 +1147,11 @@ blockquote em {
 .docs-tag {
   font-family: var(--font-mono);
   font-size: 10px;
-  letter-spacing: 0.08em;
   color: var(--accent);
 }
 
 .docs-header h1 {
-  font-size: clamp(28px, 3.2vw, 40px);
+  font-size: clamp(28px, 3.2vw, 38px);
   margin: 10px 0 14px;
   font-weight: 600;
   letter-spacing: -0.02em;
@@ -1334,7 +1347,6 @@ blockquote em {
   padding: 10px 14px;
   font-family: var(--font-mono);
   font-size: 10px;
-  letter-spacing: 0.05em;
   color: var(--text-muted);
   border-bottom: 1px solid var(--hairline);
 }
@@ -1587,7 +1599,7 @@ footer > div:first-child p {
     padding: 48px 20px 64px;
   }
   h1 {
-    font-size: 38px;
+    font-size: 36px;
   }
   .proof-strip {
     grid-template-columns: 1fr 1fr;
