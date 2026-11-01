@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { REPO_URL, CLONE_COMMAND } from "@/lib/constants";
 
-type IconName = "arrow" | "check" | "copy" | "github" | "menu" | "play" | "spark" | "x" | "terminal";
+type IconName = "arrow" | "check" | "copy" | "github" | "menu" | "spark" | "terminal" | "x";
 
-function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
+function Icon({ name, size = 16 }: { name: IconName; size?: number }) {
   const paths: Record<IconName, React.ReactNode> = {
     arrow: (
       <>
@@ -30,11 +30,9 @@ function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
         <path d="M4 17h16" />
       </>
     ),
-    play: <path d="m9 7 8 5-8 5Z" />,
     spark: (
       <>
         <path d="M12 2c.6 5.9 2.1 7.4 8 8-5.9.6-7.4 2.1-8 8-.6-5.9-2.1-7.4-8-8 5.9-.6 7.4-2.1 8-8Z" />
-        <path d="M19 17v5M16.5 19.5h5" />
       </>
     ),
     terminal: (
@@ -57,7 +55,7 @@ function Icon({ name, size = 18 }: { name: IconName; size?: number }) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.8"
+      strokeWidth="1.75"
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
@@ -71,9 +69,9 @@ const pipelineStages = [
   {
     id: "01",
     label: "01. Radar & Ingestion",
-    title: "Channel Radar & Direct Ingestion",
-    desc: "Monitor favorite creator channels or drop direct YouTube URLs and local video files. Hooky tracks view velocity to pick winning videos automatically, with zero database overhead.",
-    tags: ["yt-dlp", "View Velocity", "channels.txt", "links.txt"],
+    title: "Channel Radar and Ingestion",
+    desc: "Monitor favorite creator channels or provide direct YouTube URLs and local video files. Hooky tracks view velocity to pick winning videos automatically, with zero database overhead.",
+    tags: ["yt-dlp", "View velocity", "channels.txt", "links.txt"],
     telemetry: `[radar] Scanning @hubermanlab (min_views=250000)
 [radar] Discovered: "How to Optimize Dopamine" (1.4M views, +42k/day)
 [intake] Downloaded 1080p source stream to .hooky-state/sources/
@@ -82,11 +80,11 @@ const pipelineStages = [
   {
     id: "02",
     label: "02. Gemini 2.0 AI",
-    title: "Semantic Hook Detection & Virality Scoring",
-    desc: "Google Gemini scans the full transcript for narrative tension, pacing, and complete payoffs. It ranks moments with a 1–99 Virality Score rather than crude loudness spikes.",
-    tags: ["google-genai", "gemini-3.8-flash", "Virality Score", "Auto-fallback"],
+    title: "Semantic Hook Detection and Scoring",
+    desc: "Google Gemini scans transcript narrative tension, conversational pacing, and payoffs. It ranks moments with a 1 to 99 virality score rather than crude volume spikes.",
+    tags: ["google-genai", "gemini-3.8-flash", "Virality scoring", "Model fallback"],
     telemetry: `[gemini] Chunk analysis: 18,000 characters sent to gemini-3.8-flash
-[gemini] Hook candidate #1: 00:14:08 -> 00:14:42 (Virality Score: 98/100)
+[gemini] Hook candidate #1: 00:14:08 -> 00:14:42 (Virality score: 98/100)
 [reasoning] "Speaker shifts from problem setup to contrarian dopamine insight."
 [selection] Isolated 3 high-retention clips (34s, 48s, 56s)`,
   },
@@ -94,8 +92,8 @@ const pipelineStages = [
     id: "03",
     label: "03. Whisper Sub-Second",
     title: "Sub-Second Word-Level Transcription",
-    desc: "Hooky fuses source YouTube captions with faster-whisper (int8 quantized for modest CPUs). Every spoken word receives exact start/end millisecond timestamps.",
-    tags: ["faster-whisper", "int8 Quantized", "Microsecond Sync", "Zero GPU Required"],
+    desc: "Hooky fuses source YouTube captions with faster-whisper (int8 quantized for modest CPUs). Spoken words receive exact start and end millisecond timestamps.",
+    tags: ["faster-whisper", "int8 quantized", "Microsecond sync", "Zero GPU required"],
     telemetry: `[transcription] Aligning audio track: 00:14:08 - 00:14:42
 [whisper] Faster-Whisper (int8 compute, 2 threads): 142 words parsed
 [alignment] Word "Dopamine" at 00:14:12.340 -> 00:14:12.780 (+0.0ms drift)
@@ -104,9 +102,9 @@ const pipelineStages = [
   {
     id: "04",
     label: "04. Dynamic 9:16 Framing",
-    title: "Active Speaker Tracking & Canvas Fit",
-    desc: "Automatically crops 16:9 widescreen footage into 9:16 vertical video. Choose between speaker auto-tracking, center crop, or canvas fit with a dynamic blurred background.",
-    tags: ["Speaker Tracking", "9:16 Portrait", "Gaussian Blur Canvas", "FFmpeg Filter"],
+    title: "Active Speaker Tracking and Canvas Fit",
+    desc: "Crops 16:9 widescreen footage into 9:16 vertical video. Choose between speaker auto-tracking, center crop, or canvas fit with a dynamic blurred background.",
+    tags: ["Speaker tracking", "9:16 Portrait", "Gaussian blur canvas", "FFmpeg filter"],
     telemetry: `[framing] Mode selected: AUTO_TRACK (Speaker centered)
 [crop] Smooth pan interpolation: X_center=960 -> 1080x1920 viewport
 [filter] Scale=1080:1920:force_original_aspect_ratio=increase
@@ -116,8 +114,8 @@ const pipelineStages = [
     id: "05",
     label: "05. Hormozi Kinetic Captions",
     title: "Broadcast-Grade ASS Subtitle Engine",
-    desc: "Burns high-retention, word-by-word karaoke subtitles directly into the video. Active words pop in acid cyan/yellow with custom typography, outlines, and drop shadows.",
-    tags: ["ASS Subtitles", "Hormozi Preset", "Karaoke Highlight", "Vector Render"],
+    desc: "Burns word-by-word karaoke subtitles directly into the video. Active words pop with clean typography, subtle outlines, and drop shadows.",
+    tags: ["ASS subtitles", "Hormozi preset", "Karaoke highlight", "Vector render"],
     telemetry: `[subtitles] Style: HORMOZI_POP | Font: Arial Bold | Outline: 4px
 [stream] Rendering ASS vector script: 142 animated word events
 [highlight] Active word pop animation applied with 0.12s decay
@@ -126,9 +124,9 @@ const pipelineStages = [
   {
     id: "06",
     label: "06. Resumable Export & Publish",
-    title: "Crash-Resilient FFmpeg & Safe Instagram Queue",
+    title: "Crash-Resilient FFmpeg and Safe Queue",
     desc: "Encodes at CRF 15 high-bitrate with atomic temporary file swapping and render_state.json checkpointing. Optional scheduler posts to Instagram Reels with human-like jitter.",
-    tags: ["CRF 15", "Resumable Render", "Instagram Queue", "Anti-Ban Jitter"],
+    tags: ["CRF 15", "Resumable render", "Instagram queue", "Anti-ban jitter"],
     telemetry: `[render] FFmpeg x264 encoding started: 1080x1920 @ 60fps
 [state] Saved checkpoint to render_state.json (Frame 1,840/2,040)
 [complete] Output saved to output/huberman_dopamine_clip1.mp4 (42MB)
@@ -146,7 +144,7 @@ const capabilities = [
   {
     n: "02",
     title: "Autonomous Batch Automation",
-    desc: "Feed channel handles into channels.txt and walk away. Hooky discovers viral videos, extracts hooks, burns subtitles, and outputs 50 clips while you sleep.",
+    desc: "Feed channel handles into channels.txt and walk away. Hooky discovers viral videos, extracts hooks, burns subtitles, and outputs clips while you sleep.",
     tag: "HEADLESS DAEMON",
   },
   {
@@ -158,19 +156,19 @@ const capabilities = [
   {
     n: "04",
     title: "Kinetic Animated Subtitles",
-    desc: "Powered by an Advanced SubStation Alpha (ASS) engine. Words pop in real-time with karaoke highlights in Hormozi, Clean, and Cyber Yellow presets.",
+    desc: "Powered by an Advanced SubStation Alpha (ASS) engine. Words highlight in real time in Hormozi, Clean, and Cyber Yellow presets.",
     tag: "WORD-LEVEL SYNC",
   },
   {
     n: "05",
     title: "Crash-Proof Resumable Render",
-    desc: "Power outage or interrupted render? The cutter saves frame progress in render_state.json and resumes encoding without starting over.",
+    desc: "Power outage or interrupted render? The cutter saves frame progress in render_state.json and resumes encoding without restarting from zero.",
     tag: "CRASH RESILIENT",
   },
   {
     n: "06",
     title: "Anti-Ban Social Queue",
-    desc: "Durable queue with OS file locks, randomized 60–120 minute cooldown jitter, scheduled time windows, and uncertainty safeguards to prevent double-posts.",
+    desc: "Durable queue with OS file locks, randomized 60 to 120 minute cooldown jitter, scheduled time windows, and uncertainty safeguards to avoid double-posts.",
     tag: "SAFE PUBLISHER",
   },
 ];
@@ -225,7 +223,6 @@ export default function Home() {
   const [copiedRunner, setCopiedRunner] = useState(false);
   const [mode, setMode] = useState<"crop" | "canvas">("crop");
   const [caption, setCaption] = useState<"bold" | "clean" | "mono">("bold");
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
   const copyCommand = async () => {
     await navigator.clipboard?.writeText(`${CLONE_COMMAND} && cd Hooky && ./main.sh`);
@@ -244,9 +241,7 @@ export default function Home() {
       {/* Navigation */}
       <header className="nav-wrap">
         <a className="wordmark" href="#top" aria-label="Hooky home">
-          <span className="mark">
-            <span>H</span>
-          </span>
+          <span className="mark">H</span>
           <span>HOOKY</span>
         </a>
         <nav
@@ -271,9 +266,6 @@ export default function Home() {
           <a href="#install" onClick={() => setMenuOpen(false)}>
             Install
           </a>
-          <a className="mobile-github" href={REPO_URL} target="_blank" rel="noreferrer">
-            GitHub
-          </a>
         </nav>
         <div className="nav-actions">
           <Link className="text-link" href="/docs">
@@ -296,7 +288,7 @@ export default function Home() {
             aria-expanded={menuOpen}
             aria-label="Toggle navigation"
           >
-            <Icon name={menuOpen ? "x" : "menu"} size={22} />
+            <Icon name={menuOpen ? "x" : "menu"} size={20} />
           </button>
         </div>
       </header>
@@ -306,7 +298,7 @@ export default function Home() {
         <section className="hero">
           <div className="hero-copy">
             <p className="eyebrow">
-              <span className="status-dot" /> Autonomous AI Video Clipper · 100% Local-First
+              <span className="status-dot" /> Autonomous video clipper. 100% on your machine.
             </p>
             <h1>
               One long video.
@@ -314,14 +306,14 @@ export default function Home() {
               <em>Only the good parts.</em>
             </h1>
             <p className="hero-lede">
-              Hooky scans hours of long-form podcasts and interviews, extracts high-retention hooks with Gemini AI, synchronizes animated captions via Whisper, and renders 9:16 vertical clips on your machine.
+              Hooky scans hours of long-form podcasts and interviews, extracts high-retention hooks with Gemini AI, synchronizes animated captions via Whisper, and renders 9:16 vertical clips locally.
             </p>
             <div className="hero-actions">
               <a className="primary-cta" href="#install">
                 Install for free <Icon name="arrow" />
               </a>
               <Link className="text-link" href="/docs">
-                Read the Docs <Icon name="arrow" />
+                Read documentation <Icon name="arrow" />
               </Link>
             </div>
             <p className="microcopy">
@@ -329,66 +321,41 @@ export default function Home() {
             </p>
           </div>
 
-          <div
-            id="studio"
-            className="studio-scene"
-            style={
-              {
-                "--tilt-x": `${tilt.x}deg`,
-                "--tilt-y": `${tilt.y}deg`,
-              } as CSSProperties
-            }
-            onPointerMove={(event) => {
-              const bounds = event.currentTarget.getBoundingClientRect();
-              const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-              const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-              setTilt({ x: y * -7, y: x * 9 });
-            }}
-            onPointerLeave={() => setTilt({ x: 0, y: 0 })}
-          >
-            <div className="orbit-card orbit-card-one" aria-hidden="true">
-              <span>9:16</span>
-            </div>
-            <div className="orbit-card orbit-card-two" aria-hidden="true">
-              <Icon name="spark" size={24} />
-            </div>
-            <div className="orbit-ring" aria-hidden="true" />
-            <div
-              className="studio"
-              aria-label="Interactive Hooky studio preview"
-            >
+          {/* Authentic Studio Preview */}
+          <div id="studio" className="studio-scene">
+            <div className="studio" aria-label="Hooky web studio preview">
               <div className="studio-bar">
                 <div className="traffic">
                   <i />
                   <i />
                   <i />
                 </div>
-                <span>hooky / web-studio</span>
-                <span className="live">
-                  <i /> 98 VIRALITY SCORE
+                <span className="studio-bar-title">hooky / web-studio</span>
+                <span className="live-badge">
+                  <span className="status-dot" /> 98 virality score
                 </span>
               </div>
               <div className="studio-body">
                 <aside className="studio-controls">
                   <div>
-                    <label>FRAMING</label>
+                    <label>Framing</label>
                     <button
                       className={mode === "crop" ? "selected" : ""}
                       onClick={() => setMode("crop")}
                     >
-                      <span>Auto-Track</span>
+                      <span>Auto-track</span>
                       <small>9:16</small>
                     </button>
                     <button
                       className={mode === "canvas" ? "selected" : ""}
                       onClick={() => setMode("canvas")}
                     >
-                      <span>Canvas Fit</span>
+                      <span>Canvas fit</span>
                       <small>blur</small>
                     </button>
                   </div>
                   <div>
-                    <label>SUBTITLES</label>
+                    <label>Subtitles</label>
                     {(["bold", "clean", "mono"] as const).map((item) => (
                       <button
                         key={item}
@@ -397,10 +364,10 @@ export default function Home() {
                       >
                         <span>
                           {item === "bold"
-                            ? "Hormozi Pop"
+                            ? "Hormozi pop"
                             : item === "clean"
-                              ? "Clean Line"
-                              : "Cyber Mono"}
+                              ? "Clean line"
+                              : "Cyber mono"}
                         </span>
                       </button>
                     ))}
@@ -420,14 +387,14 @@ export default function Home() {
                       <strong>You need better moments.</strong>
                     </div>
                     <span className="crop-tag">
-                      {mode === "crop" ? "ACTIVE SPEAKER" : "CANVAS FIT (BLUR)"}
+                      {mode === "crop" ? "Active speaker" : "Canvas fit"}
                     </span>
                   </div>
                 </div>
               </div>
               <div className="timeline">
                 <div className="timeline-meta">
-                  <span>Viral Hook Detected (#1 Candidate)</span>
+                  <span>Viral hook candidate #1</span>
                   <strong>00:14:08 — 00:14:42 (+34s)</strong>
                 </div>
                 <div className="waveform">
@@ -435,7 +402,6 @@ export default function Home() {
                     <i key={i} style={{ height: `${20 + ((i * 23) % 72)}%` }} />
                   ))}
                 </div>
-                <div className="selection" />
               </div>
             </div>
           </div>
@@ -453,7 +419,7 @@ export default function Home() {
           </div>
           <div>
             <strong>3x</strong>
-            <span>Framing modes</span>
+            <span>Reframing modes</span>
           </div>
           <div>
             <strong>∞</strong>
@@ -464,11 +430,11 @@ export default function Home() {
         {/* SECTION: INTERACTIVE PIPELINE WORKFLOW */}
         <section className="section" id="workflow">
           <div className="section-heading">
-            <p className="kicker">THE AUTONOMOUS PIPELINE</p>
+            <p className="kicker">The autonomous pipeline</p>
             <h2>
               Under the hood of
               <br />
-              the Hooky engine.
+              the Hooky engine
             </h2>
             <p>
               Six automated stages from raw YouTube link to broadcast-ready 9:16 Shorts with burned animated subtitles. Click any stage to inspect the execution telemetry.
@@ -492,7 +458,7 @@ export default function Home() {
             <div className="workflow-panel">
               <div className="workflow-panel-copy">
                 <div className="stage-eyebrow">
-                  <span className="status-dot" /> STAGE {pipelineStages[activeStage].id} OF 06
+                  <span className="status-dot" /> Stage {pipelineStages[activeStage].id} of 06
                 </div>
                 <h3>{pipelineStages[activeStage].title}</h3>
                 <p>{pipelineStages[activeStage].desc}</p>
@@ -507,10 +473,8 @@ export default function Home() {
 
               <div className="workflow-telemetry-box">
                 <div className="telemetry-header">
-                  <span className="telemetry-title">
-                    <Icon name="terminal" size={14} /> LIVE ENGINE TELEMETRY
-                  </span>
-                  <span className="telemetry-status">100% LOCAL</span>
+                  <span>Engine telemetry</span>
+                  <span className="telemetry-status">100% local</span>
                 </div>
                 <div className="telemetry-content">
                   {pipelineStages[activeStage].telemetry}
@@ -523,11 +487,11 @@ export default function Home() {
         {/* SECTION: CAPABILITIES GRID */}
         <section className="section" id="capabilities">
           <div className="section-heading">
-            <p className="kicker">ENGINE CAPABILITIES</p>
+            <p className="kicker">Engine capabilities</p>
             <h2>
               Built for creators,
               <br />
-              studios &amp; automators.
+              studios and automators
             </h2>
             <p>
               Everything you need to run high-volume clipping workflows without paying SaaS subscriptions or exposing your raw video footage.
@@ -540,7 +504,7 @@ export default function Home() {
                 <div className="cap-header">
                   <span className="cap-number">{cap.n}</span>
                   <div className="cap-icon">
-                    <Icon name="spark" size={16} />
+                    <Icon name="spark" size={14} />
                   </div>
                 </div>
                 <h3>{cap.title}</h3>
@@ -553,24 +517,24 @@ export default function Home() {
 
         {/* SECTION: MANIFESTO */}
         <section className="manifesto">
-          <div className="manifesto-label">
-            LOCAL-FIRST
-            <br />
-            BY DESIGN
+          <div className="manifesto-inner">
+            <div className="manifesto-label">
+              Local-first by design
+            </div>
+            <blockquote>
+              “Your raw footage belongs on <em>your</em> machine.”
+            </blockquote>
+            <p>
+              Hooky sends only transcript text for semantic analysis. Video
+              processing, caption rendering, and final exports stay with you.
+            </p>
           </div>
-          <blockquote>
-            “Your raw footage belongs on <em>your</em> machine.”
-          </blockquote>
-          <p>
-            Hooky sends only transcript text for semantic analysis. Video
-            processing, caption rendering, and final exports stay with you.
-          </p>
         </section>
 
         {/* SECTION: COMPARISON */}
         <section className="comparison section" id="compare">
           <div className="comparison-copy">
-            <p className="kicker">A BETTER DEFAULT</p>
+            <p className="kicker">A better default</p>
             <h2>
               Software you own.
               <br />
@@ -580,21 +544,21 @@ export default function Home() {
               Cloud video tools add queues, caps, and an expensive monthly bill. Hooky uses
               the hardware already on your desk.
             </p>
-            <Link className="text-link dark" href="/docs">
+            <Link className="text-link" href="/docs">
               Read technical comparison <Icon name="arrow" />
             </Link>
           </div>
           <div className="compare-table">
             <div className="compare-head">
-              <span>CAPABILITY</span>
-              <strong>HOOKY</strong>
-              <span>CLOUD TOOLS</span>
+              <span>Capability</span>
+              <strong>Hooky</strong>
+              <span>Cloud tools</span>
             </div>
             {comparisons.map(([feature, hooky, cloud]) => (
               <div className="compare-row" key={feature}>
                 <span>{feature}</span>
                 <strong>
-                  <Icon name="check" size={16} /> {hooky}
+                  <Icon name="check" size={14} /> {hooky}
                 </strong>
                 <span>{cloud}</span>
               </div>
@@ -605,11 +569,11 @@ export default function Home() {
         {/* SECTION: COMMAND RUNNER & QUICK DOCS */}
         <section className="section" id="docs">
           <div className="section-heading">
-            <p className="kicker">QUICK DOCS &amp; COMMAND RUNNER</p>
+            <p className="kicker">Quick docs and commands</p>
             <h2>
               Run from terminal
               <br />
-              or launch the studio.
+              or launch the studio
             </h2>
             <p>
               Hooky provides a unified CLI and Web Studio. Inspect common commands below or view the complete documentation manual.
@@ -633,16 +597,16 @@ export default function Home() {
               <div className="runner-command-row">
                 <code>{runnerTabs[activeRunnerTab].cmd}</code>
                 <button onClick={() => copyRunnerCmd(runnerTabs[activeRunnerTab].cmd)}>
-                  <Icon name={copiedRunner ? "check" : "copy"} size={14} />
+                  <Icon name={copiedRunner ? "check" : "copy"} size={13} />
                   {copiedRunner ? "Copied" : "Copy"}
                 </button>
               </div>
             </div>
           </div>
 
-          <div style={{ marginTop: "32px", textAlign: "center" }}>
+          <div style={{ marginTop: "28px", textAlign: "center" }}>
             <Link className="primary-cta" href="/docs">
-              Browse Full Documentation Hub <Icon name="arrow" />
+              Browse full documentation <Icon name="arrow" />
             </Link>
           </div>
         </section>
@@ -650,11 +614,11 @@ export default function Home() {
         {/* SECTION: INSTALL */}
         <section className="install section" id="install">
           <div className="install-copy">
-            <p className="kicker">GET STARTED</p>
+            <p className="kicker">Get started</p>
             <h2>
               Your first clip is
               <br />
-              one command away.
+              one command away
             </h2>
             <p>
               Clone the repo, run the single-command launcher, and Hooky installs all prerequisites and opens the Web Studio in your browser.
@@ -662,7 +626,7 @@ export default function Home() {
           </div>
           <div className="terminal">
             <div className="terminal-top">
-              <span>TERMINAL</span>
+              <span>Terminal</span>
               <span>~/projects</span>
             </div>
             <div className="command">
@@ -678,7 +642,7 @@ export default function Home() {
               {copied ? "Copied" : "Copy commands"}
             </button>
             <p>
-              <Icon name="check" size={15} /> Auto-detects OS: macOS/Linux uses <code>./main.sh</code>, Windows uses <code>.\main.ps1</code>.
+              <Icon name="check" size={13} /> Auto-detects OS: macOS/Linux uses <code>./main.sh</code>, Windows uses <code>.\main.ps1</code>.
             </p>
           </div>
         </section>
@@ -687,13 +651,11 @@ export default function Home() {
       {/* Footer */}
       <footer>
         <div>
-          <a className="wordmark inverse" href="#top">
-            <span className="mark">
-              <span>H</span>
-            </span>
+          <a className="wordmark" href="#top">
+            <span className="mark">H</span>
             <span>HOOKY</span>
           </a>
-          <p>Make the cut. Keep the footage.</p>
+          <p>Autonomous AI video clipper. Open source and local-first.</p>
         </div>
         <div className="footer-links">
           <a href={REPO_URL} target="_blank" rel="noreferrer">
@@ -706,7 +668,7 @@ export default function Home() {
             Issues
           </a>
         </div>
-        <p className="copyright">OPEN SOURCE · MIT LICENSE</p>
+        <p className="copyright">MIT LICENSE · PRANAV256</p>
       </footer>
     </div>
   );

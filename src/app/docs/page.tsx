@@ -82,9 +82,7 @@ export default function DocsPage() {
       {/* Top Docs Navigation */}
       <header className="nav-wrap">
         <Link className="wordmark" href="/">
-          <span className="mark">
-            <span>H</span>
-          </span>
+          <span className="mark">H</span>
           <span>HOOKY</span>
           <span className="docs-badge">DOCS</span>
         </Link>
@@ -148,7 +146,7 @@ export default function DocsPage() {
             </div>
 
             <div className="doc-callout tip">
-              <strong>⚡ Single-Command Magic</strong>
+              <strong>Automated setup</strong>
               <p>You do not need to install Python virtual environments, pip packages, or FFmpeg manually. The <code>main.sh</code> and <code>main.ps1</code> scripts detect missing prerequisites and install them automatically.</p>
             </div>
 
@@ -258,16 +256,16 @@ Set-ExecutionPolicy -Scope Process Bypass
               </div>
             </div>
 
-            <h2>Why Local-First Processing Matters</h2>
+            <h2>Why local-first processing matters</h2>
             <div className="docs-grid-two">
               <div className="docs-card">
-                <h3>🔒 Privacy &amp; Data Security</h3>
+                <h3>Data privacy and security</h3>
                 <p>
                   Cloud clipping SaaS platforms require uploading gigabytes of your raw video footage to third-party cloud buckets. Hooky keeps 100% of your video files on your local drive. Only the text transcript is sent to Google Gemini for hook selection.
                 </p>
               </div>
               <div className="docs-card">
-                <h3>💸 Zero Minute Caps &amp; $0 Bills</h3>
+                <h3>Zero minute caps and zero fees</h3>
                 <p>
                   Cloud tools charge $19–$99/month and throttle you with 60–120 minute monthly limits. Hooky is MIT-licensed, completely free, and has zero limits. Process 100 hours of video every day at zero software cost.
                 </p>
@@ -319,7 +317,7 @@ Set-ExecutionPolicy -Scope Process Bypass
             </ul>
 
             <div className="doc-callout security">
-              <strong>🛡️ Local Security &amp; Token Authentication</strong>
+              <strong>Local security and token authentication</strong>
               <p>
                 Web Studio binds strictly to loopback (<code>127.0.0.1</code>), generates a cryptographically secure one-time session token on each launch, and enforces strict Host/Origin validation to protect against malicious web scripts or DNS rebinding.
               </p>
@@ -570,13 +568,11 @@ D:/Videos/Podcast_Episode_42.mp4 | clips=5 | min=20 max=55 | style=yellow`}</cod
       {/* Docs Footer */}
       <footer>
         <div>
-          <Link className="wordmark inverse" href="/">
-            <span className="mark">
-              <span>H</span>
-            </span>
+          <Link className="wordmark" href="/">
+            <span className="mark">H</span>
             <span>HOOKY</span>
           </Link>
-          <p>Autonomous AI video clipper. Open-source &amp; local-first.</p>
+          <p>Autonomous AI video clipper. Open-source and local-first.</p>
         </div>
         <div className="footer-links">
           <Link href="/">Home</Link>
