@@ -223,6 +223,7 @@ export default function Home() {
   const [copiedRunner, setCopiedRunner] = useState(false);
   const [mode, setMode] = useState<"crop" | "canvas">("crop");
   const [caption, setCaption] = useState<"bold" | "clean" | "mono">("bold");
+  const [engineTab, setEngineTab] = useState<"studio" | "settings" | "radar">("studio");
 
   const copyCommand = async () => {
     await navigator.clipboard?.writeText(`${CLONE_COMMAND} && cd Hooky && ./main.sh`);
@@ -254,8 +255,8 @@ export default function Home() {
           <a href="#capabilities" onClick={() => setMenuOpen(false)}>
             Capabilities
           </a>
-          <a href="#studio" onClick={() => setMenuOpen(false)}>
-            Studio
+          <a href="#cockpit" onClick={() => setMenuOpen(false)}>
+            Cockpit
           </a>
           <Link href="/docs" onClick={() => setMenuOpen(false)}>
             Docs
@@ -512,6 +513,82 @@ export default function Home() {
                 <div className="cap-footer">{cap.tag}</div>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* SECTION: ENGINE PHOTO SHOWCASE */}
+        <section className="section" id="cockpit">
+          <div className="section-heading">
+            <p className="kicker">Local Web Cockpit</p>
+            <h2>
+              The real studio.
+              <br />
+              Running on your machine.
+            </h2>
+            <p>
+              An autonomous control portal served at <code>http://127.0.0.1:8000</code>. Inspect AI-detected hooks, fine-tune cut boundaries, monitor creator channels, and export vertical 9:16 reels with zero cloud dependencies.
+            </p>
+          </div>
+
+          <div className="engine-showcase-container">
+            {/* Tab Selector */}
+            <div className="engine-tabs-bar">
+              <button
+                onClick={() => setEngineTab("studio")}
+                className={`engine-tab-btn ${engineTab === "studio" ? "active" : ""}`}
+              >
+                <Icon name="spark" size={14} />
+                <span>Studio Workbench</span>
+              </button>
+              <button
+                onClick={() => setEngineTab("settings")}
+                className={`engine-tab-btn ${engineTab === "settings" ? "active" : ""}`}
+              >
+                <Icon name="terminal" size={14} />
+                <span>Settings &amp; Fallbacks</span>
+              </button>
+              <button
+                onClick={() => setEngineTab("radar")}
+                className={`engine-tab-btn ${engineTab === "radar" ? "active" : ""}`}
+              >
+                <Icon name="check" size={14} />
+                <span>Channel Radar</span>
+              </button>
+            </div>
+
+            {/* Tab Active Image */}
+            <div className="engine-photo-frame">
+              {engineTab === "studio" && (
+                <img
+                  src="/images/engine_studio.png"
+                  alt="Hooky Web Studio Interface"
+                  className="engine-img"
+                />
+              )}
+              {engineTab === "settings" && (
+                <img
+                  src="/images/engine_settings.png"
+                  alt="Hooky Settings Editor"
+                  className="engine-img"
+                />
+              )}
+              {engineTab === "radar" && (
+                <img
+                  src="/images/engine_radar.png"
+                  alt="Hooky Channel Radar Monitor"
+                  className="engine-img"
+                />
+              )}
+            </div>
+
+            <div className="engine-photo-meta">
+              <span>
+                {engineTab === "studio" && "Interactive Hook Workbench — Dual 9:16 Canvas Simulator & Speech Pause Boundary Trimmer"}
+                {engineTab === "settings" && "Environment Configuration (.env) — Gemini API Key, Model Fallbacks, Thread Allocation"}
+                {engineTab === "radar" && "Autonomous Channel Radar (channels.txt) — Automated Creator Discovery & View Velocity Tracking"}
+              </span>
+              <span className="url tabular">http://127.0.0.1:8000</span>
+            </div>
           </div>
         </section>
 

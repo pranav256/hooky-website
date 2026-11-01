@@ -289,6 +289,17 @@ Set-ExecutionPolicy -Scope Process Bypass
               <pre><code>./main.sh web</code></pre>
             </div>
 
+            <div className="docs-image-card">
+              <img
+                src="/images/engine_studio.png"
+                alt="Hooky Web Studio Interface"
+              />
+              <div className="docs-image-meta">
+                <span>Interactive Hook Workbench — Dual-Mode 9:16 Canvas Simulator &amp; Dialogue Inspector</span>
+                <span style={{ color: "var(--accent)" }}>http://127.0.0.1:8000</span>
+              </div>
+            </div>
+
             <h2>Core Web Studio Features</h2>
             <ul className="docs-feature-list">
               <li>
@@ -315,6 +326,27 @@ Set-ExecutionPolicy -Scope Process Bypass
                 <strong>Output Gallery:</strong> Instant in-browser playback for all rendered MP4 clips with one-click file download.
               </li>
             </ul>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", margin: "24px 0" }}>
+              <div className="docs-image-card" style={{ margin: 0 }}>
+                <img
+                  src="/images/engine_settings.png"
+                  alt="Hooky Settings Editor"
+                />
+                <div className="docs-image-meta">
+                  <span>Environment Configuration (.env)</span>
+                </div>
+              </div>
+              <div className="docs-image-card" style={{ margin: 0 }}>
+                <img
+                  src="/images/engine_radar.png"
+                  alt="Hooky Channel Radar Monitor"
+                />
+                <div className="docs-image-meta">
+                  <span>Channel Radar (channels.txt)</span>
+                </div>
+              </div>
+            </div>
 
             <div className="doc-callout security">
               <strong>Local security and token authentication</strong>
