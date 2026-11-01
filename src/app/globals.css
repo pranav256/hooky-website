@@ -1625,3 +1625,107 @@ footer > div:first-child p {
     gap: 24px;
   }
 }
+
+/* ==========================================================================
+   ENGINE PHOTO SHOWCASE
+   ========================================================================== */
+
+.engine-showcase-container {
+  border: 1px solid var(--hairline);
+  border-radius: 12px;
+  background: var(--card);
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+.engine-tabs-bar {
+  display: flex;
+  overflow-x: auto;
+  background: var(--bg-deep);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.engine-tab-btn {
+  padding: 12px 20px;
+  border-right: 1px solid var(--hairline);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.engine-tab-btn:hover {
+  color: var(--text-primary);
+}
+
+.engine-tab-btn.active {
+  background: var(--card);
+  color: var(--text-primary);
+  box-shadow: inset 0 -2px 0 var(--accent);
+}
+
+.engine-photo-frame {
+  position: relative;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.engine-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.engine-photo-meta {
+  padding: 12px 20px;
+  background: var(--bg-deep);
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+
+.engine-photo-meta span.url {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+/* Docs Image Enhancements */
+.docs-image-card {
+  border: 1px solid var(--hairline);
+  border-radius: 10px;
+  background: var(--card);
+  overflow: hidden;
+  margin: 24px 0;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
+}
+
+.docs-image-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.docs-image-meta {
+  padding: 10px 16px;
+  background: var(--bg-deep);
+  border-top: 1px solid var(--hairline);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
