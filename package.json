@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint src",
+    "typecheck": "tsc --noEmit",
+    "check:ui": "node scripts/check-ui.mjs",
+    "sync:studio": "node scripts/sync-studio-brand.mjs",
+    "build:studio-css": "tailwindcss -c studio.tailwind.config.cjs -i ../Hooky/hooky/web/static/tailwind-source.css -o ../Hooky/hooky/web/static/studio-tailwind.css --minify"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
@@ -17,12 +21,21 @@
     "react-dom": "^19.0.0",
     "tailwind-merge": "^3.0.2"
   },
+  "overrides": {
+    "next": {
+      "postcss": "^8.5.23"
+    }
+  },
   "devDependencies": {
     "@types/node": "^22.13.1",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^15.5.29",
+    "playwright": "^1.65.0",
     "postcss": "^8.5.1",
+    "prettier": "^3.9.10",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3"
   }

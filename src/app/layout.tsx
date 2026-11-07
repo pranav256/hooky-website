@@ -5,9 +5,9 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Hooky — One long video. Only the good parts.",
+  title: "Hooky — Long story. Short form.",
   description:
-    "100% Free & Open-Source (MIT) autonomous AI video clipper. Turn long videos, podcasts, and interviews into high-retention vertical 9:16 shorts with Gemini semantic narrative detection, faster-whisper animated captions, and local FFmpeg encoding.",
+    "Turn long videos into shorts worth watching. Hooky is a free, open-source AI video clipper with a local studio, smart reframing, and word-level captions. Your Gemini API key powers moment selection.",
   keywords: [
     "Hooky",
     "AI video clipper",
@@ -30,24 +30,24 @@ export const metadata: Metadata = {
     type: "website",
     url: SITE_URL,
     siteName: "Hooky",
-    title: "Hooky — One long video. Only the good parts.",
+    title: "Hooky — Long story. Short form.",
     description:
       "Autonomous AI video clipper. Reframes for vertical video and burns word-level animated captions—without sending your raw footage to a cloud.",
     images: [
       {
-        url: "/og-image.svg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Hooky — One long video. Only the good parts.",
+        alt: "Hooky — Long story. Short form. Free, open-source AI video clipping.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hooky — One long video. Only the good parts.",
+    title: "Hooky — Long story. Short form.",
     description:
       "Autonomous AI video clipper. Reframes for vertical video and burns word-level animated captions—without sending your raw footage to a cloud.",
-    images: ["/og-image.svg"],
+    images: ["/og-image.png"],
   },
   icons: {
     icon: "/favicon.svg",
