@@ -1,7 +1,9 @@
+const { resolveStudioDir } = require("./scripts/studio-path.cjs");
+const studioDir = resolveStudioDir().replaceAll("\\", "/");
 module.exports = {
   content: [
-    "../Hooky/hooky/web/static/index.html",
-    "../Hooky/hooky/web/static/studio.js",
+    `${studioDir}/index.html`,
+    `${studioDir}/studio.js`,
   ],
   theme: {
     extend: {

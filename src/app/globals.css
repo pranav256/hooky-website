@@ -5,27 +5,10 @@
 @tailwind utilities;
 
 /* Documentation base components. Brand and responsive overrides follow. */
-.docs-page .nav-wrap {
-  border-bottom: 1px solid var(--hairline);
-}
-
-.docs-badge {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 600;
-  background: var(--raised);
-  color: var(--accent);
-  border: 1px solid var(--hairline);
-  padding: 2px 6px;
-  border-radius: 4px;
-  margin-left: 8px;
-}
 
 .docs-container {
-  max-width: 1440px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 260px 1fr;
   min-height: calc(100vh - 64px);
 }
 
@@ -33,8 +16,6 @@
   border-right: 1px solid var(--hairline);
   padding: 28px 20px;
   position: sticky;
-  top: 64px;
-  height: calc(100vh - 64px);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -86,8 +67,6 @@
 }
 
 .docs-sidebar-link.active {
-  color: var(--text-primary);
-  background: var(--raised);
   font-weight: 500;
 }
 
@@ -95,7 +74,6 @@
   border-top: 1px solid var(--hairline);
   padding-top: 14px;
   font-family: var(--font-mono);
-  font-size: 10px;
   color: var(--text-muted);
 }
 
@@ -106,7 +84,6 @@
 
 .docs-section {
   margin-bottom: 72px;
-  scroll-margin-top: 40px;
 }
 
 .docs-section + .docs-section {
@@ -121,10 +98,7 @@
 }
 
 .docs-header h1 {
-  font-size: clamp(28px, 3.2vw, 38px);
   margin: 10px 0 14px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
 }
 
 .docs-lede {
@@ -163,8 +137,6 @@
 }
 
 .docs-section h2 {
-  font-size: 20px;
-  font-weight: 600;
   letter-spacing: -0.015em;
   margin: 36px 0 14px;
 }
@@ -184,7 +156,6 @@
 }
 
 .code-header {
-  height: 36px;
   padding: 0 14px;
   display: flex;
   justify-content: space-between;
@@ -338,14 +309,12 @@
 
 .docs-grid-two {
   display: grid;
-  grid-template-columns: 1fr 1fr;
   gap: 16px;
   margin: 20px 0;
 }
 
 .docs-grid-three {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   margin: 20px 0;
 }
@@ -679,11 +648,6 @@ section[id] {
 .brand-period {
   color: var(--hooky-accent);
 }
-.brand-studio {
-  font: 12px var(--hooky-mono);
-  letter-spacing: 0;
-  color: var(--hooky-secondary);
-}
 .site-navigation {
   display: flex;
   gap: 30px;
@@ -748,6 +712,7 @@ section[id] {
 }
 .footer-top nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 26px;
   color: var(--hooky-secondary);
   font-size: 12px;
@@ -2391,12 +2356,19 @@ section[id] {
 /* Documentation inherits the same identity. */
 .docs-container {
   width: 100%;
-  max-width: 1440px;
+  max-width: none;
+  grid-template-columns: max(260px, calc((100vw - 1440px) / 2 + 260px)) minmax(0, 1fr);
   min-width: 0;
 }
 .docs-sidebar {
   top: 84px;
   height: calc(100vh - 84px);
+  padding-left: max(20px, calc((100vw - 1440px) / 2 + 20px));
+}
+.docs-section-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 .docs-main {
   min-width: 0;
@@ -2418,6 +2390,17 @@ section[id] {
   font-size: 26px;
   font-weight: 500;
   margin-top: 32px;
+}
+.docs-section :is(h1, h2, h3, h4),
+.docs-image-meta span {
+  overflow-wrap: anywhere;
+}
+.docs-image-card,
+.docs-image-meta span {
+  min-width: 0;
+}
+.docs-image-meta {
+  flex-wrap: wrap;
 }
 .docs-search-box input {
   width: 100%;
@@ -2480,6 +2463,28 @@ section[id] {
   font-size: 11px;
   color: var(--hooky-muted);
   padding: 12px;
+}
+.docs-search-feedback {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 8px;
+  margin-top: 8px;
+  color: var(--hooky-secondary);
+  font-size: 12px;
+}
+.docs-search-feedback button {
+  min-height: 44px;
+  padding: 8px;
+  color: var(--hooky-accent);
+  border-radius: 6px;
+  background: var(--hooky-raised);
+}
+.docs-page .docs-search-input,
+.docs-page .docs-sidebar-link,
+.docs-page .code-header button {
+  min-height: 44px;
 }
 @media (min-width: 1600px) {
   .hero-inner {
@@ -2755,10 +2760,14 @@ section[id] {
     scroll-padding-top: 85px;
   }
   .site-header {
-    height: 72px;
+    height: auto;
+    min-height: 72px;
   }
   .header-inner {
     padding: 0 22px;
+    min-height: 71px;
+    height: auto;
+    flex-wrap: wrap;
   }
   .brand {
     font-size: 26px;
@@ -3343,9 +3352,15 @@ section[id] {
     gap: 14px;
   }
   .docs-nav-list {
+    display: flex;
+  }
+  .docs-section-links {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 4px;
+  }
+  .docs-search-empty {
+    grid-column: 1 / -1;
   }
   .docs-sidebar-link {
     font-size: 11px;

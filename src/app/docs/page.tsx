@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SiteHeader, SiteFooter } from "@/components/site-shell";
+import { INSTALL_COMMANDS } from "@/lib/constants";
 
 function Icon({ name, size = 18 }: { name: string; size?: number }) {
   if (name === "arrow") {
@@ -93,27 +94,66 @@ export default function DocsPage() {
   const [activeSection, setActiveSection] = useState("quickstart");
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchText, setSearchText] = useState<Record<string, string>>({});
+  const searchInput = useRef<HTMLInputElement>(null);
+  const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    const sections = SECTIONS.map((section) => document.getElementById(section.id));
+    setSearchText(Object.fromEntries(SECTIONS.map((section, index) => [
+      section.id,
+      `${section.label} ${sections[index]?.textContent || ""}`.toLowerCase().replace(/\s+/g, " "),
+    ])));
+    let frame = 0;
+    const updateSection = () => {
+      frame = 0;
+      const scrollPadding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+      const current = sections.filter((section) => section && section.getBoundingClientRect().top <=
+        scrollPadding + (parseFloat(getComputedStyle(section).scrollMarginTop) || 0) + 1).at(-1);
+      setActiveSection(current?.id || "quickstart");
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(updateSection);
+    };
+    const onHashChange = () => {
+      const id = window.location.hash.slice(1);
+      if (SECTIONS.some((section) => section.id === id)) setActiveSection(id);
+      else onScroll();
+    };
+    onHashChange();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("hashchange", onHashChange);
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("hashchange", onHashChange);
+      window.removeEventListener("resize", onScroll);
+      if (copyTimer.current) clearTimeout(copyTimer.current);
+    };
+  }, []);
 
   const handleCopy = async (text: string, key: string) => {
+    if (copyTimer.current) clearTimeout(copyTimer.current);
     try {
       await navigator.clipboard.writeText(text);
       setCopiedKey(key);
     } catch {
       setCopiedKey("clipboard-error");
     }
-    setTimeout(() => setCopiedKey(null), 2500);
+    copyTimer.current = setTimeout(() => setCopiedKey(null), 2500);
   };
 
-  const filteredSections = searchQuery.trim()
-    ? SECTIONS.filter(
-        (s) =>
-          s.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          s.id.includes(searchQuery.toLowerCase()),
-      )
+  const searchWords = searchQuery.toLowerCase().trim().split(/\s+/).filter(Boolean);
+  const filteredSections = searchWords.length
+    ? SECTIONS.filter((section) => searchWords.every((word) =>
+        `${section.id} ${searchText[section.id] || section.label.toLowerCase()}`.includes(word),
+      ))
     : SECTIONS;
 
   return (
     <div id="top" className="site-shell docs-page">
+      <a className="skip-link" href="#docs-content">Skip to documentation</a>
       <SiteHeader docs />
 
       {/* Docs Body Layout */}
@@ -122,20 +162,32 @@ export default function DocsPage() {
         <aside className="docs-sidebar">
           <div className="docs-search-box">
             <input
-              type="text"
-              aria-label="Find a documentation section"
-              placeholder="Find a section..."
+              ref={searchInput}
+              type="search"
+              aria-label="Search documentation"
+              aria-controls="docs-section-links"
+              placeholder="Search documentation..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="docs-search-input"
             />
+            {searchWords.length > 0 && (
+              <div className="docs-search-feedback">
+                <span role="status">{filteredSections.length} matching {filteredSections.length === 1 ? "section" : "sections"}</span>
+                <button type="button" onClick={() => {
+                  setSearchQuery("");
+                  searchInput.current?.focus();
+                }}>Clear search</button>
+              </div>
+            )}
           </div>
 
-          <div className="docs-nav-list">
+          <nav id="docs-section-links" className="docs-nav-list" aria-label="Documentation sections">
             <span className="docs-nav-category">DOCUMENTATION</span>
+            <div className="docs-section-links">
             {filteredSections.length === 0 && (
               <p className="docs-search-empty">
-                No sections found. Try ?setup? or ?studio?.
+                No sections found. Try “setup” or “captions”.
               </p>
             )}
             {filteredSections.map((sec) => (
@@ -143,21 +195,23 @@ export default function DocsPage() {
                 key={sec.id}
                 href={`#${sec.id}`}
                 onClick={() => setActiveSection(sec.id)}
+                aria-current={activeSection === sec.id ? "location" : undefined}
                 className={`docs-sidebar-link ${activeSection === sec.id ? "active" : ""}`}
               >
                 {sec.label}
               </a>
             ))}
-          </div>
+            </div>
+          </nav>
 
           <div className="docs-sidebar-footer">
-            <p className="docs-meta-text">Hooky Engine v2.4.0</p>
+            <p className="docs-meta-text">Hooky Engine 1.0.0</p>
             <p className="docs-meta-sub">MIT Licensed · Open Source</p>
           </div>
         </aside>
 
         {/* Main Content Area */}
-        <main className="docs-main">
+        <main id="docs-content" className="docs-main" tabIndex={-1}>
           {copiedKey === "clipboard-error" && (
             <p role="status" className="doc-callout">
               Clipboard unavailable. Select and copy the command text.
@@ -201,7 +255,7 @@ export default function DocsPage() {
                 <button
                   onClick={() =>
                     handleCopy(
-                      "git clone https://github.com/pranav256/Hooky.git && cd Hooky && ./main.sh",
+                      INSTALL_COMMANDS.unix,
                       "install-sh",
                     )
                   }
@@ -214,9 +268,7 @@ export default function DocsPage() {
                 </button>
               </div>
               <pre>
-                <code>{`git clone https://github.com/pranav256/Hooky.git
-cd Hooky
-./main.sh`}</code>
+                <code>{INSTALL_COMMANDS.unix}</code>
               </pre>
             </div>
 
@@ -226,7 +278,7 @@ cd Hooky
                 <button
                   onClick={() =>
                     handleCopy(
-                      "git clone https://github.com/pranav256/Hooky.git; cd Hooky; .\\main.ps1",
+                      INSTALL_COMMANDS.windows,
                       "install-ps1",
                     )
                   }
@@ -239,14 +291,24 @@ cd Hooky
                 </button>
               </div>
               <pre>
-                <code>{`git clone https://github.com/pranav256/Hooky.git
-cd Hooky
-Set-ExecutionPolicy -Scope Process Bypass
-.\\main.ps1`}</code>
+                <code>{INSTALL_COMMANDS.windows}</code>
               </pre>
             </div>
 
-            <h2>2. What happens on the first run?</h2>
+            <h2>2. Check your system and API key</h2>
+            <p>
+              Doctor checks local dependencies without calling Gemini. Fix
+              missing dependencies, then save <code>GEMINI_API_KEY</code> with{" "}
+              <code>./main.sh setup</code> or <code>.\main.ps1 setup</code>.
+              A missing key does not block Doctor.
+            </p>
+            <h2>3. Analyze and export your first clip</h2>
+            <p>
+              Open Studio with <code>./main.sh web</code> or <code>.\main.ps1 web</code>.
+              Paste a YouTube URL and choose Detect hooks. Select a moment, edit
+              timing, then Export clip. Retrieve the MP4 in Output Gallery or <code>output/</code>.
+            </p>
+            <h2>What the launcher prepares</h2>
             <ol className="docs-steps-list">
               <li>
                 <strong>FFmpeg Check:</strong> Auto-installs FFmpeg &amp;
@@ -259,7 +321,7 @@ Set-ExecutionPolicy -Scope Process Bypass
               </li>
               <li>
                 <strong>Virtual Environment:</strong> Creates <code>.venv</code>{" "}
-                and installs exact locked dependencies in ~5 seconds.
+                and installs the project dependencies.
               </li>
               <li>
                 <strong>Configuration:</strong> Auto-generates your local{" "}
@@ -279,9 +341,8 @@ Set-ExecutionPolicy -Scope Process Bypass
               <span className="docs-tag">ARCHITECTURE</span>
               <h2 className="docs-section-title">The Autonomous Pipeline</h2>
               <p className="docs-lede">
-                Understanding how Hooky transforms a 2-hour long horizontal
-                podcast into multiple viral 9:16 Shorts with zero human
-                intervention.
+                Follow a source from discovery and transcript analysis to
+                selected moments, captions, and vertical exports.
               </p>
             </div>
 
@@ -317,8 +378,8 @@ Set-ExecutionPolicy -Scope Process Bypass
                 <span className="flow-number">04</span>
                 <h4>9:16 Framing</h4>
                 <p>
-                  Active speaker auto-tracking, dynamic blur canvas, or centered
-                  crop.
+                  Choose automatic framing, a blurred fit canvas, or a
+                  centered crop.
                 </p>
               </div>
               <div className="flow-arrow">→</div>
@@ -334,8 +395,8 @@ Set-ExecutionPolicy -Scope Process Bypass
                 <span className="flow-number">06</span>
                 <h4>Atomic Export</h4>
                 <p>
-                  Crash-proof FFmpeg render with <code>render_state.json</code>{" "}
-                  resumption.
+                  Validated FFmpeg output is published after encoding. Studio
+                  jobs interrupted by a restart can be retried explicitly.
                 </p>
               </div>
             </div>
@@ -405,17 +466,16 @@ Set-ExecutionPolicy -Scope Process Bypass
             <h2>Core Web Studio Features</h2>
             <ul className="docs-feature-list">
               <li>
-                <strong>Dual-Mode Visual Stage:</strong> Seamlessly toggle
-                between the live YouTube video player and the 9:16 Canvas
-                Simulator with animated avatars.
+                <strong>Source and style previews:</strong> Toggle between
+                source playback and a sample caption canvas. The canvas previews
+                subtitle styling; the exported MP4 shows the actual framing and timing.
               </li>
               <li>
                 <strong>Intelligent Framing Selector:</strong>
                 <ul>
                   <li>
-                    <code>Auto-Track (Speaker)</code>: Detects speaker position
-                    and applies smooth horizontal panning to keep faces
-                    centered.
+                    <code>Auto</code>: Uses the source analysis recommendation.
+                    Choose Fit to preserve multiple speakers or slides.
                   </li>
                   <li>
                     <code>Fit (Gaussian Blur)</code>: Fits the full 16:9 video
@@ -428,14 +488,12 @@ Set-ExecutionPolicy -Scope Process Bypass
                 </ul>
               </li>
               <li>
-                <strong>Kinetic Subtitle Preview:</strong> Real-time word
-                highlight playback matching the Hormozi, Clean, and Yellow
-                subtitle engines.
+                <strong>Subtitle styles:</strong> Preview Hormozi, Clean, and
+                Yellow captions before exporting. Preview animation respects reduced motion.
               </li>
               <li>
-                <strong>±0.5s Timestamp Nudge Controls:</strong> Granular
-                precision to fine-tune hook entry and exit cut points down to
-                the millisecond.
+                <strong>Editable timing:</strong> Enter start and end seconds,
+                or nudge either boundary by 0.5 seconds. Export uses your edited range.
               </li>
               <li>
                 <strong>Settings Manager:</strong> View and edit your{" "}
@@ -451,9 +509,9 @@ Set-ExecutionPolicy -Scope Process Bypass
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "16px",
-                margin: "24px 0",
+                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                gap: "1rem",
+                margin: "1.5rem 0",
               }}
             >
               <div className="docs-image-card" style={{ margin: 0 }}>
@@ -530,10 +588,9 @@ Set-ExecutionPolicy -Scope Process Bypass
                 <span className="cli-tag">DIAGNOSTICS</span>
               </div>
               <p>
-                Performs a comprehensive environment audit: verifies
-                FFmpeg/FFprobe binaries, checks CUDA/hardware acceleration,
-                validates Python packages, and makes a lightweight test ping
-                with your Gemini API key.
+                Checks FFmpeg/FFprobe and local Python dependencies without a
+                live API call. <code>./main.sh doctor live</code> explicitly tests
+                your Gemini key and model availability.
               </p>
             </div>
 
@@ -543,9 +600,8 @@ Set-ExecutionPolicy -Scope Process Bypass
                 <span className="cli-tag">RADAR</span>
               </div>
               <p>
-                Inspects all YouTube channels listed in{" "}
-                <code>channels.txt</code>, fetches view velocity, filters videos
-                exceeding view thresholds, and populates the clipping queue.
+                Shows active entries in <code>channels.txt</code>. Use{" "}
+                <code>./main.sh make</code> to discover videos and process the source queue.
               </p>
             </div>
 
@@ -567,9 +623,8 @@ Set-ExecutionPolicy -Scope Process Bypass
                 <span className="cli-tag">PUBLISHER</span>
               </div>
               <p>
-                Inspects the local Instagram publishing queue, checks pending
-                clips, schedules upload windows, and runs the safe-pacing jitter
-                scheduler.
+                Shows the local Instagram publishing queue. Publishing is a
+                separate, explicit <code>./main.sh post</code> command.
               </p>
             </div>
           </section>
@@ -622,7 +677,7 @@ Set-ExecutionPolicy -Scope Process Bypass
                       <code>GEMINI_MODEL_FALLBACKS</code>
                     </td>
                     <td>
-                      <code>gemini-3.1-flash-lite</code>
+                      <code>gemini-3.1-flash-lite,gemini-flash-latest</code>
                     </td>
                     <td>
                       Automatic fallback chain if rate limits or quota caps are
@@ -637,8 +692,9 @@ Set-ExecutionPolicy -Scope Process Bypass
                       <code>highest</code>
                     </td>
                     <td>
-                      <code>highest</code> (CRF 15, medium preset) or{" "}
-                      <code>high</code> (CRF 20, fast encode).
+                      Source download profile: <code>highest</code> uses up to
+                      1440p for long videos and 2160p for short videos;{" "}
+                      <code>high</code> uses 1080p and 1440p. Exports remain 1080×1920.
                     </td>
                   </tr>
                   <tr>
@@ -661,8 +717,8 @@ Set-ExecutionPolicy -Scope Process Bypass
                       <code>int8</code>
                     </td>
                     <td>
-                      Quantization mode. <code>int8</code> runs smoothly on
-                      modest CPUs with ~4GB RAM.
+                      CPU quantization mode. Memory and speed depend on the
+                      model and source duration.
                     </td>
                   </tr>
                   <tr>
@@ -673,8 +729,9 @@ Set-ExecutionPolicy -Scope Process Bypass
                       <code>hormozi</code>
                     </td>
                     <td>
-                      Subtitle preset: <code>hormozi</code>, <code>clean</code>,
-                      or <code>yellow</code>.
+                      Common presets: <code>hormozi</code>, <code>clean</code>,
+                      and <code>yellow</code>. Run <code>./main.sh styles</code>
+                      to list all supported presets and aliases.
                     </td>
                   </tr>
                   <tr>
@@ -682,7 +739,7 @@ Set-ExecutionPolicy -Scope Process Bypass
                       <code>SUB_FONT</code>
                     </td>
                     <td>
-                      <code>Arial</code>
+                      <code>Preset font</code>
                     </td>
                     <td>Font family for burned ASS subtitles.</td>
                   </tr>
@@ -733,9 +790,9 @@ Set-ExecutionPolicy -Scope Process Bypass
             </p>
             <div className="code-block">
               <pre>
-                <code>{`# Syntax: @handle | limit=N min_views=N
-@hubermanlab | limit=3 min_views=250000
-https://www.youtube.com/@TheDiaryOfACEO | limit=2 min_views=500000
+                <code>{`# Syntax: @handle | limit=N | min_views=N | scan=N
+@hubermanlab | limit=3 | min_views=250000 | scan=20
+https://www.youtube.com/@TheDiaryOfACEO | limit=2 | min_views=500000
 @lexfridman | limit=1`}</code>
               </pre>
             </div>
@@ -774,7 +831,7 @@ D:/Videos/Podcast_Episode_42.mp4 | clips=5 | min=20 max=55 | style=yellow`}</cod
                 <h3>Hormozi Kinetic Pop</h3>
                 <p>
                   High-energy uppercase typography, bold font weights, and an
-                  acid-green active word highlight pop.
+                  yellow active word highlights.
                 </p>
                 <div className="style-preview hormozi-preview">
                   YOU DON&apos;T NEED MORE CONTENT.
@@ -787,8 +844,8 @@ D:/Videos/Podcast_Episode_42.mp4 | clips=5 | min=20 max=55 | style=yellow`}</cod
                 <span className="style-badge">PRESET</span>
                 <h3>Editorial Clean</h3>
                 <p>
-                  Understated elegance with a translucent dark backing pill,
-                  mixed-case lettering, and white accent highlights.
+                  Smaller mixed-case white lettering with soft amber word
+                  highlights and a dark outline.
                 </p>
                 <div className="style-preview clean-preview">
                   <span>Every story has a punchline. Find it.</span>
@@ -799,8 +856,8 @@ D:/Videos/Podcast_Episode_42.mp4 | clips=5 | min=20 max=55 | style=yellow`}</cod
                 <span className="style-badge">PRESET</span>
                 <h3>Cyberpunk Yellow</h3>
                 <p>
-                  Neon yellow highlight with black drop shadows and monospace
-                  framing for tech, gaming, and developer clips.
+                  Bright yellow word highlights, bold Montserrat lettering,
+                  and black outlines for readable captions.
                 </p>
                 <div className="style-preview yellow-preview">
                   <code>[00:14] HIGHEST_RETENTION_HOOK</code>
@@ -824,36 +881,32 @@ D:/Videos/Podcast_Episode_42.mp4 | clips=5 | min=20 max=55 | style=yellow`}</cod
               <div className="faq-item">
                 <h3>Do I need an NVIDIA GPU to run Hooky?</h3>
                 <p>
-                  <strong>No.</strong> Hooky was specifically engineered with
-                  lightweight defaults (Whisper <code>int8</code> quantization
-                  and multi-threaded FFmpeg CPU encoding). It runs comfortably
-                  on standard 4GB RAM laptops with dual-core processors. If an
-                  NVIDIA GPU with CUDA is present, Hooky automatically detects
-                  it for faster rendering.
+                  <strong>No.</strong> Local transcription uses Whisper on the
+                  CPU with <code>int8</code> by default. Rendering uses FFmpeg
+                  CPU encoding. Processing speed and memory use depend on your
+                  machine, source duration, and model size.
                 </p>
               </div>
 
               <div className="faq-item">
                 <h3>How much does the Google Gemini API cost?</h3>
                 <p>
-                  <strong>$0 for standard usage.</strong> Google AI Studio
-                  provides a generous free tier for Gemini models (like{" "}
-                  <code>gemini-3.8-flash</code> and{" "}
-                  <code>gemini-3.1-flash-lite</code>). Hooky only sends
-                  transcript text (roughly two small API calls per video), so
-                  you can process dozens of videos daily without exceeding free
-                  limits.
+                  Hooky uses your Gemini API key for transcript analysis.
+                  Available models, free allowances, pricing, and quotas depend
+                  on your Google project. Check Google AI Studio before running
+                  analysis; Hooky does not guarantee free API usage.
                 </p>
               </div>
 
               <div className="faq-item">
-                <h3>How does Hooky prevent Instagram bans?</h3>
+                <h3>How does publishing handle retries?</h3>
                 <p>
                   Hooky incorporates human-like jitter intervals (60–120 minutes
                   between posts), configurable posting hour windows (e.g. 5 PM
                   to midnight), and atomic upload locks. It marks posts with an
                   uncertain outcome state rather than immediately retrying,
-                  preventing accidental double-posts.
+                  reducing accidental double-posts. Publishing still follows
+                  Instagram&apos;s rules and cannot guarantee account safety.
                 </p>
               </div>
 

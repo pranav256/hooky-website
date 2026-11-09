@@ -12,7 +12,7 @@ export function HookyMark({ className = "" }: { className?: string }) {
     </svg>
   );
 }
-export function Brand({ studio = false }: { studio?: boolean }) {
+export function Brand() {
   return (
     <Link href="/" className="brand" aria-label="Hooky home">
       <span className="brand-symbol">
@@ -21,7 +21,6 @@ export function Brand({ studio = false }: { studio?: boolean }) {
       <span>
         hooky<span className="brand-period">.</span>
       </span>
-      {studio && <span className="brand-studio">studio</span>}
     </Link>
   );
 }

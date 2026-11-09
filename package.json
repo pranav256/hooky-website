@@ -9,17 +9,19 @@
     "lint": "eslint src",
     "typecheck": "tsc --noEmit",
     "check:ui": "node scripts/check-ui.mjs",
+    "check:improvements": "node scripts/check-improvements.mjs",
+    "check:studio-workflow": "node scripts/check-studio-workflow.mjs",
+    "check:browser-ci": "node scripts/check-browser-ci.mjs",
     "sync:studio": "node scripts/sync-studio-brand.mjs",
-    "build:studio-css": "tailwindcss -c studio.tailwind.config.cjs -i ../Hooky/hooky/web/static/tailwind-source.css -o ../Hooky/hooky/web/static/studio-tailwind.css --minify"
+    "build:studio-css": "node scripts/build-studio-css.mjs",
+    "test:tooling": "node --test scripts/studio-path.test.cjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
-    "clsx": "^2.1.1",
     "lucide-react": "^1.64.0",
     "next": "^15.1.7",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "tailwind-merge": "^3.0.2"
+    "react-dom": "^19.0.0"
   },
   "overrides": {
     "next": {

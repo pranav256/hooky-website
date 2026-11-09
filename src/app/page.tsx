@@ -22,7 +22,7 @@ import { SiteFooter, SiteHeader } from "@/components/site-shell";
 import { ClipCollage } from "@/components/clip-collage";
 import { StudioDemo } from "@/components/studio-demo";
 import { HookyMark } from "@/components/brand";
-import { CLONE_COMMAND, REPO_URL } from "@/lib/constants";
+import { INSTALL_COMMANDS, REPO_URL } from "@/lib/constants";
 const steps = [
   {
     n: "01",
@@ -90,7 +90,7 @@ export default function Home() {
     nodes.forEach((n) => observer.observe(n));
     return () => observer.disconnect();
   }, []);
-  const commands = `${CLONE_COMMAND}\ncd Hooky\n${os === "windows" ? "Set-ExecutionPolicy -Scope Process Bypass\n.\\main.ps1" : "./main.sh"}`;
+  const commands = INSTALL_COMMANDS[os];
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(commands);
@@ -393,7 +393,7 @@ export default function Home() {
             <p>
               Clone it. Launch it. Create something.
               <br />
-              The launcher sets up Hooky and opens your local studio.
+              Check dependencies, configure your key, then open the local studio.
             </p>
             <div className="install-requirements">
               <span>YOU’LL NEED</span>

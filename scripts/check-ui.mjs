@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { chromium } from "playwright";
 
 const website = process.env.WEBSITE_URL || "http://127.0.0.1:3000";
@@ -8,7 +9,19 @@ const context = await browser.newContext({
   permissions: ["clipboard-read", "clipboard-write"],
 });
 const page = await context.newPage();
+// Analytics is supplied by Vercel in deployment; fixture hosts stay offline.
+await page.route(`${website}/_vercel/insights/**`, (route) => route.fulfill({ contentType: "application/javascript", body: "" }));
 const errors = [];
+await context.route("**/*", async (route) => {
+  const url = new URL(route.request().url());
+  if ([new URL(website).origin, new URL(studio).origin].includes(url.origin)) return route.fallback();
+  if (url.hostname === "www.youtube-nocookie.com") return route.fulfill({ contentType: "text/html", body: "Fixture source player" });
+  errors.push(`Unexpected external fixture request: ${url.origin}`);
+  await route.abort();
+});
+page.on("response", (response) => {
+  if (response.status() >= 400 && /\.(?:js|css)(?:\?|$)/.test(response.url())) errors.push(`Missing asset: ${response.status()} ${response.url()}`);
+});
 page.on("pageerror", (e) => errors.push(e.message));
 const visible = async (selector) =>
   assert(
@@ -23,6 +36,14 @@ const noOverflow = async (label) =>
     ),
     `${label}: horizontal overflow`,
   );
+const baseFixture = async (route) => {
+  const request = route.request();
+  const path = new URL(request.url()).pathname;
+  const fixtures = { "/api/env": { raw: "", values: {} }, "/api/doctor": { checks: [], gpu: "Fixture CPU" }, "/api/channels": { channels: [] }, "/api/outputs": { files: [] }, "/api/jobs": { jobs: [] } };
+  if (request.method() === "GET" && fixtures[path]) await route.fulfill({ json: fixtures[path] });
+  else { errors.push(`Unexpected fixture API: ${request.method()} ${path}`); await route.fulfill({ status: 500, json: { detail: "Unexpected fixture request" } }); }
+};
+await page.route(`${studio}/api/**`, baseFixture);
 try {
   for (const width of [390, 768, 1440, 1728]) {
     await page.setViewportSize({ width, height: 950 });
@@ -139,12 +160,19 @@ try {
       dialogue: [{ time: "05:00", text: "Look up once in a while." }],
     },
   ];
+  await page.unroute(`${studio}/api/**`, baseFixture);
   await page.route(`${studio}/api/**`, async (route) => {
-    const path = new URL(route.request().url()).pathname;
+    const request = route.request();
+    const path = new URL(request.url()).pathname;
+    if (request.method() !== "GET" && !(request.method() === "POST" && ["/api/analyze/start", "/api/jobs/render_clip"].includes(path))) {
+      errors.push(`Unexpected fixture mutation: ${request.method()} ${path}`);
+      await route.fulfill({ status: 500, json: { detail: "Unexpected fixture mutation" } });
+      return;
+    }
     const json =
       path === "/api/analyze/start"
         ? { job_id: "sample-analysis" }
-        : path.startsWith("/api/analyze/status/")
+        : path === "/api/analyze/status/sample-analysis"
           ? {
               status: "completed",
               progress: 100,
@@ -165,9 +193,12 @@ try {
                   ? { files: [] }
                   : path === "/api/jobs/render_clip"
                     ? { job_id: "sample-render" }
-                    : path.startsWith("/api/jobs/")
+                    : path === "/api/jobs"
+                      ? { jobs: [] }
+                      : path === "/api/jobs/sample-render"
                       ? { status: "failed", error: "Sample render error" }
-                      : {};
+                      : null;
+    if (json === null) errors.push(`Unexpected fixture API: ${route.request().method()} ${path}`);
     await route.fulfill({ json });
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -209,6 +240,11 @@ try {
   console.log(
     "Passed: responsive website, docs, all five studio views, interactive tour, commands, navigation, analysis fixture, clip selection, timing, framing, captions, and render error feedback.",
   );
+} catch (error) {
+  mkdirSync(".design-review", { recursive: true });
+  await page.screenshot({ path: ".design-review/check-ui-failure.png", fullPage: true });
+  writeFileSync(".design-review/check-ui-errors.json", JSON.stringify({ error: String(error), errors }, null, 2));
+  throw error;
 } finally {
   await browser.close();
 }
