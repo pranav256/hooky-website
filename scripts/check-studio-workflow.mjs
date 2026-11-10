@@ -59,7 +59,8 @@ try {
       maxInflight = 0,
       statusCalls = 0;
     let jobRecords = [],
-      renderPayload;
+      renderPayload,
+      openedFolder;
     let env = {
       raw: "GEMINI_API_KEY=••••••••\nFFMPEG_THREADS=4\nCUSTOM_VALUE=keep\n",
       values: {
@@ -110,6 +111,18 @@ try {
       if (path === "/api/channels" && method === "GET")
         return respond({
           channels: ["@creator | limit=2 | min_views=10000 | scan=20"],
+        });
+      if (path === "/api/outputs/open-folder" && method === "POST") {
+        openedFolder = new URL(request.url()).searchParams;
+        return respond({ status: "opened" });
+      }
+      if (path === "/api/outputs/download-all")
+        return route.fulfill({
+          contentType: "application/zip",
+          headers: {
+            "Content-Disposition": 'attachment; filename="hooky-clips.zip"',
+          },
+          body: "Fixture ZIP",
         });
       if (path === "/api/outputs" && method === "GET")
         return respond(
@@ -252,6 +265,14 @@ try {
             return respond({ detail: "Temporary fixture disconnect" }, 503);
           const job = jobRecords.find((item) => item.id === status[1]);
           if (!job) return respond({ detail: "Unknown fixture job" }, 404);
+          if (job.type === "make" && job.status === "running") {
+            job.result = {
+              video_title: "Pipeline source",
+              hooks: [hook],
+              recommended_framing: "fit",
+              recommended_style: "gold",
+            };
+          }
           if (job.type === "analyze" && job.status === "running") {
             job.status = "completed";
             job.progress = 100;
@@ -371,6 +392,10 @@ try {
 
     await page.locator("#preview-tab-player").click();
     assert(await page.locator("#youtube-embed-frame").isVisible());
+    await page
+      .frameLocator("#youtube-embed-frame")
+      .getByText("Fixture source player", { exact: true })
+      .waitFor();
     const captionAfter = await page
       .locator("#canvas-subtitle-preview")
       .textContent();
@@ -385,8 +410,13 @@ try {
     assert(await page.locator("#youtube-embed-frame").isHidden());
     assert.equal(
       await page.locator("#youtube-embed-frame").getAttribute("src"),
-      "",
+      null,
     );
+    assert.equal(
+      await page.locator("#canvas-video-frame").getAttribute("src"),
+      null,
+    );
+    assert.equal(page.frames().length, 3);
     assert(await page.locator("#player-placeholder").isVisible());
     assert.match(
       await page.locator("#player-placeholder").textContent(),
@@ -622,6 +652,22 @@ try {
       /literal/,
     );
     const token = await page.evaluate(() => window.__HOOKY_TOKEN__);
+    const bulkUrl = new URL(
+      await page.locator("#outputs-download-all").getAttribute("href"),
+      studio,
+    );
+    assert.equal(bulkUrl.pathname, "/api/outputs/download-all");
+    assert.equal(bulkUrl.searchParams.get("token"), token);
+    const downloadEvent = page.waitForEvent("download");
+    await page.locator("#outputs-download-all").click();
+    assert.equal((await downloadEvent).suggestedFilename(), "hooky-clips.zip");
+    await page
+      .locator(".output-collection")
+      .nth(1)
+      .getByRole("button", { name: "Open folder", exact: true })
+      .click();
+    assert.equal(openedFolder.get("filepath"), file.rel_path);
+    assert.equal(openedFolder.get("job_id"), "previous-root");
     for (const [index, expectedJobId] of [
       [0, null],
       [1, "previous-root"],
@@ -744,9 +790,30 @@ try {
         await page.locator("#stepper-status-text").textContent(),
         /completed/,
       );
+      assert.equal(
+        await page.locator("#studio-alert").getAttribute("data-state"),
+        "success",
+      );
+      await page
+        .locator("#studio-alert")
+        .getByRole("button", { name: "Open folder", exact: true })
+        .click();
+      assert.equal(openedFolder.get("job_id"), jobRecords[0].id);
       await page.locator("#execute-make-btn").click();
       await page.waitForFunction(
         () => !document.getElementById("job-cancel-btn").hidden,
+      );
+      await page.waitForFunction(
+        () => selectedAnalysisId === activeJobId && CURRENT_HOOKS.length === 1,
+      );
+      assert.equal(jobRecords[0].status, "running");
+      assert.match(
+        await page.locator("#canvas-video-frame").getAttribute("src"),
+        /embed\/abcdefghijk/,
+      );
+      assert.match(
+        await page.locator("#dialogue-lines-box").textContent(),
+        /One clear decision/,
       );
       jobRecords[0].status = "failed";
       jobRecords[0].error = "Fixture pipeline failed";

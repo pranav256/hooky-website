@@ -11,7 +11,7 @@ Open http://localhost:3000. Set `NEXT_PUBLIC_SITE_URL` to the deployment's canon
 
 For a first engine run, clone `https://github.com/pranav256/Hooky-engine.git`, enter `Hooky-engine`, then run `./main.sh doctor` (`.\main.ps1 doctor` on Windows; run `Set-ExecutionPolicy -Scope Process Bypass` first). Doctor checks local dependencies without a live Gemini call. Run the launcher's `setup` command to configure `GEMINI_API_KEY`, then `web` to open http://127.0.0.1:8000. Paste a YouTube URL, detect hooks, edit a selected moment's timing, export, and retrieve the MP4 in Output Gallery or the configured output folder. Gemini pricing and quotas apply to AI analysis.
 
-The shared tokens/fonts live in `public/brand.css`. Both Studio tools first resolve `../Hooky-engine/hooky/web/static`, then the legacy `../Hooky/hooky/web/static`, independently of the invoking working directory:
+The shared Lumen Dark tokens live in `public/brand.css`; both apps use system fonts. Both Studio tools first resolve `../Hooky-engine/hooky/web/static`, then the legacy `../Hooky/hooky/web/static`, independently of the invoking working directory:
 
 ```sh
 npm run sync:studio
@@ -42,4 +42,4 @@ Each repo's browser CI requires a **compatible full sibling commit SHA**. Config
 
 The engine's separate offline media smoke uses a local FFmpeg fixture and the real shared caption/render path. From the engine root, run `HOOKY_MEDIA_SMOKE=1 uv run pytest tests/test_web_media_smoke.py --run-integration -m integration` (PowerShell: `$env:HOOKY_MEDIA_SMOKE='1'; uv run pytest tests/test_web_media_smoke.py --run-integration -m integration`). It verifies fractional timing, burned caption pixels, center/fit framing, 1080×1920 duration, and failure/cancellation publishing. FFmpeg/FFprobe are required; ordinary tests skip it. Engine workflow dispatch can opt into it independently of browser pairing. It never calls YouTube, Gemini or Instagram.
 
-See [public/SOURCES.md](public/SOURCES.md) for asset provenance. To refresh licensed images and compressed fonts, use `scripts/fetch-assets.py`, `sync:studio`, and `scripts/render-og.mjs`.
+See [public/SOURCES.md](public/SOURCES.md) for the licensed image sources and theme attribution.

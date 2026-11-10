@@ -6,6 +6,6 @@ Photography is downloaded from Unsplash under the [Unsplash License](https://uns
 - Landscape: https://images.unsplash.com/photo-1500534623283-312aade485b7
 - Mountains: https://images.unsplash.com/photo-1519681393784-d120267933ba
 
-Space Grotesk, Inter, and IBM Plex Mono are self-hosted subsets of the Google Fonts sources, licensed under the SIL Open Font License. Each font's license is included in `fonts/`.
+The Lumen Dark theme uses the operating system's fonts. Its design tokens come from [Open Design](https://open-design-mcp-liard.vercel.app/design-systems/lumen-dark).
 
 Lucide icons are ISC licensed. The studio's vendored bundle retains its upstream license notice.

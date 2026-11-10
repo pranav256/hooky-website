@@ -124,8 +124,8 @@ export default function Home() {
               <p className="hero-description">
                 Your best moments are already in there.
                 <br />
-                Hooky finds them, frames them, and turns your long videos into
-                shorts worth watching.
+                Hooky finds them, frames them, and turns long videos into
+                shorts.
               </p>
               <div className="hero-buttons">
                 <a className="button button-accent" href="#install">
@@ -393,7 +393,8 @@ export default function Home() {
             <p>
               Clone it. Launch it. Create something.
               <br />
-              Check dependencies, configure your key, then open the local studio.
+              Check dependencies, configure your key, then open the local
+              studio.
             </p>
             <div className="install-requirements">
               <span>YOU’LL NEED</span>
