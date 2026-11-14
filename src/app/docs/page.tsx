@@ -84,6 +84,9 @@ const SECTIONS = [
   { id: "quickstart", label: "Quickstart & Setup", icon: "terminal" },
   { id: "pipeline", label: "The Autonomous Pipeline", icon: "spark" },
   { id: "web-studio", label: "Web Studio Manual", icon: "terminal" },
+  { id: "topic-clipping", label: "Topic clipping", icon: "spark" },
+  { id: "caption-editing", label: "Caption corrections", icon: "spark" },
+  { id: "named-projects", label: "Named projects", icon: "terminal" },
   { id: "cli", label: "CLI Reference", icon: "terminal" },
   { id: "config", label: "Config & Environment", icon: "terminal" },
   { id: "subtitles", label: "Subtitles & Styling", icon: "spark" },
@@ -99,17 +102,36 @@ export default function DocsPage() {
   const copyTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const sections = SECTIONS.map((section) => document.getElementById(section.id));
-    setSearchText(Object.fromEntries(SECTIONS.map((section, index) => [
-      section.id,
-      `${section.label} ${sections[index]?.textContent || ""}`.toLowerCase().replace(/\s+/g, " "),
-    ])));
+    const sections = SECTIONS.map((section) =>
+      document.getElementById(section.id),
+    );
+    setSearchText(
+      Object.fromEntries(
+        SECTIONS.map((section, index) => [
+          section.id,
+          `${section.label} ${sections[index]?.textContent || ""}`
+            .toLowerCase()
+            .replace(/\s+/g, " "),
+        ]),
+      ),
+    );
     let frame = 0;
     const updateSection = () => {
       frame = 0;
-      const scrollPadding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
-      const current = sections.filter((section) => section && section.getBoundingClientRect().top <=
-        scrollPadding + (parseFloat(getComputedStyle(section).scrollMarginTop) || 0) + 1).at(-1);
+      const scrollPadding =
+        parseFloat(
+          getComputedStyle(document.documentElement).scrollPaddingTop,
+        ) || 0;
+      const current = sections
+        .filter(
+          (section) =>
+            section &&
+            section.getBoundingClientRect().top <=
+              scrollPadding +
+                (parseFloat(getComputedStyle(section).scrollMarginTop) || 0) +
+                1,
+        )
+        .at(-1);
       setActiveSection(current?.id || "quickstart");
     };
     const onScroll = () => {
@@ -144,16 +166,26 @@ export default function DocsPage() {
     copyTimer.current = setTimeout(() => setCopiedKey(null), 2500);
   };
 
-  const searchWords = searchQuery.toLowerCase().trim().split(/\s+/).filter(Boolean);
+  const searchWords = searchQuery
+    .toLowerCase()
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean);
   const filteredSections = searchWords.length
-    ? SECTIONS.filter((section) => searchWords.every((word) =>
-        `${section.id} ${searchText[section.id] || section.label.toLowerCase()}`.includes(word),
-      ))
+    ? SECTIONS.filter((section) =>
+        searchWords.every((word) =>
+          `${section.id} ${searchText[section.id] || section.label.toLowerCase()}`.includes(
+            word,
+          ),
+        ),
+      )
     : SECTIONS;
 
   return (
     <div id="top" className="site-shell docs-page">
-      <a className="skip-link" href="#docs-content">Skip to documentation</a>
+      <a className="skip-link" href="#docs-content">
+        Skip to documentation
+      </a>
       <SiteHeader docs />
 
       {/* Docs Body Layout */}
@@ -173,34 +205,48 @@ export default function DocsPage() {
             />
             {searchWords.length > 0 && (
               <div className="docs-search-feedback">
-                <span role="status">{filteredSections.length} matching {filteredSections.length === 1 ? "section" : "sections"}</span>
-                <button type="button" onClick={() => {
-                  setSearchQuery("");
-                  searchInput.current?.focus();
-                }}>Clear search</button>
+                <span role="status">
+                  {filteredSections.length} matching{" "}
+                  {filteredSections.length === 1 ? "section" : "sections"}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchQuery("");
+                    searchInput.current?.focus();
+                  }}
+                >
+                  Clear search
+                </button>
               </div>
             )}
           </div>
 
-          <nav id="docs-section-links" className="docs-nav-list" aria-label="Documentation sections">
+          <nav
+            id="docs-section-links"
+            className="docs-nav-list"
+            aria-label="Documentation sections"
+          >
             <span className="docs-nav-category">DOCUMENTATION</span>
             <div className="docs-section-links">
-            {filteredSections.length === 0 && (
-              <p className="docs-search-empty">
-                No sections found. Try “setup” or “captions”.
-              </p>
-            )}
-            {filteredSections.map((sec) => (
-              <a
-                key={sec.id}
-                href={`#${sec.id}`}
-                onClick={() => setActiveSection(sec.id)}
-                aria-current={activeSection === sec.id ? "location" : undefined}
-                className={`docs-sidebar-link ${activeSection === sec.id ? "active" : ""}`}
-              >
-                {sec.label}
-              </a>
-            ))}
+              {filteredSections.length === 0 && (
+                <p className="docs-search-empty">
+                  No sections found. Try “setup” or “captions”.
+                </p>
+              )}
+              {filteredSections.map((sec) => (
+                <a
+                  key={sec.id}
+                  href={`#${sec.id}`}
+                  onClick={() => setActiveSection(sec.id)}
+                  aria-current={
+                    activeSection === sec.id ? "location" : undefined
+                  }
+                  className={`docs-sidebar-link ${activeSection === sec.id ? "active" : ""}`}
+                >
+                  {sec.label}
+                </a>
+              ))}
             </div>
           </nav>
 
@@ -220,7 +266,7 @@ export default function DocsPage() {
           {/* SECTION 1: QUICKSTART */}
           <section id="quickstart" className="docs-section">
             <div className="docs-header">
-              <span className="docs-tag">GETTING STARTED</span>
+              <span className="docs-tag">Getting started</span>
               <h1>
                 Make your <span className="serif-word">first cut.</span>
               </h1>
@@ -236,10 +282,11 @@ export default function DocsPage() {
             <div className="doc-callout tip">
               <strong>Automated setup</strong>
               <p>
-                You do not need to install Python virtual environments, pip
-                packages, or FFmpeg manually. The <code>main.sh</code> and{" "}
-                <code>main.ps1</code> scripts detect missing prerequisites and
-                install them automatically.
+                The <code>main.sh</code> and <code>main.ps1</code> launchers
+                manage Python dependencies and check prerequisites. Run{" "}
+                <code>doctor</code> first and follow any instructions for your
+                operating system, then use <code>setup</code> to configure
+                Hooky.
               </p>
             </div>
 
@@ -254,10 +301,7 @@ export default function DocsPage() {
                 <span>macOS / Linux</span>
                 <button
                   onClick={() =>
-                    handleCopy(
-                      INSTALL_COMMANDS.unix,
-                      "install-sh",
-                    )
+                    handleCopy(INSTALL_COMMANDS.unix, "install-sh")
                   }
                 >
                   <Icon
@@ -277,10 +321,7 @@ export default function DocsPage() {
                 <span>Windows (PowerShell)</span>
                 <button
                   onClick={() =>
-                    handleCopy(
-                      INSTALL_COMMANDS.windows,
-                      "install-ps1",
-                    )
+                    handleCopy(INSTALL_COMMANDS.windows, "install-ps1")
                   }
                 >
                   <Icon
@@ -299,14 +340,15 @@ export default function DocsPage() {
             <p>
               Doctor checks local dependencies without calling Gemini. Fix
               missing dependencies, then save <code>GEMINI_API_KEY</code> with{" "}
-              <code>./main.sh setup</code> or <code>.\main.ps1 setup</code>.
-              A missing key does not block Doctor.
+              <code>./main.sh setup</code> or <code>.\main.ps1 setup</code>. A
+              missing key does not block Doctor.
             </p>
             <h2>3. Analyze and export your first clip</h2>
             <p>
-              Open Studio with <code>./main.sh web</code> or <code>.\main.ps1 web</code>.
-              Paste a YouTube URL and choose Detect hooks. Select a moment, edit
-              timing, then Export clip. Retrieve the MP4 in Output Gallery or <code>output/</code>.
+              Open Studio with <code>./main.sh web</code> or{" "}
+              <code>.\main.ps1 web</code>. Paste a YouTube URL and choose Detect
+              hooks. Select a moment, edit timing, then Export clip. Retrieve
+              the MP4 in Output Gallery or <code>output/</code>.
             </p>
             <h2>What the launcher prepares</h2>
             <ol className="docs-steps-list">
@@ -378,8 +420,8 @@ export default function DocsPage() {
                 <span className="flow-number">04</span>
                 <h4>9:16 Framing</h4>
                 <p>
-                  Choose automatic framing, a blurred fit canvas, or a
-                  centered crop.
+                  Choose automatic framing, a blurred fit canvas, or a centered
+                  crop.
                 </p>
               </div>
               <div className="flow-arrow">→</div>
@@ -430,9 +472,9 @@ export default function DocsPage() {
               <span className="docs-tag">USER INTERFACE</span>
               <h2 className="docs-section-title">Web Studio Manual</h2>
               <p className="docs-lede">
-                The built-in Web Studio gives you a visual cockpit to preview
-                hook recommendations, trim timestamps, test framing modes, and
-                manage settings.
+                Use the local Studio to find moments by topic, adjust timing,
+                correct captions, choose framing and save named projects. You
+                review the cut before exporting an MP4.
               </p>
             </div>
 
@@ -449,14 +491,14 @@ export default function DocsPage() {
 
             <div className="docs-image-card">
               <img
-                src="/images/engine_studio.png"
-                alt="Hooky Web Studio Interface"
+                src="/images/engine_studio.webp"
+                alt="Current Hooky Studio with project saves and topic-guided selection using sample data"
+                width={1440}
+                height={1000}
+                loading="lazy"
               />
               <div className="docs-image-meta">
-                <span>
-                  Interactive Hook Workbench — Dual-Mode 9:16 Canvas Simulator
-                  &amp; Dialogue Inspector
-                </span>
+                <span>Current local Studio with illustrative sample data</span>
                 <span style={{ color: "var(--accent)" }}>
                   http://127.0.0.1:8000
                 </span>
@@ -466,9 +508,28 @@ export default function DocsPage() {
             <h2>Core Web Studio Features</h2>
             <ul className="docs-feature-list">
               <li>
+                <strong>Topic-guided detection:</strong> Enter an optional clip
+                topic before Detect hooks. Review matching moments and any
+                fallback notice.{" "}
+                <a href="#topic-clipping">Read the topic guide.</a>
+              </li>
+              <li>
+                <strong>Caption corrections:</strong> Search phrases and edit
+                their text while keeping their source timing. Reset a phrase to
+                its original text.{" "}
+                <a href="#caption-editing">Read the caption guide.</a>
+              </li>
+              <li>
+                <strong>Named projects:</strong> Save your source, moments,
+                timing, corrections and styling to disk. Reopen a project after
+                restarting Studio.{" "}
+                <a href="#named-projects">Read the project guide.</a>
+              </li>
+              <li>
                 <strong>Source and style previews:</strong> Toggle between
                 source playback and a sample caption canvas. The canvas previews
-                subtitle styling; the exported MP4 shows the actual framing and timing.
+                subtitle styling; the exported MP4 shows the actual framing and
+                timing.
               </li>
               <li>
                 <strong>Intelligent Framing Selector:</strong>
@@ -483,17 +544,20 @@ export default function DocsPage() {
                   </li>
                   <li>
                     <code>Center Crop (9:16)</code>: Directly crops the middle
-                    1080×1920 region.
+                    region and renders a vertical 9:16 clip. This is a fixed
+                    center crop; it does not track a moving speaker.
                   </li>
                 </ul>
               </li>
               <li>
                 <strong>Subtitle styles:</strong> Preview Hormozi, Clean, and
-                Yellow captions before exporting. Preview animation respects reduced motion.
+                Yellow captions before exporting. Preview animation respects
+                reduced motion.
               </li>
               <li>
                 <strong>Editable timing:</strong> Enter start and end seconds,
-                or nudge either boundary by 0.5 seconds. Export uses your edited range.
+                or nudge either boundary by 0.5 seconds. Export uses your edited
+                range.
               </li>
               <li>
                 <strong>Settings Manager:</strong> View and edit your{" "}
@@ -506,18 +570,14 @@ export default function DocsPage() {
               </li>
             </ul>
 
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
-                gap: "1rem",
-                margin: "1.5rem 0",
-              }}
-            >
+            <div className="docs-grid-two docs-screenshots">
               <div className="docs-image-card" style={{ margin: 0 }}>
                 <img
-                  src="/images/engine_settings.png"
+                  src="/images/engine_settings.webp"
                   alt="Hooky Settings Editor"
+                  width={1440}
+                  height={1000}
+                  loading="lazy"
                 />
                 <div className="docs-image-meta">
                   <span>Environment Configuration (.env)</span>
@@ -525,8 +585,11 @@ export default function DocsPage() {
               </div>
               <div className="docs-image-card" style={{ margin: 0 }}>
                 <img
-                  src="/images/engine_radar.png"
+                  src="/images/engine_radar.webp"
                   alt="Hooky Channel Radar Monitor"
+                  width={1440}
+                  height={1000}
+                  loading="lazy"
                 />
                 <div className="docs-image-meta">
                   <span>Channel Radar (channels.txt)</span>
@@ -543,6 +606,139 @@ export default function DocsPage() {
                 protect against malicious web scripts or DNS rebinding.
               </p>
             </div>
+          </section>
+
+          <section id="topic-clipping" className="docs-section">
+            <div className="docs-header">
+              <span className="docs-tag">Find a moment</span>
+              <h2 className="docs-section-title">Topic-guided clipping</h2>
+              <p className="docs-lede">
+                Give hook detection a subject to look for across the transcript,
+                such as “pricing mistakes” or “getting started”.
+              </p>
+            </div>
+            <ol className="docs-feature-list">
+              <li>Paste a YouTube source URL into Studio.</li>
+              <li>
+                Enter an optional <strong>Clip topic</strong>, then choose{" "}
+                <strong>Detect hooks</strong>. Leave it empty for general moment
+                selection.
+              </li>
+              <li>
+                Review the suggested moments, read their dialogue and adjust the
+                start/end times.
+              </li>
+            </ol>
+            <p>
+              Topic detection considers transcript chunks and can return up to
+              four non-overlapping suggestions between 8 and 90 seconds.
+              Suggestions are starting points; their scores do not predict
+              views.
+            </p>
+            <div className="doc-callout">
+              <strong>No matches or unavailable AI</strong>
+              <p>
+                If Gemini cannot complete selection, Studio labels a
+                word-matching fallback. If no moments match, broaden the topic
+                or clear it and try again. An empty result is not a finished
+                clip.
+              </p>
+            </div>
+            <p>
+              The topic guides <strong>Detect hooks</strong>; it does not
+              silently change the separate parts pipeline or channel workflow.
+              Source preparation may reuse a recent cache, but rendering time
+              still depends on your source, hardware and settings.
+            </p>
+          </section>
+
+          <section id="caption-editing" className="docs-section">
+            <div className="docs-header">
+              <span className="docs-tag">Refine the words</span>
+              <h2 className="docs-section-title">
+                Search and correct captions
+              </h2>
+              <p className="docs-lede">
+                Fix a name, spelling or phrase before it is burned into the
+                exported clip.
+              </p>
+            </div>
+            <ol className="docs-feature-list">
+              <li>Select a moment and open its caption phrases.</li>
+              <li>
+                Search for the words you want to correct. Search filters the
+                phrases; it does not delete them.
+              </li>
+              <li>
+                Edit the phrase text. Preview the caption style and use
+                <strong> Reset</strong> to restore the original when needed.
+              </li>
+              <li>
+                Inspect the cut and export. Hooky applies your corrected caption
+                text to the MP4 while preserving source timing.
+              </li>
+            </ol>
+            <p>
+              The original source cues remain unchanged. Corrections belong to
+              your Studio work and can be saved in a named project. Source
+              playback and the caption styling canvas are separate previews;
+              review the exported MP4 for actual framing and timing.
+            </p>
+            <div className="doc-callout">
+              <strong>If the source or selection changed</strong>
+              <p>
+                Studio rejects outdated caption edits instead of applying them
+                to different source cues. Reopen the current moment and review
+                its phrases before making corrections again.
+              </p>
+            </div>
+          </section>
+
+          <section id="named-projects" className="docs-section">
+            <div className="docs-header">
+              <span className="docs-tag">Continue your work</span>
+              <h2 className="docs-section-title">Named local projects</h2>
+              <p className="docs-lede">
+                Save a cut deliberately, give it a name, and reopen it next time
+                you use Studio.
+              </p>
+            </div>
+            <ul className="docs-feature-list">
+              <li>
+                <strong>Save project:</strong> Saves the current project,
+                including later changes.
+              </li>
+              <li>
+                <strong>Save as new:</strong> Creates a separate snapshot for a
+                different cut or styling variation.
+              </li>
+              <li>
+                <strong>Open project:</strong> Restores the source URL, topic,
+                all suggested moments, selected moment, timing, caption
+                corrections, framing and subtitle choices.
+              </li>
+            </ul>
+            <p>
+              Projects use versioned JSON files in{" "}
+              <code>STATE_DIR/web_projects</code>, separate from job history and
+              temporary source caches. They survive Studio restarts and history
+              cleanup. Keep this directory if you move your Hooky state to
+              another machine.
+            </p>
+            <div className="doc-callout">
+              <strong>A project is an editing snapshot</strong>
+              <p>
+                It does not back up source media or copy projects to the cloud.
+                The source must still be available when you export. Browser
+                draft recovery helps with an interrupted tab; use Save project
+                for a deliberate disk save.
+              </p>
+            </div>
+            <p>
+              If another tab saved a newer project revision, Studio blocks an
+              outdated overwrite. Open the latest saved project before
+              continuing, or use Save as new to preserve your separate changes.
+            </p>
           </section>
 
           {/* SECTION 4: CLI REFERENCE */}
@@ -589,8 +785,8 @@ export default function DocsPage() {
               </div>
               <p>
                 Checks FFmpeg/FFprobe and local Python dependencies without a
-                live API call. <code>./main.sh doctor live</code> explicitly tests
-                your Gemini key and model availability.
+                live API call. <code>./main.sh doctor live</code> explicitly
+                tests your Gemini key and model availability.
               </p>
             </div>
 
@@ -601,7 +797,8 @@ export default function DocsPage() {
               </div>
               <p>
                 Shows active entries in <code>channels.txt</code>. Use{" "}
-                <code>./main.sh make</code> to discover videos and process the source queue.
+                <code>./main.sh make</code> to discover videos and process the
+                source queue.
               </p>
             </div>
 
@@ -694,7 +891,8 @@ export default function DocsPage() {
                     <td>
                       Source download profile: <code>highest</code> uses up to
                       1440p for long videos and 2160p for short videos;{" "}
-                      <code>high</code> uses 1080p and 1440p. Exports remain 1080×1920.
+                      <code>high</code> uses 1080p and 1440p. Exports remain
+                      1080×1920.
                     </td>
                   </tr>
                   <tr>
@@ -856,8 +1054,8 @@ D:/Videos/Podcast_Episode_42.mp4 | clips=5 | min=20 max=55 | style=yellow`}</cod
                 <span className="style-badge">PRESET</span>
                 <h3>Cyberpunk Yellow</h3>
                 <p>
-                  Bright yellow word highlights, bold Montserrat lettering,
-                  and black outlines for readable captions.
+                  Bright yellow word highlights, bold Montserrat lettering, and
+                  black outlines for readable captions.
                 </p>
                 <div className="style-preview yellow-preview">
                   <code>[00:14] HIGHEST_RETENTION_HOOK</code>

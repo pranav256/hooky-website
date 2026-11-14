@@ -37,7 +37,7 @@ try {
     assert(await page.locator(".docs-search-empty").isVisible());
     await page.getByRole("button", { name: "Clear search" }).click();
     assert(await search.evaluate((el) => el === document.activeElement));
-    assert.equal(await page.locator(".docs-sidebar-link").count(), 7);
+    assert.equal(await page.locator(".docs-sidebar-link").count(), 10);
     await page.locator('.docs-sidebar-link[href="#quickstart"]').click();
     await page.waitForFunction(() => document.querySelector('a[href="#quickstart"][aria-current="location"]'));
     const windows = page.locator(".code-block").filter({ has: page.locator('.code-header span', { hasText: "Windows (PowerShell)" }) }).first();

@@ -1,4 +1,6 @@
-The clip collage and studio tour use illustrative sample content, not customer testimonials or actual Hooky exports. The people pictured do not endorse Hooky.
+The hero preview and Studio tour use illustrative sample content, not customer testimonials or actual Hooky exports. The people pictured do not endorse Hooky.
+
+The documentation's Studio, settings and channel radar screenshots were captured from the current local app in an isolated browser fixture. They contain sample data and no user credentials. They are WebP images with fixed intrinsic dimensions to reduce transfer size and avoid layout shifts.
 
 Photography is downloaded from Unsplash under the [Unsplash License](https://unsplash.com/license):
 

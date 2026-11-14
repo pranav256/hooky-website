@@ -10,17 +10,25 @@ const context = await browser.newContext({
 });
 const page = await context.newPage();
 // Analytics is supplied by Vercel in deployment; fixture hosts stay offline.
-await page.route(`${website}/_vercel/insights/**`, (route) => route.fulfill({ contentType: "application/javascript", body: "" }));
+await page.route(`${website}/_vercel/insights/**`, (route) =>
+  route.fulfill({ contentType: "application/javascript", body: "" }),
+);
 const errors = [];
 await context.route("**/*", async (route) => {
   const url = new URL(route.request().url());
-  if ([new URL(website).origin, new URL(studio).origin].includes(url.origin)) return route.fallback();
-  if (url.hostname === "www.youtube-nocookie.com") return route.fulfill({ contentType: "text/html", body: "Fixture source player" });
+  if ([new URL(website).origin, new URL(studio).origin].includes(url.origin))
+    return route.fallback();
+  if (url.hostname === "www.youtube-nocookie.com")
+    return route.fulfill({
+      contentType: "text/html",
+      body: "Fixture source player",
+    });
   errors.push(`Unexpected external fixture request: ${url.origin}`);
   await route.abort();
 });
 page.on("response", (response) => {
-  if (response.status() >= 400 && /\.(?:js|css)(?:\?|$)/.test(response.url())) errors.push(`Missing asset: ${response.status()} ${response.url()}`);
+  if (response.status() >= 400 && /\.(?:js|css)(?:\?|$)/.test(response.url()))
+    errors.push(`Missing asset: ${response.status()} ${response.url()}`);
 });
 page.on("pageerror", (e) => errors.push(e.message));
 const visible = async (selector) =>
@@ -39,9 +47,23 @@ const noOverflow = async (label) =>
 const baseFixture = async (route) => {
   const request = route.request();
   const path = new URL(request.url()).pathname;
-  const fixtures = { "/api/env": { raw: "", values: {} }, "/api/doctor": { checks: [], gpu: "Fixture CPU" }, "/api/channels": { channels: [] }, "/api/outputs": { files: [] }, "/api/jobs": { jobs: [] }, "/api/projects": { projects: [] } };
-  if (request.method() === "GET" && fixtures[path]) await route.fulfill({ json: fixtures[path] });
-  else { errors.push(`Unexpected fixture API: ${request.method()} ${path}`); await route.fulfill({ status: 500, json: { detail: "Unexpected fixture request" } }); }
+  const fixtures = {
+    "/api/env": { raw: "", values: {} },
+    "/api/doctor": { checks: [], gpu: "Fixture CPU" },
+    "/api/channels": { channels: [] },
+    "/api/outputs": { files: [] },
+    "/api/jobs": { jobs: [] },
+    "/api/projects": { projects: [] },
+  };
+  if (request.method() === "GET" && fixtures[path])
+    await route.fulfill({ json: fixtures[path] });
+  else {
+    errors.push(`Unexpected fixture API: ${request.method()} ${path}`);
+    await route.fulfill({
+      status: 500,
+      json: { detail: "Unexpected fixture request" },
+    });
+  }
 };
 await page.route(`${studio}/api/**`, baseFixture);
 try {
@@ -69,6 +91,72 @@ try {
     await visible(".demo-alt");
     await click('.demo-alt button:has-text("Back to clip editor")');
     await visible(".demo-workbench");
+    await page.locator("#demo-topic").fill("permission");
+    await page.locator("#demo-topic").press("Enter");
+    assert.equal(await page.locator(".moment-card").count(), 1);
+    await page.locator("#demo-topic").fill("unlikely-sample-topic");
+    await page.locator("#demo-topic").press("Enter");
+    await visible(".demo-empty");
+    assert(await page.locator(".demo-heading button").isDisabled());
+    await click('.demo-empty button:has-text("Clear topic")');
+    assert.equal(await page.locator(".moment-card").count(), 3);
+    await page.locator("#demo-caption-search").fill("unlikely-caption");
+    assert.equal(await page.locator(".demo-phrase").count(), 0);
+    await click('.demo-caption-editor button:has-text("Clear search")');
+    await page.locator("#demo-caption-search").fill("worth");
+    await page.locator("#demo-phrase-0").fill("Edited while searching");
+    assert(
+      await page
+        .locator("#demo-phrase-0")
+        .evaluate((el) => el === document.activeElement),
+    );
+    await page.locator("#demo-caption-search").fill("");
+    await page.locator("#demo-phrase-0").fill("A corrected sample caption");
+    assert.equal(
+      await page.locator(".demo-caption").textContent(),
+      "A corrected sample caption",
+    );
+    await click(".demo-project summary");
+    await page.locator("#demo-project-name").fill("");
+    await click('.demo-project button:has-text("Save sample")');
+    assert(
+      (await page.locator(".demo-project-status").textContent()).includes(
+        "Enter a project name",
+      ),
+    );
+    await page.locator("#demo-project-name").fill(`Interview cut ${width}`);
+    await page.locator("#demo-phrase-0").fill("");
+    assert(await page.locator(".demo-heading button").isDisabled());
+    await click('.demo-project button:has-text("Save sample")');
+    assert(
+      (await page.locator(".demo-project-status").textContent()).includes(
+        "Correct empty caption",
+      ),
+    );
+    await page.locator("#demo-phrase-0").fill("A corrected sample caption");
+    await page.locator('.demo-project button:has-text("Save as new")').focus();
+    await page.keyboard.press("Enter");
+    assert(
+      (await page.locator(".demo-project-status").textContent()).includes(
+        "Saved",
+      ),
+    );
+    await page.locator("#demo-phrase-0").fill("Unsaved edit");
+    await click('.demo-style:has-text("Bold pop")');
+    await click('.demo-project button:has-text("Open project")');
+    await visible(".demo-project-list");
+    await click(`button[aria-label="Open sample Interview cut ${width}"]`);
+    assert.equal(
+      await page.locator("#demo-phrase-0").inputValue(),
+      "A corrected sample caption",
+    );
+    await visible(".caption-clean");
+    await visible(".frame-fit");
+    await click('.demo-caption-editor button:has-text("Reset phrase 1")');
+    assert.equal(
+      await page.locator("#demo-phrase-0").inputValue(),
+      "Make something worth watching",
+    );
     await click('.os-tabs button:has-text("Windows")');
     assert(
       (await page.locator(".terminal-code pre").textContent()).includes(
@@ -94,6 +182,13 @@ try {
       "true",
     );
     if (width === 390) {
+      await click(".mobile-menu");
+      await page.keyboard.press("Escape");
+      assert(
+        await page
+          .locator(".mobile-menu")
+          .evaluate((el) => el === document.activeElement),
+      );
       await click(".mobile-menu");
       await visible(".site-navigation");
       await click('.site-navigation a:has-text("How it works")');
@@ -123,10 +218,16 @@ try {
   }
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(website, { waitUntil: "networkidle" });
-  await click('button[aria-label="Show next sample caption"]');
+  await page.locator("#demo-topic").fill("perspective");
+  await page.locator("#demo-topic").press("Enter");
   assert.equal(
-    await page.locator(".caption-highlight").textContent(),
-    "PROUD OF.",
+    await page.locator(".demo-caption").textContent(),
+    "A different kind of perspective",
+  );
+  assert(
+    !(await page.locator(".hero-preview").textContent()).includes(
+      "Speaker tracking",
+    ),
   );
   await page.emulateMedia({ reducedMotion: "no-preference" });
   // All requests in this workflow are intercepted. This never downloads, renders,
@@ -164,9 +265,18 @@ try {
   await page.route(`${studio}/api/**`, async (route) => {
     const request = route.request();
     const path = new URL(request.url()).pathname;
-    if (request.method() !== "GET" && !(request.method() === "POST" && ["/api/analyze/start", "/api/jobs/render_clip"].includes(path))) {
+    if (
+      request.method() !== "GET" &&
+      !(
+        request.method() === "POST" &&
+        ["/api/analyze/start", "/api/jobs/render_clip"].includes(path)
+      )
+    ) {
       errors.push(`Unexpected fixture mutation: ${request.method()} ${path}`);
-      await route.fulfill({ status: 500, json: { detail: "Unexpected fixture mutation" } });
+      await route.fulfill({
+        status: 500,
+        json: { detail: "Unexpected fixture mutation" },
+      });
       return;
     }
     const json =
@@ -185,22 +295,25 @@ try {
             }
           : path === "/api/projects"
             ? { projects: [] }
-          : path === "/api/doctor"
-            ? { gpu: "Local engine", checks: [] }
-            : path === "/api/env"
-              ? { raw: "", values: {} }
-              : path === "/api/channels"
-                ? { channels: [] }
-                : path === "/api/outputs"
-                  ? { files: [] }
-                  : path === "/api/jobs/render_clip"
-                    ? { job_id: "sample-render" }
-                    : path === "/api/jobs"
-                      ? { jobs: [] }
-                      : path === "/api/jobs/sample-render"
-                      ? { status: "failed", error: "Sample render error" }
-                      : null;
-    if (json === null) errors.push(`Unexpected fixture API: ${route.request().method()} ${path}`);
+            : path === "/api/doctor"
+              ? { gpu: "Local engine", checks: [] }
+              : path === "/api/env"
+                ? { raw: "", values: {} }
+                : path === "/api/channels"
+                  ? { channels: [] }
+                  : path === "/api/outputs"
+                    ? { files: [] }
+                    : path === "/api/jobs/render_clip"
+                      ? { job_id: "sample-render" }
+                      : path === "/api/jobs"
+                        ? { jobs: [] }
+                        : path === "/api/jobs/sample-render"
+                          ? { status: "failed", error: "Sample render error" }
+                          : null;
+    if (json === null)
+      errors.push(
+        `Unexpected fixture API: ${route.request().method()} ${path}`,
+      );
     await route.fulfill({ json });
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
@@ -244,8 +357,14 @@ try {
   );
 } catch (error) {
   mkdirSync(".design-review", { recursive: true });
-  await page.screenshot({ path: ".design-review/check-ui-failure.png", fullPage: true });
-  writeFileSync(".design-review/check-ui-errors.json", JSON.stringify({ error: String(error), errors }, null, 2));
+  await page.screenshot({
+    path: ".design-review/check-ui-failure.png",
+    fullPage: true,
+  });
+  writeFileSync(
+    ".design-review/check-ui-errors.json",
+    JSON.stringify({ error: String(error), errors }, null, 2),
+  );
   throw error;
 } finally {
   await browser.close();

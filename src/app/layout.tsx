@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Hooky — Long story. Short form.",
   description:
-    "Turn long videos into shorts worth watching. Hooky is a free, open-source AI video clipper with a local studio, smart reframing, and word-level captions. Your Gemini API key powers moment selection.",
+    "Turn long videos into captioned shorts with Hooky. Find moments by topic, correct captions and save named projects in a free, open-source local Studio. Gemini powers AI selection.",
   keywords: [
     "Hooky",
     "AI video clipper",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     siteName: "Hooky",
     title: "Hooky — Long story. Short form.",
     description:
-      "Autonomous AI video clipper. Reframes for vertical video and burns word-level animated captions—without sending your raw footage to a cloud.",
+      "Find moments by topic, correct captions and save named projects. Hooky is an open-source video clipper with local rendering and Gemini-powered AI selection.",
     images: [
       {
         url: "/og-image.png",
@@ -46,7 +46,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Hooky — Long story. Short form.",
     description:
-      "Autonomous AI video clipper. Reframes for vertical video and burns word-level animated captions—without sending your raw footage to a cloud.",
+      "Find moments by topic, correct captions and save named projects. Hooky is an open-source video clipper with local rendering and Gemini-powered AI selection.",
     images: ["/og-image.png"],
   },
   icons: {
@@ -76,14 +76,15 @@ export default function RootLayout({
               isAccessibleForFree: true,
               license: "https://opensource.org/licenses/MIT",
               description:
-                "Autonomous AI video clipper and shorts/reels generator. Open-source Opus Clip alternative powered by Google Gemini, faster-whisper, and FFmpeg.",
+                "Open-source video clipper with topic-guided selection, editable captions, named local projects and FFmpeg rendering. AI selection uses your Gemini API key.",
               url: SITE_URL,
               codeRepository: REPO_URL,
               offers: {
                 "@type": "Offer",
                 price: "0",
                 priceCurrency: "USD",
-                description: "100% Free & Open Source under MIT License",
+                description:
+                  "Free MIT-licensed software. Gemini API pricing and quotas apply to AI selection.",
               },
             }),
           }}
