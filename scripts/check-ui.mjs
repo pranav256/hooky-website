@@ -39,7 +39,7 @@ const noOverflow = async (label) =>
 const baseFixture = async (route) => {
   const request = route.request();
   const path = new URL(request.url()).pathname;
-  const fixtures = { "/api/env": { raw: "", values: {} }, "/api/doctor": { checks: [], gpu: "Fixture CPU" }, "/api/channels": { channels: [] }, "/api/outputs": { files: [] }, "/api/jobs": { jobs: [] } };
+  const fixtures = { "/api/env": { raw: "", values: {} }, "/api/doctor": { checks: [], gpu: "Fixture CPU" }, "/api/channels": { channels: [] }, "/api/outputs": { files: [] }, "/api/jobs": { jobs: [] }, "/api/projects": { projects: [] } };
   if (request.method() === "GET" && fixtures[path]) await route.fulfill({ json: fixtures[path] });
   else { errors.push(`Unexpected fixture API: ${request.method()} ${path}`); await route.fulfill({ status: 500, json: { detail: "Unexpected fixture request" } }); }
 };
@@ -183,6 +183,8 @@ try {
                 recommended_style: "clean",
               },
             }
+          : path === "/api/projects"
+            ? { projects: [] }
           : path === "/api/doctor"
             ? { gpu: "Local engine", checks: [] }
             : path === "/api/env"

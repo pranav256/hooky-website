@@ -36,6 +36,7 @@ try {
       if (path === "/api/outputs") return route.fulfill({ json: { files: [], folders: [], count: 0 } });
       if (path === "/api/channels") return route.fulfill({ json: { channels: [] } });
       if (path === "/api/jobs") return route.fulfill({ json: { jobs } });
+      if (path === "/api/projects") return route.fulfill({ json: { projects: [] } });
       if (["/api/analyze/start", "/api/jobs/render_clip"].includes(path)) {
         const payload = request.postDataJSON();
         const type = path.includes("analyze") ? "analyze" : "render_clip";

@@ -78,6 +78,7 @@ try {
         path = new URL(request.url()).pathname,
         method = request.method();
       const respond = (json, status = 200) => route.fulfill({ json, status });
+      if (path === "/api/projects" && method === "GET") return respond({ projects: [] });
       if (path === "/api/doctor" && method === "GET")
         return respond({
           gpu: "Fixture CPU",

@@ -79,8 +79,8 @@ try {
           posted = request.postDataJSON();
           await route.fulfill({ status: saveFails ? 500 : 200, json: saveFails ? { detail: "Fixture failure" } : { status: "saved", count: posted.channels.length } });
         } else await route.fulfill({ status: loadFails ? 503 : 200, json: loadFails ? { detail: "Unavailable" } : { channels: ["@creator | limit=2 | min_views=10000 | scan=20"] } });
-      } else if (request.method() === "GET" && ["/api/doctor", "/api/env", "/api/outputs", "/api/jobs"].includes(path)) {
-        await route.fulfill({ json: path === "/api/doctor" ? { checks: [], gpu: "Test CPU" } : path === "/api/env" ? { raw: "", values: {} } : path === "/api/jobs" ? { jobs: [] } : { files: [] } });
+      } else if (request.method() === "GET" && ["/api/doctor", "/api/env", "/api/outputs", "/api/jobs", "/api/projects"].includes(path)) {
+        await route.fulfill({ json: path === "/api/doctor" ? { checks: [], gpu: "Test CPU" } : path === "/api/env" ? { raw: "", values: {} } : path === "/api/jobs" ? { jobs: [] } : path === "/api/projects" ? { projects: [] } : { files: [] } });
       } else {
         errors.push(`Unintercepted fixture API: ${request.method()} ${path}`);
         await route.fulfill({ status: 500, json: { detail: "Unexpected fixture request" } });
