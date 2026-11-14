@@ -11,6 +11,7 @@
     "check:ui": "node scripts/check-ui.mjs",
     "check:improvements": "node scripts/check-improvements.mjs",
     "check:studio-workflow": "node scripts/check-studio-workflow.mjs",
+    "check:studio-features": "node scripts/check-studio-features.mjs",
     "check:browser-ci": "node scripts/check-browser-ci.mjs",
     "sync:studio": "node scripts/sync-studio-brand.mjs",
     "build:studio-css": "node scripts/build-studio-css.mjs",

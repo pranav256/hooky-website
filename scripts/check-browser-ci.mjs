@@ -65,7 +65,7 @@ try {
     CHANNELS_FILE: resolve(isolated, "channels.txt"), LINKS_FILE: resolve(isolated, "links.txt"),
   }, "studio-server");
   await Promise.all([ready(website, web), ready(studio, api)]);
-  for (const script of ["check-ui", "check-improvements", "check-studio-workflow"]) {
+  for (const script of ["check-ui", "check-improvements", "check-studio-workflow", "check-studio-features"]) {
     console.log(`Running ${script} against production website and isolated Studio`);
     await start(process.execPath, [resolve(root, `scripts/${script}.mjs`)], root, env, script).done;
   }
