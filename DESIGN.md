@@ -24,4 +24,6 @@ The final homepage and documentation geometry checks have no critical or serious
 
 Production build, lint, typecheck and all five isolated browser suites passed. Coverage includes four widths, doubled documentation text, keyboard saves and menu dismissal, topic empty states, correction search focus, empty-caption recovery, sample project reopening, and real Studio project persistence/concurrent saves. No live Gemini selection, YouTube download or real media export was performed for this website change.
 
+The published browser check exposed Vercel serving LFS pointer files as images. Small public images and the social image now bypass LFS and are stored directly in Git. Browser checks verify public image bytes and hero decoding.
+
 Design method adapted from Unslop by Damir Sokolovsky (https://x.com/heydamir), CC BY 4.0.

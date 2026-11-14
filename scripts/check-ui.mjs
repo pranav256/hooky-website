@@ -67,10 +67,34 @@ const baseFixture = async (route) => {
 };
 await page.route(`${studio}/api/**`, baseFixture);
 try {
+  for (const asset of [
+    "images/portrait.jpg",
+    "images/engine_studio.webp",
+    "images/engine_settings.webp",
+    "images/engine_radar.webp",
+    "og-image.png",
+  ]) {
+    const response = await fetch(`${website}/${asset}`);
+    assert.equal(response.status, 200, `${asset} should load`);
+    const bytes = Buffer.from(await response.arrayBuffer());
+    assert(
+      !bytes
+        .subarray(0, 100)
+        .toString()
+        .startsWith("version https://git-lfs.github.com/spec/"),
+      `${asset} must contain image bytes, not a Git LFS pointer`,
+    );
+  }
   for (const width of [390, 768, 1440, 1728]) {
     await page.setViewportSize({ width, height: 950 });
     const response = await page.goto(website, { waitUntil: "networkidle" });
     assert.equal(response.status(), 200);
+    assert(
+      await page
+        .locator(".hero-preview img")
+        .evaluate((img) => img.complete && img.naturalWidth > 0),
+      "Hero image should decode",
+    );
     await noOverflow(`Website ${width}`);
     await click(".moment-card:nth-of-type(2)");
     assert.equal(
