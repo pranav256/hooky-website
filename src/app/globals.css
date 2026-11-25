@@ -397,7 +397,7 @@
 
 .yellow-preview {
   font-family: var(--font-mono);
-  color: #facc15;
+  color: var(--hooky-accent);
 }
 
 .faq-list {
@@ -583,8 +583,8 @@ section[id] {
 }
 .button-accent {
   background: var(--hooky-accent);
-  color: var(--lumen-primary-foreground);
-  box-shadow: var(--lumen-shadow-primary);
+  color: var(--ember-primary-foreground);
+  box-shadow: var(--ember-shadow-primary);
 }
 .button-accent:hover {
   background: color-mix(in srgb, var(--hooky-accent) 85%, white);
@@ -1040,7 +1040,7 @@ section[id] {
   padding-inline: 1rem;
 }
 .button-accent {
-  box-shadow: var(--lumen-shadow-xs);
+  box-shadow: var(--ember-shadow-xs);
 }
 .button-outline {
   border-color: oklch(1 0 0 / 0.3);

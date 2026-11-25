@@ -10,6 +10,6 @@ Photography is downloaded from Unsplash under the [Unsplash License](https://uns
 
 The playable hero source is “A Man Talking to an Interviewer at a Venue” by Henri Mathieu-Saint-Laurent, from [Pexels](https://www.pexels.com/video/a-man-talking-to-an-interviewer-at-a-venue-8244306/) under the [Pexels License](https://www.pexels.com/license/). The accompanying vertical sample is rendered with Hooky. Its caption is editorial demonstration text over silent footage, not a transcript.
 
-The Lumen Dark theme uses the operating system's fonts. Its design tokens come from [Open Design](https://open-design-mcp-liard.vercel.app/design-systems/lumen-dark).
+The Ember palette uses the operating system's fonts and is adapted from Eidova's [Dark Orange design system](https://eidova.vercel.app/?specimen=vibrant-dark). Orange is used for primary actions; status colors remain semantically distinct.
 
 Lucide icons are ISC licensed. The studio's vendored bundle retains its upstream license notice.

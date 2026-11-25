@@ -109,7 +109,7 @@
   position: relative;
   overflow: hidden;
   border-radius: 0.25rem;
-  background: #080a0c;
+  background: var(--hooky-deep);
 }
 .preview-video-source {
   aspect-ratio: 16 / 9;
@@ -581,7 +581,7 @@
 }
 .demo-sidebar > button.active {
   color: var(--hooky-accent);
-  background: var(--lumen-accent);
+  background: var(--ember-accent);
 }
 .demo-sidebar > button:hover {
   background: var(--hooky-raised);

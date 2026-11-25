@@ -11,7 +11,7 @@ Open http://localhost:3000. Set `NEXT_PUBLIC_SITE_URL` to the deployment's canon
 
 For a first engine run, clone `https://github.com/pranav256/Hooky-engine.git`, enter `Hooky-engine`, then run `./main.sh doctor` (`.\main.ps1 doctor` on Windows; run `Set-ExecutionPolicy -Scope Process Bypass` first). Doctor checks local dependencies without a live Gemini call. Run the launcher's `setup` command to configure `GEMINI_API_KEY`, then `web` to open http://127.0.0.1:8000. Paste a YouTube URL, detect hooks, edit a selected moment's timing, export, and retrieve the MP4 in Output Gallery or the configured output folder. Gemini pricing and quotas apply to AI analysis.
 
-The shared Lumen Dark tokens live in `public/brand.css`; both apps use system fonts. Both Studio tools first resolve `../Hooky-engine/hooky/web/static`, then the legacy `../Hooky/hooky/web/static`, independently of the invoking working directory:
+The shared Ember tokens live in `public/brand.css`; both apps use system fonts. Both Studio tools first resolve `../Hooky-engine/hooky/web/static`, then the legacy `../Hooky/hooky/web/static`, independently of the invoking working directory:
 
 ```sh
 npm run sync:studio

@@ -52,7 +52,12 @@ const baseFixture = async (route) => {
     "/api/doctor": { checks: [], gpu: "Fixture CPU" },
     "/api/channels": { channels: [] },
     "/api/outputs": { files: [] },
-    "/api/jobs": { jobs: [] },
+    "/api/jobs": { jobs: [{
+      id: "batch-fixture", type: "batch", status: "interrupted", progress: 50,
+      title: "Selected clips", url: "https://example.com/video",
+      request: { clips: [{ title: "Finished" }, { title: "Needs retry" }, { title: "Pending" }] },
+      result: { clips: [{ status: "completed" }, { status: "failed" }] },
+    }] },
     "/api/projects": { projects: [] },
   };
   if (request.method() === "GET" && fixtures[path])
@@ -232,6 +237,10 @@ try {
     await visible(".docs-search-empty");
     await page.goto(studio, { waitUntil: "networkidle" });
     await noOverflow(`Studio ${width}`);
+    await click(".jobs-history summary");
+    const batchRow = page.locator("#jobs-list li").filter({ hasText: "batch-fixture" });
+    assert((await batchRow.textContent()).includes("1 of 3 clips saved"));
+    assert.equal(await batchRow.getByRole("button", { name: "Resume unfinished clips" }).count(), 1);
     for (const tab of ["settings", "radar", "gallery", "doctor", "studio"]) {
       await click(`#tab-${tab}`);
       await visible(`#view-${tab}`);
@@ -247,6 +256,12 @@ try {
   }
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto(website, { waitUntil: "networkidle" });
+  assert(
+    await page.locator(".hero-preview video").evaluateAll((videos) =>
+      videos.every((video) => video.controls && !video.autoplay),
+    ),
+    "Hero videos should remain user-controlled when reduced motion is enabled",
+  );
   await page.locator("#demo-topic").fill("perspective");
   await page.locator("#demo-topic").press("Enter");
   assert.equal(
@@ -259,6 +274,9 @@ try {
     ),
   );
   await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.waitForFunction(() =>
+    [...document.querySelectorAll(".hero-preview video")].every((video) => video.autoplay),
+  );
   // All requests in this workflow are intercepted. This never downloads, renders,
   // publishes a clip, or writes the user's settings or channel list.
   const fixtures = [
