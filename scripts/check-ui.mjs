@@ -68,7 +68,8 @@ const baseFixture = async (route) => {
 await page.route(`${studio}/api/**`, baseFixture);
 try {
   for (const asset of [
-    "images/portrait.jpg",
+    "videos/hooky-interview-source.mp4",
+    "videos/hooky-interview-export.mp4",
     "images/engine_studio.webp",
     "images/engine_settings.webp",
     "images/engine_radar.webp",
@@ -90,10 +91,14 @@ try {
     const response = await page.goto(website, { waitUntil: "networkidle" });
     assert.equal(response.status(), 200);
     assert(
-      await page
-        .locator(".hero-preview img")
-        .evaluate((img) => img.complete && img.naturalWidth > 0),
-      "Hero image should decode",
+      await page.locator(".hero-preview video").count() === 2,
+      "Hero should show source and export videos",
+    );
+    assert(
+      await page.locator(".hero-preview video").evaluateAll((videos) =>
+        videos.every((video) => video.readyState >= 1 && video.videoWidth > 0 && video.videoHeight > 0),
+      ),
+      "Hero videos should have decoded metadata",
     );
     await noOverflow(`Website ${width}`);
     await click(".moment-card:nth-of-type(2)");
