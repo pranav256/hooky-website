@@ -8,7 +8,8 @@ if (!studio) throw new Error("Run check:browser-ci, or set STUDIO_URL to an isol
 const artifacts = new URL("../.design-review/", import.meta.url);
 await mkdir(artifacts, { recursive: true });
 const browser = await chromium.launch({ headless: true });
-const errors = [], spacing = [];
+const errors = [];
+let currentPage;
 const source = "https://www.youtube.com/watch?v=abcdefghijk&feature=share";
 const cue = { start: 10, end: 15, text: "Talk to customers before building." };
 const hooks = [1, 2].map(index => ({ id: `hook_${index}`, title: `Founder lesson ${index}`,
@@ -70,10 +71,12 @@ async function open(page, id) {
 try {
   for (const width of [390, 768, 1440, 1728]) {
     const { page, context, clearJobs } = await newPage(width), before = starts;
+    currentPage = page;
     await page.locator("#source-url").fill(source);
     await page.locator("#analyze-btn").click();
     await page.waitForFunction(() => !activeJobId && CURRENT_HOOKS.length === 2);
     await page.locator('[data-hook-id="hook_2"].hook-select').click();
+    assert.equal(await page.locator('[data-hook-id="hook_2"].hook-select').getAttribute("aria-pressed"), "true");
     await page.locator("#caption-0").fill("Corrected founder name.");
     await page.locator("#timing-start").fill("11.5");
     await page.locator("#timing-end").fill("28.5");
@@ -168,21 +171,6 @@ try {
     await page.locator("#project-name").press("Tab");
     assert.equal(await page.evaluate(() => document.activeElement.id), "project-save");
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
-    await page.locator(".project-panel").scrollIntoViewIfNeeded();
-    spacing.push(await page.evaluate(() => {
-      const elements = [...document.querySelectorAll(".project-panel, .project-panel h2, .project-panel p, .project-row, .project-field, .project-field label, .project-field input, .project-field select, .project-row button")].filter(element => element.getClientRects().length).map((element, index) => {
-        const r = element.getBoundingClientRect(), s = getComputedStyle(element), number = value => parseFloat(value) || 0;
-        return { id: element.id || `project-element-${index}`, tag: element.tagName.toLowerCase(), label: element.textContent.slice(0, 80),
-          interactive: element.matches("input,select,button"), rect: { x: r.x, y: r.y, width: r.width, height: r.height },
-          clientWidth: element.clientWidth, clientHeight: element.clientHeight, scrollWidth: element.scrollWidth, scrollHeight: element.scrollHeight,
-          style: { display: s.display, position: s.position, flexDirection: s.flexDirection, flexWrap: s.flexWrap,
-            overflowX: s.overflowX, overflowY: s.overflowY, rowGap: number(s.rowGap), columnGap: number(s.columnGap),
-            padding: { top: number(s.paddingTop), right: number(s.paddingRight), bottom: number(s.paddingBottom), left: number(s.paddingLeft) },
-            margin: { top: number(s.marginTop), right: number(s.marginRight), bottom: number(s.marginBottom), left: number(s.marginLeft) } } };
-      });
-      return { name: `projects-${innerWidth}`, viewport: { width: innerWidth, height: innerHeight }, elements };
-    }));
-    await page.screenshot({ path: new URL(`studio-projects-${width}.png`, artifacts).pathname.replace(/^\/([A-Za-z]:)/, "$1"), fullPage: true });
     await page.locator("#top-render-btn").click();
     await page.waitForFunction(() => Boolean(activeJobId));
     assert.equal(exportPayload.caption_edits[0].text, "Final founder caption.");
@@ -194,7 +182,11 @@ try {
     console.log(`Passed real project save/open, concurrent tabs and recovery at ${width}px`);
   }
   assert.deepEqual(errors, []);
-  await writeFile(new URL("studio-projects-spacing.json", artifacts), JSON.stringify(spacing, null, 2));
+} catch (error) {
+  if (currentPage && !currentPage.isClosed())
+    await currentPage.screenshot({ path: new URL("studio-projects-failure.png", artifacts).pathname.replace(/^\/([A-Za-z]:)/, "$1"), fullPage: true }).catch(() => {});
+  await writeFile(new URL("studio-projects-errors.json", artifacts), JSON.stringify({ error: String(error), errors }, null, 2));
+  throw error;
 } finally {
   await browser.close();
 }

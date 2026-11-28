@@ -355,6 +355,8 @@ try {
         .count(),
       1,
     );
+    await page.locator("button[onclick=\"nudgeTime('start', +0.5)\"]").click();
+    assert.match(await page.locator("#transcript-time-badge").textContent(), /19\.5s/);
     await page.locator("#timing-start").fill("13.25");
     await page.locator("#timing-end").fill("34.75");
     await page
@@ -377,6 +379,9 @@ try {
     assert.equal(await page.locator("#timing-start").inputValue(), "13.25");
     await page.locator("#preview-tab-canvas").focus();
     await page.locator("#preview-tab-canvas").press("Enter");
+    await page.locator("#sub-mode-hormozi").click();
+    assert.equal(await page.locator("#sub-mode-hormozi").getAttribute("aria-pressed"), "true");
+    assert.equal(await page.locator("#canvas-subtitle-preview span").evaluate((element) => getComputedStyle(element).backgroundColor), "rgb(255, 255, 0)");
     const captionBefore = await page
       .locator("#canvas-subtitle-preview")
       .textContent();
@@ -781,6 +786,17 @@ try {
       );
       assert.equal(starts, 3);
       assert.equal(renderPayload.start, 13.25);
+      jobRecords[0].status = "failed";
+      jobRecords[0].error = "Fixture render failed";
+      await page.waitForFunction(
+        () => document.getElementById("job-cancel-btn").hidden,
+      );
+      assert.match(await page.locator("#studio-alert").textContent(), /Fixture render failed/);
+      await page.evaluate((id) => retryJob(jobs.find((job) => job.id === id)), jobRecords[0].id);
+      await page.waitForFunction(
+        () => !document.getElementById("job-cancel-btn").hidden,
+      );
+      assert.equal(starts, 4);
       jobRecords[0].status = "completed";
       jobRecords[0].progress = 100;
       jobRecords[0].output_file = file.rel_path;
@@ -846,13 +862,14 @@ try {
       assert.equal(env.values.GEMINI_API_KEY, "first-run-key");
       assert.equal(env.values.FFMPEG_THREADS, undefined);
     }
+    assert.equal(await page.locator("i[data-lucide]").count(), 0, "Dynamic Studio icons should render");
     await context.close();
   }
   assert.deepEqual(errors, []);
   assert.deepEqual(missingAssets, []);
   assert.deepEqual(unknownRoutes, []);
   console.log(
-    "Passed Studio workflow at 390, 768, 1440 and 1728: sequential delayed polls/reconnect, source/job/timing reload, optional health checks, source preview recovery, Start/End export validation, cancel/interrupted history, dirty settings and editor synchronization, safe current/historical gallery URLs, retry/retained gallery, literal text, keyboard focus, bounded logs and geometry.",
+    "Passed Studio workflow at 390, 768, 1440 and 1728: sequential delayed polls/reconnect, source/job/timing reload, optional health checks, source preview recovery, Start/End export validation, cancel/interrupted history, dirty settings and editor synchronization, safe current/historical gallery URLs, failed-render feedback and retry/retained gallery, clip nudges, subtitle styles, literal text, keyboard focus, bounded logs and geometry.",
   );
 } catch (error) {
   if (currentPage && !currentPage.isClosed())

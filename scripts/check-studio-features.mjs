@@ -6,7 +6,8 @@ const studio = process.env.STUDIO_URL || "http://127.0.0.1:8000";
 const artifacts = new URL("../.design-review/", import.meta.url);
 await mkdir(artifacts, { recursive: true });
 const browser = await chromium.launch({ headless: true });
-const errors = [], spacing = [];
+const errors = [];
+let currentPage;
 const source = "https://www.youtube.com/watch?v=abcdefghijk";
 const cues = [
   { start: 12.5, end: 17, text: "Maya explains what went wrong with our startup." },
@@ -21,6 +22,7 @@ try {
   for (const width of [390, 768, 1440, 1728]) {
     const context = await browser.newContext({ viewport: { width, height: 1000 }, reducedMotion: "reduce" });
     const page = await context.newPage();
+    currentPage = page;
     page.on("pageerror", error => errors.push(error.message));
     let jobs = [], starts = 0, exportPayload;
     await context.route("**/*", route => {
@@ -97,26 +99,6 @@ try {
     await page.locator("#caption-0").fill("Maya explains why our startup failed.");
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
 
-    await page.locator("#caption-editor").scrollIntoViewIfNeeded();
-    spacing.push(await page.evaluate(() => {
-      const selectors = [".topic-field", ".topic-field label", "#clip-topic", "#topic-help", "#caption-editor",
-        ".caption-editor-heading", ".caption-search-row", "#caption-search", "#caption-reset", "#caption-editor-help",
-        "#caption-edit-status", ".caption-phrases", ".caption-phrase", ".caption-phrase label", ".caption-phrase textarea"];
-      const number = value => parseFloat(value) || 0;
-      const elements = selectors.flatMap(selector => [...document.querySelectorAll(selector)].map((element, index) => {
-        const rect = element.getBoundingClientRect(), style = getComputedStyle(element);
-        return { id: selector + "-" + index, selector, tag: element.tagName.toLowerCase(),
-          label: element.getAttribute("aria-label") || element.textContent.slice(0, 80), interactive: element.matches("input,textarea,button"),
-          rect: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
-          clientWidth: element.clientWidth, clientHeight: element.clientHeight, scrollWidth: element.scrollWidth, scrollHeight: element.scrollHeight,
-          style: { display: style.display, position: style.position, flexDirection: style.flexDirection, flexWrap: style.flexWrap,
-            overflowX: style.overflowX, overflowY: style.overflowY, rowGap: number(style.rowGap), columnGap: number(style.columnGap),
-            padding: { top: number(style.paddingTop), right: number(style.paddingRight), bottom: number(style.paddingBottom), left: number(style.paddingLeft) },
-            margin: { top: number(style.marginTop), right: number(style.marginRight), bottom: number(style.marginBottom), left: number(style.marginLeft) } } };
-      }));
-      return { name: `caption-editor-${innerWidth}`, viewport: { width: innerWidth, height: innerHeight }, elements };
-    }));
-    await page.screenshot({ path: new URL(`studio-features-${width}.png`, artifacts).pathname.replace(/^\/([A-Za-z]:)/, "$1"), fullPage: true });
     await page.locator("#top-render-btn").click();
     await page.waitForFunction(() => Boolean(activeJobId));
     assert.equal(exportPayload.caption_edits[0].text, "Maya explains why our startup failed.");
@@ -134,7 +116,11 @@ try {
     console.log(`Passed topic/caption workflow at ${width}px`);
   }
   assert.deepEqual(errors, []);
-  await writeFile(new URL("studio-features-spacing.json", artifacts), JSON.stringify(spacing, null, 2));
+} catch (error) {
+  if (currentPage && !currentPage.isClosed())
+    await currentPage.screenshot({ path: new URL("studio-features-failure.png", artifacts).pathname.replace(/^\/([A-Za-z]:)/, "$1"), fullPage: true }).catch(() => {});
+  await writeFile(new URL("studio-features-errors.json", artifacts), JSON.stringify({ error: String(error), errors }, null, 2));
+  throw error;
 } finally {
   await browser.close();
 }

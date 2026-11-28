@@ -1,96 +1,62 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { SiteHeader, SiteFooter } from "@/components/site-shell";
 import { INSTALL_COMMANDS } from "@/lib/constants";
 
-function Icon({ name, size = 18 }: { name: string; size?: number }) {
-  if (name === "arrow") {
-    return (
-      <svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.4"
-      >
-        <path d="M5 12h14M12 5l7 7-7 7" />
-      </svg>
-    );
-  }
-  if (name === "copy") {
-    return (
-      <svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.2"
-      >
-        <rect x="9" y="9" width="13" height="13" rx="2" />
-        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-      </svg>
-    );
-  }
-  if (name === "check") {
-    return (
-      <svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="3"
-      >
+function CommandCard({
+  command,
+  tag,
+  children,
+}: {
+  command: string;
+  tag: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="cli-command-card">
+      <div className="cli-header">
+        <code>{command}</code>
+        <span className="cli-tag">{tag}</span>
+      </div>
+      <p>{children}</p>
+    </div>
+  );
+}
+
+function CopyIcon({ copied }: { copied: boolean }) {
+  return (
+    <svg
+      width={14}
+      height={14}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={copied ? 3 : 2.2}
+    >
+      {copied ? (
         <path d="M20 6L9 17l-5-5" />
-      </svg>
-    );
-  }
-  if (name === "github") {
-    return (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-      </svg>
-    );
-  }
-  if (name === "spark") {
-    return (
-      <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2L9.5 9.5 2 12l7.5 2.5L12 22l2.5-7.5L22 12l-7.5-2.5z" />
-      </svg>
-    );
-  }
-  if (name === "terminal") {
-    return (
-      <svg
-        width={size}
-        height={size}
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-      >
-        <polyline points="4 17 10 11 4 5" />
-        <line x1="12" y1="19" x2="20" y2="19" />
-      </svg>
-    );
-  }
-  return null;
+      ) : (
+        <>
+          <rect x="9" y="9" width="13" height="13" rx="2" />
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+        </>
+      )}
+    </svg>
+  );
 }
 
 const SECTIONS = [
-  { id: "quickstart", label: "Quickstart & Setup", icon: "terminal" },
-  { id: "pipeline", label: "The Autonomous Pipeline", icon: "spark" },
-  { id: "web-studio", label: "Web Studio Manual", icon: "terminal" },
-  { id: "topic-clipping", label: "Topic clipping", icon: "spark" },
-  { id: "caption-editing", label: "Caption corrections", icon: "spark" },
-  { id: "named-projects", label: "Named projects", icon: "terminal" },
-  { id: "cli", label: "CLI Reference", icon: "terminal" },
-  { id: "config", label: "Config & Environment", icon: "terminal" },
-  { id: "subtitles", label: "Subtitles & Styling", icon: "spark" },
-  { id: "faq", label: "FAQ & Troubleshooting", icon: "terminal" },
+  { id: "quickstart", label: "Quickstart & Setup" },
+  { id: "pipeline", label: "The Autonomous Pipeline" },
+  { id: "web-studio", label: "Web Studio Manual" },
+  { id: "topic-clipping", label: "Topic clipping" },
+  { id: "caption-editing", label: "Caption corrections" },
+  { id: "named-projects", label: "Named projects" },
+  { id: "cli", label: "CLI Reference" },
+  { id: "config", label: "Config & Environment" },
+  { id: "subtitles", label: "Subtitles & Styling" },
+  { id: "faq", label: "FAQ & Troubleshooting" },
 ];
 
 export default function DocsPage() {
@@ -296,45 +262,28 @@ export default function DocsPage() {
               operating system:
             </p>
 
-            <div className="code-block">
-              <div className="code-header">
-                <span>macOS / Linux</span>
-                <button
-                  onClick={() =>
-                    handleCopy(INSTALL_COMMANDS.unix, "install-sh")
-                  }
-                >
-                  <Icon
-                    name={copiedKey === "install-sh" ? "check" : "copy"}
-                    size={14}
-                  />
-                  {copiedKey === "install-sh" ? "Copied" : "Copy"}
-                </button>
+            {(["unix", "windows"] as const).map((platform) => (
+              <div className="code-block" key={platform}>
+                <div className="code-header">
+                  <span>
+                    {platform === "unix"
+                      ? "macOS / Linux"
+                      : "Windows (PowerShell)"}
+                  </span>
+                  <button
+                    onClick={() =>
+                      handleCopy(INSTALL_COMMANDS[platform], platform)
+                    }
+                  >
+                    <CopyIcon copied={copiedKey === platform} />
+                    {copiedKey === platform ? "Copied" : "Copy"}
+                  </button>
+                </div>
+                <pre>
+                  <code>{INSTALL_COMMANDS[platform]}</code>
+                </pre>
               </div>
-              <pre>
-                <code>{INSTALL_COMMANDS.unix}</code>
-              </pre>
-            </div>
-
-            <div className="code-block">
-              <div className="code-header">
-                <span>Windows (PowerShell)</span>
-                <button
-                  onClick={() =>
-                    handleCopy(INSTALL_COMMANDS.windows, "install-ps1")
-                  }
-                >
-                  <Icon
-                    name={copiedKey === "install-ps1" ? "check" : "copy"}
-                    size={14}
-                  />
-                  {copiedKey === "install-ps1" ? "Copied" : "Copy"}
-                </button>
-              </div>
-              <pre>
-                <code>{INSTALL_COMMANDS.windows}</code>
-              </pre>
-            </div>
+            ))}
 
             <h2>2. Check your system and API key</h2>
             <p>
@@ -752,78 +701,42 @@ export default function DocsPage() {
               </p>
             </div>
 
-            <div className="cli-command-card">
-              <div className="cli-header">
-                <code>./main.sh web</code>
-                <span className="cli-tag">PORTAL</span>
-              </div>
-              <p>
-                Launches the FastAPI Web Studio server, generates session
-                credentials, and opens your default browser at{" "}
-                <code>http://127.0.0.1:8000</code>.
-              </p>
-            </div>
+            <CommandCard command="./main.sh web" tag="PORTAL">
+              Launches the FastAPI Web Studio server, generates session
+              credentials, and opens your default browser at{" "}
+              <code>http://127.0.0.1:8000</code>.
+            </CommandCard>
 
-            <div className="cli-command-card">
-              <div className="cli-header">
-                <code>./main.sh make</code>
-                <span className="cli-tag">AUTOMATION</span>
-              </div>
-              <p>
-                Autonomous batch clipping engine. Reads handles from{" "}
-                <code>channels.txt</code> and links from <code>links.txt</code>,
-                extracts top viral moments, downloads source media, burns
-                subtitles, and outputs finished 9:16 clips to{" "}
-                <code>output/</code>.
-              </p>
-            </div>
+            <CommandCard command="./main.sh make" tag="AUTOMATION">
+              Autonomous batch clipping engine. Reads handles from{" "}
+              <code>channels.txt</code> and links from <code>links.txt</code>,
+              extracts top viral moments, downloads source media, burns
+              subtitles, and outputs finished 9:16 clips to{" "}
+              <code>output/</code>.
+            </CommandCard>
 
-            <div className="cli-command-card">
-              <div className="cli-header">
-                <code>./main.sh doctor</code>
-                <span className="cli-tag">DIAGNOSTICS</span>
-              </div>
-              <p>
-                Checks FFmpeg/FFprobe and local Python dependencies without a
-                live API call. <code>./main.sh doctor live</code> explicitly
-                tests your Gemini key and model availability.
-              </p>
-            </div>
+            <CommandCard command="./main.sh doctor" tag="DIAGNOSTICS">
+              Checks FFmpeg/FFprobe and local Python dependencies without a
+              live API call. <code>./main.sh doctor live</code> explicitly
+              tests your Gemini key and model availability.
+            </CommandCard>
 
-            <div className="cli-command-card">
-              <div className="cli-header">
-                <code>./main.sh channels</code>
-                <span className="cli-tag">RADAR</span>
-              </div>
-              <p>
-                Shows active entries in <code>channels.txt</code>. Use{" "}
-                <code>./main.sh make</code> to discover videos and process the
-                source queue.
-              </p>
-            </div>
+            <CommandCard command="./main.sh channels" tag="RADAR">
+              Shows active entries in <code>channels.txt</code>. Use{" "}
+              <code>./main.sh make</code> to discover videos and process the
+              source queue.
+            </CommandCard>
 
-            <div className="cli-command-card">
-              <div className="cli-header">
-                <code>./main.sh parts [URL or file.mp4]</code>
-                <span className="cli-tag">SERIES</span>
-              </div>
-              <p>
-                Splits long interviews or stories into a serialized &quot;Part
-                1, Part 2, Part 3...&quot; series, using sentence and scene
-                boundaries to avoid cutting speakers mid-sentence.
-              </p>
-            </div>
+            <CommandCard command="./main.sh parts [URL or file.mp4]" tag="SERIES">
+              Splits long interviews or stories into a serialized &quot;Part
+              1, Part 2, Part 3...&quot; series, using sentence and scene
+              boundaries to avoid cutting speakers mid-sentence.
+            </CommandCard>
 
-            <div className="cli-command-card">
-              <div className="cli-header">
-                <code>./main.sh queue</code>
-                <span className="cli-tag">PUBLISHER</span>
-              </div>
-              <p>
-                Shows the local Instagram publishing queue. Publishing is a
-                separate, explicit <code>./main.sh post</code> command.
-              </p>
-            </div>
+            <CommandCard command="./main.sh queue" tag="PUBLISHER">
+              Shows the local Instagram publishing queue. Publishing is a
+              separate, explicit <code>./main.sh post</code> command.
+            </CommandCard>
           </section>
 
           {/* SECTION 5: CONFIG & ENVIRONMENT */}

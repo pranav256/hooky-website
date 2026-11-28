@@ -15,7 +15,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
-import { HookyMark } from "./brand";
+import { HookyMark } from "./site-shell";
 
 const moments = [
   {
@@ -67,21 +67,18 @@ const topicMatches = (topic: string) =>
     );
 
 export function StudioDemo() {
-  const [selected, setSelected] = useState(0),
-    [style, setStyle] = useState("bold"),
-    [frame, setFrame] = useState("center");
+  const [draft, setDraft] = useState(starter);
+  const { id: projectId, name, selected, style, frame, topic, edits } = draft;
+  const updateDraft = (changes: Partial<SampleProject>) =>
+    setDraft((current) => ({ ...current, ...changes }));
   const [active, setActive] = useState("studio"),
     [notice, setNotice] = useState(false);
-  const [topicInput, setTopicInput] = useState(""),
-    [topic, setTopic] = useState("");
-  const [edits, setEdits] = useState<Record<string, string>>({}),
-    [captionQuery, setCaptionQuery] = useState(""),
+  const [topicInput, setTopicInput] = useState("");
+  const [captionQuery, setCaptionQuery] = useState(""),
     [previewPhrase, setPreviewPhrase] = useState(0),
     [focusedPhrase, setFocusedPhrase] = useState<number | null>(null);
-  const [projects, setProjects] = useState<SampleProject[]>([starter]),
-    [projectId, setProjectId] = useState(0),
-    [name, setName] = useState(starter.name),
-    [projectMessage, setProjectMessage] = useState("");
+  const [projects, setProjects] = useState<SampleProject[]>([starter]);
+  const [projectMessage, setProjectMessage] = useState("");
   const matches = topicMatches(topic),
     moment = moments[selected];
   const phrases = [moment.title, moment.quote].map((original, i) => ({
@@ -101,16 +98,10 @@ export function StudioDemo() {
   );
   const invalidCaption = Object.values(edits).some((text) => !text.trim());
   const current = projects.find((p) => p.id === projectId);
-  const changed =
-    !current ||
-    current.name !== name.trim() ||
-    current.selected !== selected ||
-    current.style !== style ||
-    current.frame !== frame ||
-    current.topic !== topic ||
-    JSON.stringify(current.edits) !== JSON.stringify(edits);
+  const snapshot = { ...draft, name: name.trim() };
+  const changed = JSON.stringify(current) !== JSON.stringify(snapshot);
   const saveProject = (asNew: boolean) => {
-    if (!name.trim()) {
+    if (!snapshot.name) {
       setProjectMessage("Enter a project name before saving.");
       return;
     }
@@ -118,34 +109,18 @@ export function StudioDemo() {
       setProjectMessage("Correct empty caption phrases before saving.");
       return;
     }
-    const id = asNew ? projects.length : projectId;
-    const project = {
-      id,
-      name: name.trim(),
-      selected,
-      style,
-      frame,
-      topic,
-      edits: { ...edits },
-    };
+    const project = { ...snapshot, id: asNew ? projects.length : projectId };
     setProjects(
       asNew
         ? [...projects, project]
-        : projects.map((p) => (p.id === id ? project : p)),
+        : projects.map((p) => (p.id === project.id ? project : p)),
     );
-    setProjectId(id);
-    setName(project.name);
+    setDraft(project);
     setProjectMessage(`Saved “${project.name}” for this page visit.`);
   };
   const openProject = (project: SampleProject) => {
-    setProjectId(project.id);
-    setName(project.name);
-    setSelected(project.selected);
-    setStyle(project.style);
-    setFrame(project.frame);
-    setTopic(project.topic);
+    setDraft(project);
     setTopicInput(project.topic);
-    setEdits({ ...project.edits });
     setCaptionQuery("");
     setPreviewPhrase(0);
     setActive("studio");
@@ -215,10 +190,14 @@ export function StudioDemo() {
                 onSubmit={(event) => {
                   event.preventDefault();
                   const next = topicInput.trim();
-                  setTopic(next);
                   const found = topicMatches(next);
-                  if (found.length && !found.some(({ i }) => i === selected))
-                    setSelected(found[0].i);
+                  updateDraft({
+                    topic: next,
+                    selected:
+                      found.length && !found.some(({ i }) => i === selected)
+                        ? found[0].i
+                        : selected,
+                  });
                   setCaptionQuery("");
                   setPreviewPhrase(0);
                   setNotice(false);
@@ -259,7 +238,7 @@ export function StudioDemo() {
                       className={`moment-card ${selected === i ? "selected" : ""}`}
                       aria-pressed={selected === i}
                       onClick={() => {
-                        setSelected(i);
+                        updateDraft({ selected: i });
                         setCaptionQuery("");
                         setPreviewPhrase(0);
                         setNotice(false);
@@ -281,7 +260,7 @@ export function StudioDemo() {
                       <button
                         className="text-action"
                         onClick={() => {
-                          setTopic("");
+                          updateDraft({ topic: "" });
                           setTopicInput("");
                         }}
                       >
@@ -338,7 +317,7 @@ export function StudioDemo() {
                         key={f}
                         aria-pressed={frame === f}
                         className={frame === f ? "active" : ""}
-                        onClick={() => setFrame(f)}
+                        onClick={() => updateDraft({ frame: f })}
                       >
                         {f === "center" ? "Center" : "Canvas fit"}
                       </button>
@@ -353,7 +332,7 @@ export function StudioDemo() {
                       key={s}
                       className={`demo-style ${style === s ? "active" : ""}`}
                       aria-pressed={style === s}
-                      onClick={() => setStyle(s)}
+                      onClick={() => updateDraft({ style: s })}
                     >
                       <span className={`style-sample sample-${s}`}>Aa</span>
                       <span>
@@ -406,7 +385,9 @@ export function StudioDemo() {
                         }}
                         onBlur={() => setFocusedPhrase(null)}
                         onChange={(event) =>
-                          setEdits({ ...edits, [key]: event.target.value })
+                          updateDraft({
+                            edits: { ...edits, [key]: event.target.value },
+                          })
                         }
                       />
                       {!text.trim() && (
@@ -420,7 +401,7 @@ export function StudioDemo() {
                           onClick={() => {
                             const next = { ...edits };
                             delete next[key];
-                            setEdits(next);
+                            updateDraft({ edits: next });
                           }}
                         >
                           Reset phrase {i + 1}
@@ -452,7 +433,7 @@ export function StudioDemo() {
                       maxLength={120}
                       aria-describedby="demo-project-help"
                       onChange={(event) => {
-                        setName(event.target.value);
+                        updateDraft({ name: event.target.value });
                         setProjectMessage("");
                       }}
                     />

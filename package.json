@@ -14,8 +14,8 @@
     "check:studio-features": "node scripts/check-studio-features.mjs",
     "check:studio-projects": "node scripts/check-studio-projects.mjs",
     "check:browser-ci": "node scripts/check-browser-ci.mjs",
-    "sync:studio": "node scripts/sync-studio-brand.mjs",
-    "build:studio-css": "node scripts/build-studio-css.mjs",
+    "sync:studio": "node scripts/studio-assets.cjs sync",
+    "build:studio-css": "node scripts/studio-assets.cjs css",
     "test:tooling": "node --test scripts/studio-path.test.cjs"
   },
   "dependencies": {
@@ -39,7 +39,6 @@
     "eslint-config-next": "^15.5.29",
     "playwright": "^1.65.0",
     "postcss": "^8.5.1",
-    "prettier": "^3.9.10",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3"
   }

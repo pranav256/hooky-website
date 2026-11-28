@@ -197,9 +197,6 @@
   line-height: 1.7;
   color: var(--hooky-secondary);
 }
-.feature-number {
-  display: none;
-}
 .feature-row > a {
   display: grid;
   place-items: center;

@@ -1,14 +1,26 @@
+import assert from "node:assert/strict";
+import { runInNewContext } from "node:vm";
 import { spawn, spawnSync } from "node:child_process";
-import { createWriteStream, mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
+import { createWriteStream, mkdtempSync, mkdirSync, readFileSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, isAbsolute, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createRequire } from "node:module";
 import { createServer } from "node:net";
-import studioPaths from "./studio-path.cjs";
+import studioPaths from "./studio-assets.cjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const engine = resolve(studioPaths.resolveStudioDir(process.argv[2]), "../../..");
+const studioDir = studioPaths.resolveStudioDir(process.argv[2]);
+const engine = resolve(studioDir, "../../..");
+const iconRuntime = {};
+runInNewContext(readFileSync(resolve(studioDir, "lucide.min.js"), "utf8"), iconRuntime);
+const usedIcons = new Set(["index.html", "studio.js", "projects.js"].flatMap((file) =>
+  [...readFileSync(resolve(studioDir, file), "utf8").matchAll(/data-lucide=["']([^"']+)["']/g)].map((match) => match[1])));
+assert(usedIcons.size > 0, "Studio must declare its icons");
+for (const name of usedIcons) {
+  const exportedName = name.replace(/(^|-)(\w)/g, (_, separator, letter) => letter.toUpperCase());
+  assert(iconRuntime.lucide.icons[exportedName], `Missing bundled Studio icon: ${name}`);
+}
 const require = createRequire(import.meta.url);
 const isolated = mkdtempSync(resolve(tmpdir(), "hooky-browser-"));
 const artifacts = resolve(root, ".design-review");

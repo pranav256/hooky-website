@@ -173,14 +173,13 @@ export default function Home() {
             </p>
           </div>
           <div className="feature-list">
-            {features.map(({ icon: Icon, title, body, detail, href }, i) => (
+            {features.map(({ icon: Icon, title, body, detail, href }) => (
               <article className="feature-row" key={title}>
                 <div className="feature-label">
                   <Icon size={22} />
                   <span>{detail}</span>
                 </div>
                 <div>
-                  <span className="feature-number">0{i + 1}</span>
                   <h3>{title}</h3>
                   <p>{body}</p>
                 </div>

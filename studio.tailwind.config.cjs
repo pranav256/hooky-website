@@ -1,4 +1,4 @@
-const { resolveStudioDir } = require("./scripts/studio-path.cjs");
+const { resolveStudioDir } = require("./scripts/studio-assets.cjs");
 const studioDir = resolveStudioDir().replaceAll("\\", "/");
 module.exports = {
   content: [`${studioDir}/index.html`, `${studioDir}/studio.js`],

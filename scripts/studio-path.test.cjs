@@ -3,7 +3,7 @@ const { mkdtempSync, mkdirSync, writeFileSync, rmSync } = require("node:fs");
 const { tmpdir } = require("node:os");
 const { join, resolve } = require("node:path");
 const { test } = require("node:test");
-const { resolveStudioDir } = require("./studio-path.cjs");
+const { resolveStudioDir } = require("./studio-assets.cjs");
 
 test("studio tools find current and legacy siblings and honor explicit overrides", (t) => {
   const workspace = mkdtempSync(join(tmpdir(), "hooky-paths-"));
@@ -74,7 +74,7 @@ function resolverWithSimulatedFs(t, methods) {
   })) {
     t.mock.method(fs, name, implementation);
   }
-  const modulePath = require.resolve("./studio-path.cjs");
+  const modulePath = require.resolve("./studio-assets.cjs");
   delete require.cache[modulePath];
   t.after(() => { delete require.cache[modulePath]; });
   return require(modulePath).resolveStudioDir;

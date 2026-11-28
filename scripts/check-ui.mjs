@@ -250,6 +250,7 @@ try {
         "page",
       );
     }
+    assert.equal(await page.locator("i[data-lucide]").count(), 0, "Studio icons should render");
     assert(await page.locator("#top-render-btn").isDisabled());
     await click("#analyze-btn");
     await visible("#studio-alert");
@@ -277,130 +278,9 @@ try {
   await page.waitForFunction(() =>
     [...document.querySelectorAll(".hero-preview video")].every((video) => video.autoplay),
   );
-  // All requests in this workflow are intercepted. This never downloads, renders,
-  // publishes a clip, or writes the user's settings or channel list.
-  const fixtures = [
-    {
-      id: "sample-01",
-      title: "Make something worth watching",
-      hook_quote: "Start before you feel ready.",
-      retention_score: 94,
-      category: "Creative insight",
-      start: 252,
-      end: 286,
-      start_fmt: "04:12",
-      end_fmt: "04:46",
-      duration: "34s",
-      words: ["MAKE", "SOMETHING", "WORTH", "WATCHING"],
-      dialogue: [{ time: "04:12", text: "Start before you feel ready." }],
-    },
-    {
-      id: "sample-02",
-      title: "A new perspective",
-      hook_quote: "Look up once in a while.",
-      retention_score: 89,
-      start: 300,
-      end: 340,
-      start_fmt: "05:00",
-      end_fmt: "05:40",
-      duration: "40s",
-      words: ["A", "NEW", "PERSPECTIVE"],
-      dialogue: [{ time: "05:00", text: "Look up once in a while." }],
-    },
-  ];
-  await page.unroute(`${studio}/api/**`, baseFixture);
-  await page.route(`${studio}/api/**`, async (route) => {
-    const request = route.request();
-    const path = new URL(request.url()).pathname;
-    if (
-      request.method() !== "GET" &&
-      !(
-        request.method() === "POST" &&
-        ["/api/analyze/start", "/api/jobs/render_clip"].includes(path)
-      )
-    ) {
-      errors.push(`Unexpected fixture mutation: ${request.method()} ${path}`);
-      await route.fulfill({
-        status: 500,
-        json: { detail: "Unexpected fixture mutation" },
-      });
-      return;
-    }
-    const json =
-      path === "/api/analyze/start"
-        ? { job_id: "sample-analysis" }
-        : path === "/api/analyze/status/sample-analysis"
-          ? {
-              status: "completed",
-              progress: 100,
-              result: {
-                hooks: fixtures,
-                video_title: "The Creative Mind",
-                recommended_framing: "fit",
-                recommended_style: "clean",
-              },
-            }
-          : path === "/api/projects"
-            ? { projects: [] }
-            : path === "/api/doctor"
-              ? { gpu: "Local engine", checks: [] }
-              : path === "/api/env"
-                ? { raw: "", values: {} }
-                : path === "/api/channels"
-                  ? { channels: [] }
-                  : path === "/api/outputs"
-                    ? { files: [] }
-                    : path === "/api/jobs/render_clip"
-                      ? { job_id: "sample-render" }
-                      : path === "/api/jobs"
-                        ? { jobs: [] }
-                        : path === "/api/jobs/sample-render"
-                          ? { status: "failed", error: "Sample render error" }
-                          : null;
-    if (json === null)
-      errors.push(
-        `Unexpected fixture API: ${route.request().method()} ${path}`,
-      );
-    await route.fulfill({ json });
-  });
-  await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.goto(studio, { waitUntil: "networkidle" });
-  await page
-    .locator("#source-url")
-    .fill("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
-  await page.locator("#source-url").press("Enter");
-  await page.waitForSelector(".hook-select");
-  assert.equal(await page.locator(".hook-select").count(), 2);
-  assert(!(await page.locator("#top-render-btn").isDisabled()));
-  await click('.hook-select:has-text("A new perspective")');
-  assert.equal(
-    await page
-      .locator('.hook-select:has-text("A new perspective")')
-      .getAttribute("aria-pressed"),
-    "true",
-  );
-  await click("#frame-mode-center");
-  await click("#sub-mode-hormozi");
-  await click("#preview-tab-canvas");
-  await visible("#preview-canvas-container");
-  await click("button[onclick=\"nudgeTime('start', +0.5)\"]");
-  assert(
-    (await page.locator("#transcript-time-badge").textContent()).includes(
-      "39.5s",
-    ),
-  );
-  await click("#top-render-btn");
-  await page.waitForFunction(
-    () => !document.getElementById("studio-alert").classList.contains("hidden"),
-  );
-  assert(
-    (await page.locator("#studio-alert").textContent()).includes(
-      "Sample render error",
-    ),
-  );
   assert.equal(errors.length, 0, errors.join("\n"));
   console.log(
-    "Passed: responsive website, docs, all five studio views, interactive tour, commands, navigation, analysis fixture, clip selection, timing, framing, captions, and render error feedback.",
+    "Passed: responsive website, docs, all five studio views, interactive tour, commands, navigation, media assets, and reduced-motion playback.",
   );
 } catch (error) {
   mkdirSync(".design-review", { recursive: true });
